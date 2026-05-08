@@ -128,7 +128,7 @@ node scripts/sweep.js
 ## Obsidian Vault Structure
 
 ```
-ObsidianVault/                          (on OneDrive)
+ObsidianVaultPersoMemory/                          (on OneDrive)
   MEMORY.md                             Top-level durable memory (loaded every agent session)
   memory/
     daily/

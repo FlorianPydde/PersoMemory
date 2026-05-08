@@ -1,0 +1,13 @@
+# Obsidian config (local to each machine)
+vault/.obsidian/
+
+# Environment
+.env
+.env.local
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
