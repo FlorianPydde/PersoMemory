@@ -28,8 +28,9 @@ vault/
 
 At the start of every session:
 1. Read `MEMORY.md` using the `read_note` tool for top-level context
-2. Read today's daily note (`memory/daily/YYYY-MM-DD.md`) if it exists
-3. Read yesterday's daily note if it exists
+2. Use `list_directory` on `memory/daily/` to check which daily notes exist
+3. If today's or yesterday's daily notes exist, read them for recent context
+4. If no daily notes exist yet, that is normal. Do not treat missing files as errors.
 
 ## When to Write Memory
 
