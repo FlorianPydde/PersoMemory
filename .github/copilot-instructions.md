@@ -27,10 +27,25 @@ vault/
 ## Session Start Behavior
 
 At the start of every session:
+
 1. Read `MEMORY.md` using the `read_note` tool for top-level context
 2. Use `list_directory` on `memory/daily/` to check which daily notes exist
-3. If today's or yesterday's daily notes exist, read them for recent context
-4. If no daily notes exist yet, that is normal. Do not treat missing files as errors.
+3. Determine today's date and the last expected workday:
+   - If today is Monday, last workday = Friday
+   - If today is Tuesday-Friday, last workday = yesterday
+   - Weekends (Saturday/Sunday) are skipped (no sweep expected)
+4. **Auto-sweep check**: If the last workday's daily note is missing, run a sweep for that day:
+   - Tell the user: *"Yesterday's daily note is missing. Generating it now (~15-20s)..."*
+   - Query WorkIQ with a single comprehensive prompt:
+     > "Summarize all my work activities from [MISSING DATE]: emails received and sent, Teams messages and conversations, meetings attended, and any call transcripts. Focus on: decisions made, action items assigned, key facts learned, projects discussed, and people involved. Be thorough but concise."
+   - Extract signal from the WorkIQ response
+   - Write a structured daily note to `memory/daily/YYYY-MM-DD.md` using the daily note format below
+   - Update relevant project/people notes if significant content found
+   - Set the `## Source` section to `- Automated sweep via WorkIQ`
+5. Read today's and recent daily notes for context
+6. If no daily notes exist yet, that is normal. Do not treat missing files as errors.
+
+**Important**: The sweep check (steps 2-4) must be fast. The `list_directory` call is instant. Only run WorkIQ if a day is actually missing. On most sessions, the note already exists and you skip straight to step 5.
 
 ## When to Write Memory
 
