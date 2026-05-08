@@ -1,11 +1,26 @@
 # PersoMemory Agent Instructions
 
-You have access to two MCP servers that form a personal memory system:
+You have access to three MCP servers that form a personal memory system:
 
 ## MCP Servers
 
 1. **WorkIQ** (`workiq`): Queries Microsoft 365 data (Teams chats, emails, calendar, call transcripts). Use natural language queries.
 2. **MCPVault** (`mcpvault`): Reads and writes Markdown notes in an Obsidian vault. This is the persistent memory store.
+3. **Smart Connections** (`smart-connections`): Semantic search over the vault using local embeddings (TaylorAI/bge-micro-v2, 384d). Read-only. Use for discovery and retrieval.
+
+### Retrieval Strategy: MCPVault vs Smart Connections
+
+| Need | Tool | Why |
+|------|------|-----|
+| Read/write a specific note by path | MCPVault `read_note` / `write_note` | Direct file access |
+| List files in a directory | MCPVault `list_directory` | Exact listing |
+| Find notes related to a topic (no exact path known) | Smart Connections `get_similar_notes` | Semantic similarity via embeddings |
+| Find what connects to a specific note | Smart Connections `get_connection_graph` | Graph traversal across vault |
+| Get block-level content from a note | Smart Connections `get_note_content` | Granular retrieval |
+| Keyword search in note content | Smart Connections `search_notes` | Substring matching |
+| Check vault embedding stats | Smart Connections `get_stats` | Diagnostics |
+
+**Key rule**: Smart Connections `get_similar_notes` requires a `note_path` as input (finds notes similar to a reference note). It does NOT accept free-text queries for semantic search. To find related content, pick the most relevant existing note as the anchor.
 
 ## Memory Vault Structure
 
@@ -53,7 +68,8 @@ At the start of every session:
    - Update relevant project/people notes if significant content found
    - Set the `## Source` section to `- Automated sweep via WorkIQ`
 5. Read today's and recent daily notes for context
-6. If no daily notes exist yet, that is normal. Do not treat missing files as errors.
+6. **Semantic context**: If the user mentions a topic, use Smart Connections `get_similar_notes` with the most relevant daily/project note as anchor to pull related memories. This surfaces forgotten context.
+7. If no daily notes exist yet, that is normal. Do not treat missing files as errors.
 
 **Important**: The sweep check (steps 2-4) must be fast. The `list_directory` call is instant. Only run WorkIQ if a day is actually missing. On most sessions, the note already exists and you skip straight to step 5.
 
@@ -147,7 +163,11 @@ Dreaming is the process of promoting short-term daily notes into durable long-te
 ### Phase 1: Light (scan and stage)
 
 1. Read all daily notes since the last consolidation
-2. For each note, extract promotion candidates into these categories:
+2. **Semantic discovery**: For each daily note, call Smart Connections `get_similar_notes` (threshold: 0.5) to find related vault content. This reveals:
+   - Patterns repeating across days (same note appears similar to multiple dailies)
+   - Connections to project/people notes that should be updated
+   - Toolkit candidates that match existing patterns
+3. For each note, extract promotion candidates into these categories:
    - **Operating truths**: stable preferences, recurring heuristics, identity-level facts
    - **Project knowledge**: insights specific to a project
    - **People context**: working styles, preferences, influence, ownership
@@ -157,6 +177,8 @@ Dreaming is the process of promoting short-term daily notes into durable long-te
 3. Write candidates to `DREAMS.md` under a dated `## Dream Diary` entry
 
 ### Phase 2: Deep (score and route)
+
+Use Smart Connections `get_connection_graph` on key daily notes (depth: 2) to discover non-obvious relationships and strengthen pattern detection.
 
 Score each candidate on these signals:
 - **Frequency**: appeared in multiple daily notes (strongest signal)
