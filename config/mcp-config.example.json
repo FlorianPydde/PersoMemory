@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "sharepoint-lists": {
+      "type": "http",
+      "url": "https://agent365.svc.cloud.microsoft/agents/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47/servers/mcp_SharePointListsTools"
+    },
+    "onedrive-sharepoint": {
+      "type": "http",
+      "url": "https://agent365.svc.cloud.microsoft/agents/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47/servers/mcp_ODSPRemoteServer"
+    },
+    "workiq": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@microsoft/workiq",
+        "mcp"
+      ]
+    },
+    "mcpvault": {
+      "command": "npx",
+      "args": [
+        "@bitbonsai/mcpvault@latest",
+        "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+      ]
+    },
+    "smart-connections": {
+      "command": "node",
+      "args": [
+        "/home/flpydde/smart-connections-mcp/dist/index.js"
+      ],
+      "env": {
+        "SMART_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+      }
+    }
+  }
+}
