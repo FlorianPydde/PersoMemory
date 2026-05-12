@@ -29,6 +29,15 @@ Build a personal, evolving memory system that:
 9. OAuth refresh token can be stored as GitHub secret for CI auth
 ```
 
+## Source of Truth Split
+
+PersoMemory has two separate roles:
+
+1. `ObsidianVaultPersoMemory` is the active memory store. It contains personal memory content.
+2. `PersoMemory` is the source and recovery repo. It contains setup artifacts, docs, skills, templates, config examples, and scripts.
+
+Runtime behavior is provided by global Copilot instructions, MCP configuration, and the installed `persomemory` skill.
+
 ## Architecture
 
 ```
@@ -127,26 +136,36 @@ node scripts/sweep.js
 
 ## Obsidian Vault Structure
 
-```
-ObsidianVaultPersoMemory/                          (on OneDrive)
-  MEMORY.md                             Top-level durable memory (loaded every agent session)
+```text
+ObsidianVaultPersoMemory/             (on OneDrive)
+  MEMORY.md                           Durable self model and stable context only
+  DREAMS.md                           Consolidation diary and promotion log
   memory/
+    active/
+      now.md                          Current priorities and live context
+    commitments/
+      open-loops.md                   Follow ups, promises, obligations
     daily/
-      2026-05-08.md                     Daily extracted knowledge
+      YYYY-MM-DD.md                   Daily episodic intake and evidence
+      TEMPLATE.md                     Daily intake schema
     projects/
-      {project-name}.md                 Per-project accumulated knowledge
+      {project-name}.md               Durable project knowledge
     people/
-      {person-name}.md                  Relationship context
+      {person-name}.md                Durable relationship context
     decisions/
-      {decision-slug}.md                Key decisions with rationale
+      {decision-slug}.md              Durable decisions and revisit triggers
     career/
-      goals.md                          Current goals, aspirations
-      accomplishments.md                Track record
-      feedback.md                       Feedback received
+      goals.md                        Current goals and aspirations
+      accomplishments.md              Track record
+      feedback.md                     Feedback received
     patterns/
-      decision-frameworks.md            Reusable heuristics extracted over time
-      project-evaluation.md             How you evaluate new projects
+      decision-frameworks.md          Reusable heuristics extracted over time
+      project-evaluation.md           How you evaluate new projects
+    toolkits/
+      README.md                       Reusable working assets
 ```
+
+**Ontology rule:** daily notes are intake and evidence. Durable retrieval should prefer `MEMORY.md`, `memory/active/now.md`, `memory/commitments/open-loops.md`, `memory/projects/`, `memory/people/`, `memory/patterns/`, `memory/decisions/`, `memory/toolkits/`, and `memory/career/` before falling back to daily notes.
 
 ## GitHub Actions Pipeline
 
@@ -213,6 +232,13 @@ Two options for getting the generated Markdown back to your OneDrive-synced vaul
 - Git pull syncs new content, OneDrive syncs across devices
 
 **Recommended: Option A** (simplest to start, git gives you version history).
+
+## Runtime Skill
+
+The `persomemory` skill is the procedural layer for the memory system. MCPs provide access, but the skill defines live capture, WorkIQ daily intake, routing rules, promotion gates, and dreaming.
+
+Source copy: `skills/persomemory/SKILL.md`
+Runtime install: `~/.copilot/skills/persomemory/SKILL.md`
 
 ## Agent Workflows
 
