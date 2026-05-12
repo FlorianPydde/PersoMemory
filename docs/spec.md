@@ -374,3 +374,54 @@ Can be automated (separate weekly cron) or manual:
 4. **Sensitive data exclusion:** Blocklist certain Teams channels or email senders from ingestion?
 5. **MEMORY.md bootstrap:** Pre-populate with current projects, goals, org context to give the system a head start?
 6. **Token rotation:** Accept manual re-auth every 90 days, or build auto-rotation?
+
+---
+
+## Graph and Browsing Model
+
+*Added during vault graph evolution, 2026-05-13.*
+
+### Decision
+
+Use plain markdown index notes as the primary human browsing layer for v1. Defer Bases views until the graph schema is proven stable and the note population is sufficient to justify query design.
+
+**Rationale:**
+- Index notes are portable plain markdown that work with or without any plugin.
+- Bases requires the graph contract to be stable before designing useful queries.
+- Agent retrieval does not depend on Bases at all — it uses frontmatter, wikilinks, and Smart Connections.
+- Index notes can be converted to Bases views later without losing content.
+
+### Target Human Browsing Workflows
+
+#### Workflow 1: Find all active projects
+
+Entry point: `memory/PROJECTS.md`
+
+This index note lists all project notes with their status and domain. It is manually maintained during consolidation and updated when project status changes.
+
+Alternative: open Obsidian Graph view and filter by `type: project`. The local graph on any project note shows people, decisions, and patterns connected to it.
+
+#### Workflow 2: Trace impact from project to career
+
+Start at a project note (e.g., `memory/projects/otp-bank-agentic.md`). The backlinks pane shows career evidence notes that reference this project via their `projects` frontmatter. Follow the evidence note to its `impact-areas`, `so-what`, and `observers`.
+
+Alternative path: open `memory/career/accomplishments.md` and follow links to specific evidence notes under `memory/career/evidence/`.
+
+#### Workflow 3: Trace one person across projects
+
+Open a person note (e.g., `memory/people/george-theologou.md`). The frontmatter `projects` field lists projects they appear in. The backlinks pane shows daily notes, evidence notes, and decision notes that reference them via their `people` field.
+
+### What Bases Can Do Later
+
+Obsidian Bases (core plugin, already enabled) can create live queryable tables from frontmatter across the vault. Once the graph contract is stable, useful Bases views would include:
+- All active projects by domain
+- All open decisions by project
+- All career evidence by impact area
+- All people by project involvement
+
+This is a Phase 2 investment. Do not design Bases views until at least 80% of durable notes have frontmatter.
+
+### Index Notes to Create
+
+- `memory/INDEX.md` — vault entry point with links to all major sections
+- `memory/PROJECTS.md` — manually curated project registry with status, domains, and links

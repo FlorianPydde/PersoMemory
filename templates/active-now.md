@@ -1,3 +1,11 @@
+---
+type: active-now
+updated: YYYY-MM-DD
+projects:
+  - "[[projects/project-slug]]"
+people: []
+---
+
 # Active Now
 
 This file captures current working context. It is intentionally volatile and should be reviewed during consolidation.

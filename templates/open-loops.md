@@ -1,3 +1,10 @@
+---
+type: open-loops
+updated: YYYY-MM-DD
+projects: []
+people: []
+---
+
 # Open Loops
 
 ## Current

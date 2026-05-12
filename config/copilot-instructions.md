@@ -30,6 +30,18 @@ The vault is at: `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/Obsid
 2. Use `smart-connections` for semantic retrieval when the user asks about a topic, pattern, project, person, or prior discussion and exact filenames are unknown.
 3. Use `workiq` only for M365 backed daily intake, meeting, email, and calendar reconstruction. Do not treat WorkIQ output as durable memory until it is written into the vault.
 
+## Retrieval Order
+
+When answering a question about personal memory, use this exact order:
+
+1. **Direct file lookup**: if the exact path is known, read it. Example: `memory/projects/otp-bank-agentic.md` for a question about OTP.
+2. **Explicit linked notes**: follow frontmatter `projects`, `people`, `patterns`, `decisions` wikilinks from the anchor note to discover related context.
+3. **Property search**: search for notes with matching `type`, `status`, `domains`, or `impact-areas` values.
+4. **Semantic search via Smart Connections**: for conceptual questions where the exact filename is unknown.
+5. **Daily notes as evidence**: only when you need chronological evidence, source detail, or a specific date range.
+
+Do NOT load daily notes as the first retrieval step.
+
 ## Session Start Memory Loading
 
 At the start of a meaningful session, load memory in this order:
@@ -40,16 +52,115 @@ At the start of a meaningful session, load memory in this order:
 4. Use `smart-connections` or `mcpvault` search only if the user asks about a specific topic that needs deeper context.
 5. Use daily notes only as episodic evidence, not as primary memory.
 
+## Graph-Writing Contract
+
+Every durable note you create or update must include:
+
+1. **Frontmatter** with `type` and all applicable relationship fields.
+2. **Inline wikilinks** in the prose body where referencing other notes.
+
+Both are required. Frontmatter makes the note machine-readable. Inline wikilinks make relationships traversable in Obsidian.
+
+### Frontmatter examples
+
+**Daily note** (include projects and people that are clearly mentioned in the body):
+```yaml
+---
+type: daily
+date: 2026-05-04
+projects:
+  - "[[projects/otp-bank-agentic]]"
+people:
+  - "[[people/george-theologou]]"
+decisions: []
+impact-areas: []
+---
+```
+
+**Project note** (include all relationship types relevant to the project):
+```yaml
+---
+type: project
+status: active
+domains:
+  - banking
+  - agentic-ai
+technologies:
+  - Azure OpenAI
+  - Cosmos DB
+people:
+  - "[[people/george-theologou]]"
+  - "[[people/harish-chandran]]"
+decisions:
+  - "[[decisions/otp-storage-architecture]]"
+patterns:
+  - "[[patterns/agentic-ai-delivery]]"
+toolkits: []
+related:
+  - "[[projects/premier-league]]"
+tags:
+  - regulated-fsi
+---
+```
+
+**Career evidence note** (highest signal, Connect/promotion-threshold only):
+```yaml
+---
+type: career-evidence
+date: 2026-05-04
+impact-areas:
+  - "AI Design Wins / Pre-sales"
+  - "High Quality Delivery"
+so-what: "OTP Bank SRM Stage 3 ECIF passed, unlocking commercial deal and validating the regulated FSI agentic model."
+source-type: meeting-outcome
+observers:
+  - "[[people/george-theologou]]"
+projects:
+  - "[[projects/otp-bank-agentic]]"
+people:
+  - "[[people/harish-chandran]]"
+patterns:
+  - "[[patterns/agentic-ai-delivery]]"
+decisions:
+  - "[[decisions/otp-storage-architecture]]"
+tags: []
+---
+```
+
+### Inline wikilink rule
+
+After writing frontmatter, also embed wikilinks in prose:
+```markdown
+This decision was shaped by [[people/george-theologou]] during Stage 3.
+The approach generalizes as [[patterns/agentic-ai-delivery]].
+See [[decisions/otp-storage-architecture]] for full rationale.
+Related work: [[projects/premier-league]].
+```
+
+### Wikilink path convention
+
+`[[folder/slug]]` using lowercase hyphenated slugs matching the filename without `.md`.
+
+| Note type | Wikilink prefix |
+|---|---|
+| project | `[[projects/slug]]` |
+| person | `[[people/slug]]` |
+| pattern | `[[patterns/slug]]` |
+| decision | `[[decisions/slug]]` |
+| toolkit | `[[toolkits/slug]]` |
+| career evidence | `[[career/evidence/slug]]` |
+
 ## Daily Intake Workflow
 
 When the user asks for a daily summary, daily memory update, or WorkIQ sweep:
 
 1. Query WorkIQ for the relevant day.
 2. Write or update `memory/daily/YYYY-MM-DD.md` using `memory/daily/TEMPLATE.md`.
-3. Capture only state changes, decisions, commitments, people signals, evidence of impact, reusable assets, emerging patterns, promotion candidates, and source.
-4. Update `memory/commitments/open-loops.md` for new or closed obligations.
-5. Update `memory/active/now.md` only when current priorities or active project status materially change.
-6. Do not promote daily facts into `MEMORY.md`, `projects`, `people`, `patterns`, `decisions`, `toolkits`, or `career` unless they are repeated, identity shaping, relationship shaping, strategy changing, career relevant, or reusable.
+3. Populate `projects` and `people` frontmatter with wikilinks to notes that exist in the vault.
+4. Capture only state changes, decisions, commitments, people signals, evidence of impact, reusable assets, emerging patterns, promotion candidates, and source.
+5. Update `memory/commitments/open-loops.md` for new or closed obligations.
+6. Update `memory/active/now.md` only when current priorities or active project status materially change.
+7. Do not promote daily facts into `MEMORY.md`, `projects`, `people`, `patterns`, `decisions`, `toolkits`, or `career` unless they are repeated, identity shaping, relationship shaping, strategy changing, career relevant, or reusable.
 
 ## Durable Memory Update Workflow
 
@@ -63,7 +174,8 @@ When a conversation creates durable memory:
 6. Store durable decisions in `memory/decisions/*.md`.
 7. Store reusable prompts, checklists, playbooks, and workshop formats in `memory/toolkits/`.
 8. Store feedback, accomplishments, and growth evidence in `memory/career/`.
-9. Update `DREAMS.md` during consolidation, not for every raw daily fact.
+9. Store atomic proof (Connect/promotion threshold) in `memory/career/evidence/`.
+10. Update `DREAMS.md` during consolidation, not for every raw daily fact.
 
 ## Key Files
 
@@ -79,6 +191,9 @@ When a conversation creates durable memory:
 10. `memory/decisions/*.md`: durable decisions and revisit triggers.
 11. `memory/toolkits/`: reusable working assets.
 12. `memory/career/`: feedback, accomplishments, and goals.
+13. `memory/career/evidence/`: atomic career evidence notes (Connect/promotion threshold).
+14. `memory/INDEX.md`: vault entry point.
+15. `memory/PROJECTS.md`: project registry.
 
 ## Memory Hygiene Rules
 
@@ -87,3 +202,21 @@ When a conversation creates durable memory:
 3. Do not bury obligations in daily notes. Mirror them into `memory/commitments/open-loops.md`.
 4. Do not retrieve daily notes by default. Retrieve daily notes only when evidence, chronology, or source detail matters.
 5. Prefer promotion through `DREAMS.md` when a signal has appeared across multiple days.
+6. Always write frontmatter when creating or updating a durable note.
+7. Always add inline wikilinks in prose when referencing another note by name.
+8. Only create career evidence notes that meet the Connect/promotion/leadership threshold.
+
+## Career Evidence Impact Taxonomy
+
+When creating career evidence notes, use exactly these `impact-areas` labels from the manager evaluation rubric:
+
+- `High Quality Delivery`
+- `Customer Orientation`
+- `AI Design Wins / Pre-sales`
+- `Thought & Technical Leadership`
+- `Microsoft Business Understanding and Management`
+- `Growth Mindset & Problem Solving`
+- `Diversity & Inclusion`
+- `Security`
+
+Each evidence note maps to one or more of these areas. The `so-what` field should be a sentence that could appear verbatim in Connect.
