@@ -169,7 +169,7 @@ WorkIQ returns structured signal candidates. Accept them as evidence, not decisi
 After routing, run the lifecycle check to surface stale notes and lapsed commitments:
 
 ```
-python3 ~/lifecycle-check.py
+lifecycle-check
 ```
 
 Review the output and take action on any flagged items:
