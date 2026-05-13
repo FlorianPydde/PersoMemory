@@ -46,6 +46,13 @@ templates/                          Vault note templates
 ./scripts/validate-memory-vault.sh
 ```
 
+## Architecture Notes
+
+1. `docs/memory-challenge.md`: top down model of the personal memory problem.
+2. `docs/ontology.md`: note types, schemas, and graph rules.
+3. `docs/hooks.md`: Copilot hook behavior and local queue design.
+4. `docs/scheduling.md`: unattended evening sweep setup.
+
 ## Validate Runtime Behavior
 
 ```bash
