@@ -8,7 +8,8 @@ Read:
 
 1. `DREAMS.md`
 2. Daily notes since the last consolidation point.
-3. Related project, people, pattern, decision, toolkit, and career notes only when needed.
+3. Pending Copilot conversation queue entries that were not processed by evening sweeps.
+4. Related project, people, pattern, decision, toolkit, and career notes only when needed.
 
 Score candidate memory by:
 

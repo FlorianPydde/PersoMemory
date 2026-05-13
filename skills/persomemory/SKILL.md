@@ -77,13 +77,15 @@ Workflow:
 4. Do not update `MEMORY.md` unless the user explicitly asks or the fact is already proven durable.
 5. Preserve source attribution as "Conversation with agent".
 
-### 2. Daily WorkIQ Intake
+### 2. Daily Evening Intake
 
 Trigger: the user says "sweep my day", "summarize my day into memory", or asks for a daily memory update.
 
-Purpose: extract strategic signals from Microsoft 365 evidence and route them into the memory graph.
+Purpose: extract strategic signals from Microsoft 365 evidence and Copilot conversation evidence, then route them into the memory graph.
 
 WorkIQ retrieves evidence. PersoMemory decides meaning. Do not let WorkIQ judge career impact, Connect grade, or memory routing.
+
+Copilot conversations are a second evidence stream. The hook queue stores only pointers to Copilot transcripts under `~/.local/share/persomemory`; it is not memory and must not be treated as truth.
 
 Workflow:
 
@@ -154,7 +156,23 @@ At the end, list items discarded as low value and why (scheduling noise, admin, 
 
 WorkIQ returns structured signal candidates. Accept them as evidence, not decisions. Do not use WorkIQ's framing to classify career impact or memory priority — that judgment belongs to PersoMemory.
 
-**Phase 4: Memory routing**
+**Phase 4: Copilot conversation evidence**
+
+Read pending conversation review pointers from:
+
+```text
+~/.local/share/persomemory/session-reviews/
+```
+
+For each relevant pointer:
+
+1. Read the referenced transcript if available.
+2. Extract only signals that change future action, judgment, or retrieval.
+3. Deduplicate against the current daily note, active memory, open loops, project notes, and durable notes.
+4. Discard implementation noise, tool logs, duplicates, stale claims, and transient discussion.
+5. Never write raw transcripts to the vault.
+
+**Phase 5: Memory routing**
 
 1. Write or merge `memory/daily/YYYY-MM-DD.md` using `memory/daily/TEMPLATE.md`.
 2. Populate frontmatter `projects` and `people` with wikilinks to existing notes based on what was mentioned.
@@ -163,8 +181,35 @@ WorkIQ returns structured signal candidates. Accept them as evidence, not decisi
 5. Update `memory/active/now.md` only for material current context changes.
 6. Flag promotion candidates in the daily note. Do not blindly promote into durable memory.
 7. Preserve source attribution as "Automated sweep via WorkIQ" or "Manual WorkIQ sweep".
+8. Mark processed local conversation queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
 
-**Phase 5: Lifecycle check**
+The evening sweep should ask for input only at approval gates, not during routine capture.
+
+When running unattended through `copilot -p`, do not ask. Write approval-gated decisions to `memory/inbox/approvals/YYYY-MM-DD.md` and leave them with status `pending`.
+
+Ask before:
+
+1. Editing `MEMORY.md`.
+2. Creating career evidence.
+3. Promoting durable project, people, pattern, decision, or toolkit notes.
+4. Closing a project.
+5. Closing an ambiguous commitment.
+6. Resolving conflicting evidence between WorkIQ, Copilot conversations, and existing vault state.
+7. Capturing potentially sensitive content.
+
+Approval inbox item statuses are `pending`, `approved`, `rejected`, `deferred`, and `superseded`.
+
+Approval inbox sections:
+
+1. Project Closures.
+2. Commitment Closures.
+3. Durable Promotions.
+4. Career Evidence Candidates.
+5. Sensitive or Ambiguous Items.
+6. Discard Recommendations.
+7. Sweep Failures.
+
+**Phase 6: Lifecycle check**
 
 After routing, call the `lifecycle_check` MCP tool (server: `persomemory-lifecycle`) to surface stale notes and lapsed commitments:
 
@@ -179,7 +224,24 @@ Review the output and take action on any flagged items:
 
 Do not skip this step. A sweep that captures new evidence without clearing stale state leaves the vault gradually noisier.
 
-### 3. Dreaming and Consolidation
+### 3. Copilot Conversation Sweep
+
+Trigger: the user says "sweep this Copilot session", "review pending conversation queue", or asks to capture memory from Copilot conversations.
+
+Purpose: extract useful memory signals from Copilot CLI conversation transcripts.
+
+Workflow:
+
+1. Read pointer-only queue entries from `~/.local/share/persomemory/session-reviews/`.
+2. Read referenced transcripts when available.
+3. Apply the same keep-versus-discard gates used for WorkIQ.
+4. Deduplicate against current vault state before writing.
+5. Write concise daily note entries or operational updates only when the signal is still current.
+6. Ask before durable promotions, project closures, ambiguous commitment closures, career evidence, or `MEMORY.md` edits.
+7. Mark local queue entries as reviewed or superseded after processing when permissions allow.
+8. Never write raw transcripts into the vault.
+
+### 4. Dreaming and Consolidation
 
 Trigger: the user says "dream", "consolidate", "consolidate this week", or asks to promote daily notes.
 

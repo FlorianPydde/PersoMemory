@@ -38,6 +38,24 @@ When invoked for PersoMemory work:
 3. Do not load daily notes unless the user asks for chronology, evidence, or a date-specific sweep.
 4. Run `lifecycle_check(stale_days=14, loop_age_days=14)` when doing a morning brief, daily sweep, weekly consolidation, or lifecycle triage.
 
+## Approval inbox
+
+Approval items live in the vault at `memory/inbox/approvals/YYYY-MM-DD.md`.
+
+Use the approval inbox when a sweep finds a decision that needs Florian's judgment:
+
+1. Project closures.
+2. Ambiguous commitment closures.
+3. Durable project, people, pattern, decision, or toolkit promotions.
+4. Career evidence candidates.
+5. Sensitive or ambiguous capture.
+6. Conflicting evidence.
+7. Sweep failures that need attention.
+
+Approval item statuses are `pending`, `approved`, `rejected`, `deferred`, and `superseded`.
+
+Approval inbox entries are allowed during unattended sweeps because they are curated pending decisions, not durable promotions.
+
 ## Morning brief
 
 Trigger phrases include:
@@ -49,16 +67,20 @@ Trigger phrases include:
 Process:
 
 1. Use startup context or load the three startup files.
-2. Run lifecycle_check.
-3. Return:
+2. Read `memory/inbox/approvals/*.md` files whose frontmatter has `status: pending`.
+3. Run lifecycle_check.
+4. Return:
    1. Top 3 focus areas.
    2. Open follow ups that matter today.
    3. Stale projects or overdue reviews.
-   4. One risk Florian may be underweighting.
-   5. One sharp question: "What is the one outcome that makes today successful?"
-4. Do not write to memory during the morning brief unless Florian explicitly asks.
+   4. Pending approval decisions grouped by type.
+   5. One risk Florian may be underweighting.
+   6. One sharp question: "What is the one outcome that makes today successful?"
+5. Ask Florian to approve, reject, defer, or edit pending approval items that still matter.
+6. Apply approved items through normal PersoMemory write rules and update their status.
+7. Do not otherwise write to memory during the morning brief unless Florian explicitly asks.
 
-## Daily WorkIQ sweep
+## Daily evening sweep
 
 Trigger phrases include:
 
@@ -70,7 +92,10 @@ Process:
 
 1. Prime with active context, open loops, and project registry.
 2. Query WorkIQ for evidence across meetings, transcripts, Teams, email, files, and calendar.
-3. Keep only signals with future consequence:
+3. Read pending Copilot conversation review pointers from `~/.local/share/persomemory/session-reviews/`.
+4. Read referenced Copilot transcripts when available.
+5. Treat WorkIQ and Copilot conversations as two evidence streams into the same memory layer.
+6. Keep only signals with future consequence:
    1. State changes.
    2. Decisions and rationale.
    3. Open loops and closures.
@@ -79,12 +104,42 @@ Process:
    6. Reusable assets.
    7. Emerging patterns.
    8. Promotion candidates.
-4. Write or merge `memory/daily/YYYY-MM-DD.md`.
-5. Route operational changes immediately:
+7. Deduplicate against the current vault before writing.
+8. Write or merge `memory/daily/YYYY-MM-DD.md`.
+9. Route low-risk operational changes immediately:
    1. Active priorities to `memory/active/now.md`.
    2. Commitments to `memory/commitments/open-loops.md`.
-6. Run lifecycle_check after routing.
-7. Ask before closing projects, promoting durable memory, or changing `MEMORY.md`.
+10. Mark processed local queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
+11. Run lifecycle_check after routing.
+12. Ask before high-impact changes:
+   1. Editing `MEMORY.md`.
+   2. Creating career evidence.
+   3. Promoting durable project, people, pattern, decision, or toolkit notes.
+   4. Closing projects.
+   5. Closing ambiguous commitments.
+   6. Resolving conflicting evidence.
+   7. Capturing potentially sensitive content.
+13. In unattended mode, write high-impact decisions to `memory/inbox/approvals/YYYY-MM-DD.md` instead of asking.
+14. If WorkIQ, MCP, permission, or vault access fails, write a `Sweep Failures` approval item if possible.
+
+## Copilot conversation sweep
+
+Trigger phrases include:
+
+1. "Sweep this Copilot session."
+2. "Review pending conversation queue."
+3. "Capture memory from Copilot conversations."
+
+Process:
+
+1. Read queue pointers from `~/.local/share/persomemory/session-reviews/`.
+2. Read transcript paths referenced by the queue.
+3. Extract only memory-worthy signals using the same keep-versus-discard rules as WorkIQ.
+4. Compare against daily notes, active context, open loops, project notes, and durable notes.
+5. Discard duplicates and stale claims superseded by later memory.
+6. Write concise governed memory outputs only.
+7. For gated decisions, write approval inbox items rather than applying the change.
+8. Never write raw transcripts to the vault.
 
 ## Weekly consolidation
 

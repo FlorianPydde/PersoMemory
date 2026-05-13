@@ -22,10 +22,7 @@
       {
         "type": "command",
         "bash": "$HOME/.copilot/hooks/scripts/persomemory-session-end.sh",
-        "timeoutSec": 5,
-        "env": {
-          "PERSOMEMORY_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
-        }
+        "timeoutSec": 5
       }
     ]
   }

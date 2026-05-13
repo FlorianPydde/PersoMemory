@@ -9,6 +9,10 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+const TRANSCRIPT_RETENTION_DAYS = 14;
+const REVIEW_RETENTION_DAYS = 30;
+const EVENT_LOG_RETENTION_DAYS = 30;
+
 let input = {};
 try {
   input = JSON.parse(process.env.HOOK_INPUT || '{}');
@@ -16,8 +20,67 @@ try {
   input = {};
 }
 
-const baseDir = path.join(os.homedir(), '.copilot', 'plugin-data', 'persomemory');
-const queueDir = path.join(baseDir, 'pending-session-reviews');
+function resolveDataHome() {
+  const configured = process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory');
+  const resolved = path.resolve(configured);
+  const root = path.parse(resolved).root;
+  const home = path.resolve(os.homedir());
+  if (resolved === root || resolved === home) {
+    throw new Error(`Refusing unsafe PERSOMEMORY_DATA_HOME: ${resolved}`);
+  }
+  return resolved;
+}
+
+function daysAgo(days) {
+  return Date.now() - days * 24 * 60 * 60 * 1000;
+}
+
+function pruneDirectory(dir, retentionDays) {
+  if (!fs.existsSync(dir)) return;
+  const cutoff = daysAgo(retentionDays);
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    const stat = fs.lstatSync(fullPath);
+    if (!stat.isFile() || stat.isSymbolicLink()) continue;
+    if (stat.mtimeMs < cutoff) fs.unlinkSync(fullPath);
+  }
+}
+
+function pruneJsonl(filePath, retentionDays) {
+  if (!fs.existsSync(filePath)) return;
+  const cutoff = daysAgo(retentionDays);
+  const retained = [];
+  for (const line of fs.readFileSync(filePath, 'utf8').split('\n')) {
+    if (!line.trim()) continue;
+    try {
+      const event = JSON.parse(line);
+      const recordedAt = Date.parse(event.recordedAt || event.timestamp || '');
+      if (!Number.isNaN(recordedAt) && recordedAt < cutoff) continue;
+    } catch {
+      // Keep malformed lines rather than risking data loss during cleanup.
+    }
+    retained.push(line);
+  }
+  fs.writeFileSync(filePath, retained.length > 0 ? `${retained.join('\n')}\n` : '', 'utf8');
+}
+
+function runCleanup(baseDir) {
+  try {
+    pruneDirectory(path.join(baseDir, 'session-transcripts'), TRANSCRIPT_RETENTION_DAYS);
+    pruneDirectory(path.join(baseDir, 'session-reviews'), REVIEW_RETENTION_DAYS);
+    pruneJsonl(path.join(baseDir, 'session-end-events.jsonl'), EVENT_LOG_RETENTION_DAYS);
+  } catch (error) {
+    fs.mkdirSync(baseDir, { recursive: true });
+    fs.appendFileSync(
+      path.join(baseDir, 'cleanup-errors.log'),
+      `${new Date().toISOString()} ${error.message}\n`,
+      'utf8'
+    );
+  }
+}
+
+const baseDir = resolveDataHome();
+const queueDir = path.join(baseDir, 'session-reviews');
 fs.mkdirSync(queueDir, { recursive: true });
 
 const date = new Date(input.timestamp || Date.now()).toISOString().slice(0, 10);
@@ -52,13 +115,15 @@ const prompt = [
   `# Pending PersoMemory session reviews for ${date}`,
   '',
   `- Session ${sessionId} ended with reason: ${event.reason || 'unknown'}`,
+  '  - status: pending',
   `  - cwd: ${event.cwd || 'unknown'}`,
   `  - transcript: ${event.transcriptPath || 'not captured'}`,
-  '  - Review only if Florian asks for session-end memory capture.',
-  '  - Do not write memory automatically.',
+  '  - source: copilot-sessionEnd-hook',
+  '  - This is a pointer-only review item, not memory.',
   '',
 ].join('\n');
 
 fs.appendFileSync(reviewPath, prompt, 'utf8');
+runCleanup(baseDir);
 process.stdout.write('{}');
 NODE

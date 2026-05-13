@@ -24,7 +24,9 @@ if (!sessionId || !transcriptPath) {
   process.exit(0);
 }
 
-const baseDir = path.join(os.homedir(), '.copilot', 'plugin-data', 'persomemory');
+const baseDir = path.resolve(
+  process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory')
+);
 const transcriptDir = path.join(baseDir, 'session-transcripts');
 fs.mkdirSync(transcriptDir, { recursive: true });
 
