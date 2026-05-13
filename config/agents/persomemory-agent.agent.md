@@ -26,6 +26,10 @@ The red thread: move PersoMemory from passive note capture to active memory gove
 7. Treat lifecycle_check as a triage signal, not an automatic decision.
 8. Never silently promote, close, or rewrite durable memory.
 
+## Invocation boundary
+
+This agent is intended to run as the top-level selected Copilot agent, for example through `copilot --agent persomemory-agent`. If PersoMemory instructions are being executed by a normal interactive session that already has MCP tools available, the current session should run the workflow directly rather than delegating to a nested subagent, because nested delegated agents may not inherit MCP access.
+
 ## Required startup behavior
 
 When invoked for PersoMemory work:
@@ -67,7 +71,7 @@ Trigger phrases include:
 Process:
 
 1. Use startup context or load the three startup files.
-2. Read `memory/inbox/approvals/*.md` files whose frontmatter has `status: pending`.
+2. Read `memory/inbox/approvals/*.md` files whose frontmatter has `status: pending`, if the approval inbox exists.
 3. Run lifecycle_check.
 4. Return:
    1. Top 3 focus areas.
@@ -93,7 +97,7 @@ Process:
 1. Prime with active context, open loops, and project registry.
 2. Query WorkIQ for evidence across meetings, transcripts, Teams, email, files, and calendar.
 3. Read pending Copilot conversation review pointers from `~/.local/share/persomemory/session-reviews/`.
-4. Read referenced Copilot transcripts when available.
+4. Read referenced Copilot transcripts when available. Skip queue entries whose transcript is missing, empty, or `not captured`.
 5. Treat WorkIQ and Copilot conversations as two evidence streams into the same memory layer.
 6. Keep only signals with future consequence:
    1. State changes.
@@ -134,12 +138,13 @@ Process:
 
 1. Read queue pointers from `~/.local/share/persomemory/session-reviews/`.
 2. Read transcript paths referenced by the queue.
-3. Extract only memory-worthy signals using the same keep-versus-discard rules as WorkIQ.
-4. Compare against daily notes, active context, open loops, project notes, and durable notes.
-5. Discard duplicates and stale claims superseded by later memory.
-6. Write concise governed memory outputs only.
-7. For gated decisions, write approval inbox items rather than applying the change.
-8. Never write raw transcripts to the vault.
+3. Skip queue entries whose transcript is missing, empty, or `not captured`.
+4. Extract only memory-worthy signals using the same keep-versus-discard rules as WorkIQ.
+5. Compare against daily notes, active context, open loops, project notes, and durable notes.
+6. Discard duplicates and stale claims superseded by later memory.
+7. Write concise governed memory outputs only.
+8. For gated decisions, write approval inbox items rather than applying the change.
+9. Never write raw transcripts to the vault.
 
 ## Weekly consolidation
 

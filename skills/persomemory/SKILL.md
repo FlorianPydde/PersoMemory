@@ -36,6 +36,10 @@ The PersoMemory repo is the source of truth for setup, skills, docs, templates, 
 
 WorkIQ output is evidence, not durable memory. MCPVault writes files, but does not decide what should be remembered. Smart Connections retrieves context, but does not promote memory.
 
+## Execution Rule
+
+When PersoMemory work is requested from an interactive Copilot session that already has MCP tools available, run the workflow in the current session. Do not delegate to a nested subagent for WorkIQ, MCPVault, Smart Connections, or persomemory-lifecycle work because nested delegated agents may not inherit those MCP tools. Use `persomemory-agent` as the top-level selected agent, for example through `copilot --agent persomemory-agent`, or when the session is already running as that agent.
+
 ## Retrieval Priority Order
 
 When answering a memory question, use this exact order:
@@ -167,10 +171,11 @@ Read pending conversation review pointers from:
 For each relevant pointer:
 
 1. Read the referenced transcript if available.
-2. Extract only signals that change future action, judgment, or retrieval.
-3. Deduplicate against the current daily note, active memory, open loops, project notes, and durable notes.
-4. Discard implementation noise, tool logs, duplicates, stale claims, and transient discussion.
-5. Never write raw transcripts to the vault.
+2. Skip the pointer if its transcript is missing, empty, or `not captured`; that is a diagnostic artifact, not reviewable evidence.
+3. Extract only signals that change future action, judgment, or retrieval.
+4. Deduplicate against the current daily note, active memory, open loops, project notes, and durable notes.
+5. Discard implementation noise, tool logs, duplicates, stale claims, and transient discussion.
+6. Never write raw transcripts to the vault.
 
 **Phase 5: Memory routing**
 
@@ -185,7 +190,7 @@ For each relevant pointer:
 
 The evening sweep should ask for input only at approval gates, not during routine capture.
 
-When running unattended through `copilot -p`, do not ask. Write approval-gated decisions to `memory/inbox/approvals/YYYY-MM-DD.md` and leave them with status `pending`.
+When running unattended through `copilot -p`, do not ask. Write approval-gated decisions to `memory/inbox/approvals/YYYY-MM-DD.md` and leave them with status `pending`. If the approval inbox directory does not exist and there are no approval-gated items, treat it as an empty inbox. If approval-gated items exist, create the directory and inbox note.
 
 Ask before:
 
@@ -234,12 +239,13 @@ Workflow:
 
 1. Read pointer-only queue entries from `~/.local/share/persomemory/session-reviews/`.
 2. Read referenced transcripts when available.
-3. Apply the same keep-versus-discard gates used for WorkIQ.
-4. Deduplicate against current vault state before writing.
-5. Write concise daily note entries or operational updates only when the signal is still current.
-6. Ask before durable promotions, project closures, ambiguous commitment closures, career evidence, or `MEMORY.md` edits.
-7. Mark local queue entries as reviewed or superseded after processing when permissions allow.
-8. Never write raw transcripts into the vault.
+3. Skip entries whose transcript is missing, empty, or `not captured`.
+4. Apply the same keep-versus-discard gates used for WorkIQ.
+5. Deduplicate against current vault state before writing.
+6. Write concise daily note entries or operational updates only when the signal is still current.
+7. Ask before durable promotions, project closures, ambiguous commitment closures, career evidence, or `MEMORY.md` edits.
+8. Mark local queue entries as reviewed or superseded after processing when permissions allow.
+9. Never write raw transcripts into the vault.
 
 ### 4. Dreaming and Consolidation
 

@@ -16,17 +16,40 @@ try {
   input = {};
 }
 
+const baseDir = path.resolve(
+  process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory')
+);
 const sessionId = input.sessionId || input.session_id;
-const transcriptPath = input.transcriptPath || input.transcript_path;
+const transcriptPath =
+  input.transcriptPath ||
+  input.transcript_path ||
+  input.transcript?.path ||
+  input.transcript?.filePath ||
+  input.transcript?.file_path ||
+  input.conversation?.transcriptPath ||
+  input.conversation?.transcript_path ||
+  '';
+const stopReason = input.stopReason || input.stop_reason || '';
+
+fs.mkdirSync(baseDir, { recursive: true });
+fs.appendFileSync(
+  path.join(baseDir, 'agent-stop-events.jsonl'),
+  `${JSON.stringify({
+    recordedAt: new Date().toISOString(),
+    sessionId: sessionId || '',
+    cwd: input.cwd || '',
+    stopReason,
+    hasTranscriptPath: Boolean(transcriptPath),
+    inputKeys: Object.keys(input).sort(),
+  })}\n`,
+  'utf8'
+);
 
 if (!sessionId || !transcriptPath) {
   process.stdout.write('{}');
   process.exit(0);
 }
 
-const baseDir = path.resolve(
-  process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory')
-);
 const transcriptDir = path.join(baseDir, 'session-transcripts');
 fs.mkdirSync(transcriptDir, { recursive: true });
 
@@ -35,7 +58,7 @@ const event = {
   sessionId,
   cwd: input.cwd || '',
   transcriptPath,
-  stopReason: input.stopReason || input.stop_reason || '',
+  stopReason,
 };
 
 fs.writeFileSync(

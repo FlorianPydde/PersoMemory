@@ -37,13 +37,14 @@ Directory layout:
 ```text
 session-reviews/              Pointer-only review queue by date
 session-transcripts/          Session id to transcript path breadcrumbs
+agent-stop-events.jsonl       Lightweight diagnostics for transcript capture
 session-end-events.jsonl      Lightweight diagnostics
 cleanup-errors.log            Cleanup diagnostics, if needed
 ```
 
 This directory is disposable local working state. It should not be copied to a new laptop. Durable memory belongs in the Obsidian vault.
 
-The queue must be pointer-only. It should not contain extracted facts, conversation summaries, commitments, decisions, project status, or career evidence.
+The queue must be pointer-only. It should not contain extracted facts, conversation summaries, commitments, decisions, project status, or career evidence. If a session ends before a transcript breadcrumb is captured, the session end event is logged for diagnostics but no pending review item is created.
 
 ## Conversation sweep
 

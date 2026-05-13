@@ -1,6 +1,10 @@
 # PersoMemory Evening Sweep
 
-Use the persomemory-agent.
+Run this workflow in the current session when MCP tools are available.
+
+Do not delegate this workflow to a nested subagent from an interactive Copilot session. Nested delegated agents may not inherit WorkIQ, MCPVault, Smart Connections, or persomemory-lifecycle access. Use `persomemory-agent` only when it is the top-level selected agent, for example through `copilot --agent persomemory-agent`.
+
+Do not use scheduled prompt tools during a sweep. Scheduling is configured separately.
 
 Sweep today using both evidence streams and update memory.
 
@@ -18,7 +22,7 @@ Then read pending Copilot conversation pointers from:
 ~/.local/share/persomemory/session-reviews/
 ```
 
-Read referenced Copilot transcripts when available. Treat them as evidence only.
+Read referenced Copilot transcripts when available. Treat them as evidence only. Skip any queue item whose transcript is missing, empty, or `not captured`; that is a diagnostic artifact, not reviewable evidence.
 
 Capture only:
 
@@ -33,7 +37,7 @@ Capture only:
 
 Deduplicate WorkIQ evidence and Copilot conversation evidence against current vault state before writing.
 
-Write or merge `memory/daily/YYYY-MM-DD.md`.
+If `memory/daily/YYYY-MM-DD.md` does not exist yet, create it from the daily note schema. Treat that as normal empty-state behavior, not a failure.
 
 Route operational changes to:
 
@@ -54,10 +58,12 @@ If running interactively, ask only at approval gates:
 6. Resolving conflicting evidence.
 7. Capturing potentially sensitive content.
 
-If running unattended via `copilot -p`, do not ask. Write approval-gated decisions to:
+If `memory/inbox/approvals/` does not exist and there are no approval-gated items, treat it as an empty inbox. If approval-gated items exist, create the directory and write them to:
 
 ```text
 memory/inbox/approvals/YYYY-MM-DD.md
 ```
+
+If running unattended via `copilot -p`, do not ask. Write approval-gated decisions to the same approval inbox path.
 
 Use sections for project closures, commitment closures, durable promotions, career evidence candidates, sensitive or ambiguous items, discard recommendations, and sweep failures.

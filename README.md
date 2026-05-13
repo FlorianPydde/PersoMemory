@@ -46,6 +46,12 @@ templates/                          Vault note templates
 ./scripts/validate-memory-vault.sh
 ```
 
+## Validate Runtime Behavior
+
+```bash
+bash ./scripts/test-runtime.sh
+```
+
 ## Scheduled Evening Sweep
 
 ```bash
@@ -69,3 +75,5 @@ MCPs provide access. The `persomemory` skill provides judgment and routing. The 
 The durable memory store is the Obsidian vault. The local queue is disposable working state and can be rebuilt only by future activity.
 
 Approval inbox items are stored in the vault under `memory/inbox/approvals/` because they are curated pending decisions, not raw local queue data.
+
+For interactive memory work, the current MCP-enabled session should run PersoMemory workflows directly. The agent markdown can list MCP tools, but it does not by itself grant a nested delegated agent access to the parent session's MCP connections or permissions.

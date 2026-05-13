@@ -15,13 +15,14 @@ if [ ! -d "${VAULT_PATH}" ]; then
 fi
 
 PROMPT="$(cat <<PROMPT
-Use persomemory-agent.
+You are running as the top-level persomemory-agent. Do not delegate this sweep to a nested subagent.
 
 Run the PersoMemory evening sweep for ${DATE}.
 
 Process both evidence streams:
 1. WorkIQ evidence for ${DATE}.
 2. Copilot conversation evidence from pointer-only queue entries in ${PERSOMEMORY_DATA_HOME}/session-reviews/.
+3. Skip any queue item whose transcript is missing, empty, or "not captured".
 
 Apply low-risk daily and operational writes:
 1. Merge the daily note for ${DATE}.
@@ -43,6 +44,8 @@ Approval gates:
 7. Capturing potentially sensitive content.
 
 If WorkIQ, MCP, permission, vault, or transcript access fails, write a Sweep Failures item in the approval inbox if possible and continue with whatever evidence is available.
+
+Do not use scheduled prompt tools or schedule management tools during this sweep.
 PROMPT
 )"
 

@@ -1,13 +1,15 @@
 # PersoMemory Morning Brief
 
-Use the persomemory-agent.
+Run this workflow in the current session when MCP tools are available.
+
+Do not delegate this workflow to a nested subagent from an interactive Copilot session. Nested delegated agents may not inherit MCPVault, Smart Connections, or persomemory-lifecycle access. Use `persomemory-agent` only when it is the top-level selected agent.
 
 Load the minimum memory context:
 
 1. `MEMORY.md`
 2. `memory/active/now.md`
 3. `memory/commitments/open-loops.md`
-4. `memory/inbox/approvals/*.md` with `status: pending`
+4. `memory/inbox/approvals/*.md` with `status: pending`, if the approval inbox exists
 
 If hook-loaded PersoMemory startup context is already present, use it instead of reloading unless it is stale.
 

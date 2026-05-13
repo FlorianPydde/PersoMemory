@@ -68,6 +68,7 @@ function runCleanup(baseDir) {
   try {
     pruneDirectory(path.join(baseDir, 'session-transcripts'), TRANSCRIPT_RETENTION_DAYS);
     pruneDirectory(path.join(baseDir, 'session-reviews'), REVIEW_RETENTION_DAYS);
+    pruneJsonl(path.join(baseDir, 'agent-stop-events.jsonl'), EVENT_LOG_RETENTION_DAYS);
     pruneJsonl(path.join(baseDir, 'session-end-events.jsonl'), EVENT_LOG_RETENTION_DAYS);
   } catch (error) {
     fs.mkdirSync(baseDir, { recursive: true });
@@ -110,20 +111,22 @@ fs.appendFileSync(
   'utf8'
 );
 
-const reviewPath = path.join(queueDir, `${date}.md`);
-const prompt = [
-  `# Pending PersoMemory session reviews for ${date}`,
-  '',
-  `- Session ${sessionId} ended with reason: ${event.reason || 'unknown'}`,
-  '  - status: pending',
-  `  - cwd: ${event.cwd || 'unknown'}`,
-  `  - transcript: ${event.transcriptPath || 'not captured'}`,
-  '  - source: copilot-sessionEnd-hook',
-  '  - This is a pointer-only review item, not memory.',
-  '',
-].join('\n');
+if (event.transcriptPath) {
+  const reviewPath = path.join(queueDir, `${date}.md`);
+  const needsHeader = !fs.existsSync(reviewPath) || fs.statSync(reviewPath).size === 0;
+  const prompt = [
+    ...(needsHeader ? [`# Pending PersoMemory session reviews for ${date}`, ''] : []),
+    `- Session ${sessionId} ended with reason: ${event.reason || 'unknown'}`,
+    '  - status: pending',
+    `  - cwd: ${event.cwd || 'unknown'}`,
+    `  - transcript: ${event.transcriptPath}`,
+    '  - source: copilot-sessionEnd-hook',
+    '  - This is a pointer-only review item, not memory.',
+    '',
+  ].join('\n');
 
-fs.appendFileSync(reviewPath, prompt, 'utf8');
+  fs.appendFileSync(reviewPath, prompt, 'utf8');
+}
 runCleanup(baseDir);
 process.stdout.write('{}');
 NODE

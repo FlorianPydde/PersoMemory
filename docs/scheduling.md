@@ -19,6 +19,8 @@ The script runs:
 3. Low-risk daily and operational memory routing.
 4. Approval inbox creation for gated decisions.
 
+The helper starts `persomemory-agent` as the top-level selected Copilot agent. That is different from asking a normal interactive session to delegate to a nested subagent. Nested delegated agents may not inherit the parent session's MCP tools, even if those tools are listed in the agent markdown file.
+
 Approval-gated decisions go to:
 
 ```text
