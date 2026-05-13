@@ -164,6 +164,21 @@ WorkIQ returns structured signal candidates. Accept them as evidence, not decisi
 6. Flag promotion candidates in the daily note. Do not blindly promote into durable memory.
 7. Preserve source attribution as "Automated sweep via WorkIQ" or "Manual WorkIQ sweep".
 
+**Phase 5: Lifecycle check**
+
+After routing, run the lifecycle check to surface stale notes and lapsed commitments:
+
+```
+python3 ~/lifecycle-check.py
+```
+
+Review the output and take action on any flagged items:
+- OVERDUE: a project note has passed its `review-by` date. Update status, extend review-by, or close the note.
+- STALE: an active or winding-down project has not been updated in 14+ days. Confirm still active or change status.
+- AGED LOOPS: an open commitment has an explicit date older than 14 days. Confirm still open, close it, or escalate.
+
+Do not skip this step. A sweep that captures new evidence without clearing stale state leaves the vault gradually noisier.
+
 ### 3. Dreaming and Consolidation
 
 Trigger: the user says "dream", "consolidate", "consolidate this week", or asks to promote daily notes.
@@ -197,13 +212,14 @@ Every durable note write must include frontmatter and inline wikilinks. This is 
 
 Always include `type` matching the note type. Always include the relationship fields that apply. Leave relationship arrays empty (`[]`) rather than omitting them when a field is relevant to the note type.
 
-**When creating a project note**, include: `type`, `status`, `domains`, `technologies`, `people`, `decisions`, `patterns`, `toolkits`, `related`, `tags`.
+**When creating a project note**, include: `type`, `status`, `updated`, `domains`, `technologies`, `people`, `decisions`, `patterns`, `toolkits`, `related`, `tags`. Add `review-by` when the project is winding down or needs a scheduled check.
 
 Example:
 ```yaml
 ---
 type: project
 status: active
+updated: 2026-05-13
 domains:
   - banking
   - agentic-ai

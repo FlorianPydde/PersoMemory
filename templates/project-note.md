@@ -1,6 +1,7 @@
 ---
 type: project
 status: active
+updated: YYYY-MM-DD
 domains:
   - domain-label
 technologies:
