@@ -22,11 +22,22 @@ fs.mkdirSync(queueDir, { recursive: true });
 
 const date = new Date(input.timestamp || Date.now()).toISOString().slice(0, 10);
 const sessionId = input.sessionId || input.session_id || 'unknown-session';
+const transcriptInfoPath = path.join(baseDir, 'session-transcripts', `${sessionId}.json`);
+let transcriptInfo = {};
+if (fs.existsSync(transcriptInfoPath)) {
+  try {
+    transcriptInfo = JSON.parse(fs.readFileSync(transcriptInfoPath, 'utf8'));
+  } catch {
+    transcriptInfo = {};
+  }
+}
+
 const event = {
   recordedAt: new Date().toISOString(),
   sessionId,
   cwd: input.cwd || '',
   reason: input.reason || '',
+  transcriptPath: transcriptInfo.transcriptPath || '',
   source: 'copilot-sessionEnd-hook',
 };
 
@@ -42,6 +53,7 @@ const prompt = [
   '',
   `- Session ${sessionId} ended with reason: ${event.reason || 'unknown'}`,
   `  - cwd: ${event.cwd || 'unknown'}`,
+  `  - transcript: ${event.transcriptPath || 'not captured'}`,
   '  - Review only if Florian asks for session-end memory capture.',
   '  - Do not write memory automatically.',
   '',

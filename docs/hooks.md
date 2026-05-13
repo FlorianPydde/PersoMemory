@@ -17,9 +17,10 @@ Copilot CLI supports user-level hooks in `~/.copilot/hooks/*.json`. PersoMemory 
 The hook does two things:
 
 1. `sessionStart`: injects `MEMORY.md`, `memory/active/now.md`, and `memory/commitments/open-loops.md` as background context.
-2. `sessionEnd`: records a lightweight pending session review entry under `~/.copilot/plugin-data/persomemory/`.
+2. `agentStop`: records the latest transcript path for the session.
+3. `sessionEnd`: records a lightweight pending session review entry under `~/.copilot/plugin-data/persomemory/`.
 
-The session end hook deliberately does not write memory. Closing a session with Ctrl+C can fire `sessionEnd`, but the session is ending, so the hook cannot naturally continue the same conversation. It can run a command, log state, or queue a review for the next PersoMemory run.
+The session end hook deliberately does not write memory. Closing a session with Ctrl+C can fire `sessionEnd`, but the session is ending, so the hook cannot naturally continue the same conversation. It can run a command, log state, or queue a review for the next PersoMemory run. The preceding `agentStop` hook captures the transcript path so a later review has evidence to inspect.
 
 ## Why not put hooks in every work repo?
 
@@ -41,7 +42,8 @@ Source files:
 
 1. `config/hooks/persomemory-session.json`
 2. `config/hooks/scripts/persomemory-session-start.sh`
-3. `config/hooks/scripts/persomemory-session-end.sh`
+3. `config/hooks/scripts/persomemory-agent-stop.sh`
+4. `config/hooks/scripts/persomemory-session-end.sh`
 
 ## Source
 

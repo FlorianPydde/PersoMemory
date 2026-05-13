@@ -11,6 +11,13 @@
         }
       }
     ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/hooks/scripts/persomemory-agent-stop.sh",
+        "timeoutSec": 5
+      }
+    ],
     "sessionEnd": [
       {
         "type": "command",

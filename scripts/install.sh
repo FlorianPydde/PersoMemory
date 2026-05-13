@@ -15,8 +15,9 @@ echo "Installed persomemory-agent to ${COPILOT_DIR}/agents/persomemory-agent.age
 mkdir -p "${COPILOT_DIR}/hooks/scripts"
 cp "${REPO_DIR}/config/hooks/persomemory-session.json" "${COPILOT_DIR}/hooks/persomemory-session.json"
 cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh"
+cp "${REPO_DIR}/config/hooks/scripts/persomemory-agent-stop.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-agent-stop.sh"
 cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-end.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
-chmod +x "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
+chmod +x "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-agent-stop.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
 echo "Installed PersoMemory hooks to ${COPILOT_DIR}/hooks/persomemory-session.json"
 
 LIFECYCLE_MCP_DIR="${HOME}/persomemory-lifecycle-mcp"
