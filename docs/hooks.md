@@ -37,6 +37,7 @@ Directory layout:
 ```text
 session-reviews/              Pointer-only review queue by date
 session-transcripts/          Session id to transcript path breadcrumbs
+session-start-events.jsonl    Diagnostics for startup context injection
 agent-stop-events.jsonl       Lightweight diagnostics for transcript capture
 session-end-events.jsonl      Lightweight diagnostics
 cleanup-errors.log            Cleanup diagnostics, if needed
@@ -45,6 +46,16 @@ cleanup-errors.log            Cleanup diagnostics, if needed
 This directory is disposable local working state. It should not be copied to a new laptop. Durable memory belongs in the Obsidian vault.
 
 The queue must be pointer-only. It should not contain extracted facts, conversation summaries, commitments, decisions, project status, or career evidence. If a session ends before a transcript breadcrumb is captured, the session end event is logged for diagnostics but no pending review item is created.
+
+To verify startup context injection without reading Copilot internal logs:
+
+```bash
+tail ~/.local/share/persomemory/session-start-events.jsonl
+```
+
+An event with `additionalContext: true` and `filesLoaded` containing `MEMORY.md`, `memory/active/now.md`, and `memory/commitments/open-loops.md` means the hook ran and returned context. The context may be injected silently and not shown as a visible timeline message.
+
+Directly invoking `~/.copilot/hooks/scripts/persomemory-session-start.sh` is only a script smoke test. The real Copilot hook gets `PERSOMEMORY_VAULT_PATH` from `~/.copilot/hooks/persomemory-session.json`; pass that environment variable yourself when testing the script outside Copilot.
 
 ## Conversation sweep
 

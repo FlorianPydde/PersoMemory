@@ -18,6 +18,27 @@ cleanup() {
 }
 trap cleanup EXIT
 
+fixture_vault="${tmpdir}/vault"
+mkdir -p "${fixture_vault}/memory/active" "${fixture_vault}/memory/commitments"
+printf '# Memory\n' > "${fixture_vault}/MEMORY.md"
+printf '# Now\n' > "${fixture_vault}/memory/active/now.md"
+printf '# Open Loops\n' > "${fixture_vault}/memory/commitments/open-loops.md"
+
+printf '{"sessionId":"startup","source":"manual-test","cwd":"/tmp/project"}' \
+  | PERSOMEMORY_DATA_HOME="${tmpdir}" PERSOMEMORY_VAULT_PATH="${fixture_vault}" bash config/hooks/scripts/persomemory-session-start.sh >"${tmpdir}/session-start.out"
+
+test -f "${tmpdir}/session-start-events.jsonl"
+grep -q '"additionalContext":true' "${tmpdir}/session-start-events.jsonl"
+grep -q 'MEMORY.md' "${tmpdir}/session-start-events.jsonl"
+grep -q 'memory/active/now.md' "${tmpdir}/session-start-events.jsonl"
+grep -q 'memory/commitments/open-loops.md' "${tmpdir}/session-start-events.jsonl"
+grep -q 'additionalContext' "${tmpdir}/session-start.out"
+
+printf '{"sessionId":"startup-unsafe-data-home","source":"manual-test","cwd":"/tmp/project"}' \
+  | PERSOMEMORY_DATA_HOME="/" PERSOMEMORY_VAULT_PATH="${fixture_vault}" bash config/hooks/scripts/persomemory-session-start.sh >"${tmpdir}/session-start-unsafe-data-home.out" 2>"${tmpdir}/session-start-unsafe-data-home.err"
+grep -q 'additionalContext' "${tmpdir}/session-start-unsafe-data-home.out"
+grep -q 'PersoMemory sessionStart diagnostics failed' "${tmpdir}/session-start-unsafe-data-home.err"
+
 printf '{"sessionId":"without-transcript","timestamp":1778683417000,"cwd":"/tmp/project","stopReason":"end_turn"}' \
   | PERSOMEMORY_DATA_HOME="${tmpdir}" bash config/hooks/scripts/persomemory-agent-stop.sh >/dev/null
 printf '{"sessionId":"without-transcript","timestamp":1778683417000,"cwd":"/tmp/project","reason":"user_exit"}' \

@@ -68,6 +68,7 @@ function runCleanup(baseDir) {
   try {
     pruneDirectory(path.join(baseDir, 'session-transcripts'), TRANSCRIPT_RETENTION_DAYS);
     pruneDirectory(path.join(baseDir, 'session-reviews'), REVIEW_RETENTION_DAYS);
+    pruneJsonl(path.join(baseDir, 'session-start-events.jsonl'), EVENT_LOG_RETENTION_DAYS);
     pruneJsonl(path.join(baseDir, 'agent-stop-events.jsonl'), EVENT_LOG_RETENTION_DAYS);
     pruneJsonl(path.join(baseDir, 'session-end-events.jsonl'), EVENT_LOG_RETENTION_DAYS);
   } catch (error) {
