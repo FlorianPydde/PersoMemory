@@ -23,6 +23,15 @@
       "env": {
         "SMART_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
       }
+    },
+    "persomemory-lifecycle": {
+      "command": "node",
+      "args": [
+        "/home/flpydde/persomemory-lifecycle-mcp/index.js"
+      ],
+      "env": {
+        "VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+      }
     }
   }
 }

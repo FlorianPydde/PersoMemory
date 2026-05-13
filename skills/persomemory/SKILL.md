@@ -166,16 +166,16 @@ WorkIQ returns structured signal candidates. Accept them as evidence, not decisi
 
 **Phase 5: Lifecycle check**
 
-After routing, run the lifecycle check to surface stale notes and lapsed commitments:
+After routing, call the `lifecycle_check` MCP tool (server: `persomemory-lifecycle`) to surface stale notes and lapsed commitments:
 
 ```
-lifecycle-check
+lifecycle_check(stale_days=14, loop_age_days=14)
 ```
 
 Review the output and take action on any flagged items:
-- OVERDUE: a project note has passed its `review-by` date. Update status, extend review-by, or close the note.
-- STALE: an active or winding-down project has not been updated in 14+ days. Confirm still active or change status.
-- AGED LOOPS: an open commitment has an explicit date older than 14 days. Confirm still open, close it, or escalate.
+- `overdue`: a project note has passed its `review-by` date. Update status, extend review-by, or close the note.
+- `stale`: an active or winding-down project has not been updated in 14+ days. Confirm still active or change status.
+- `agedLoops`: an open commitment has an explicit date older than 14 days. Confirm still open, close it, or escalate.
 
 Do not skip this step. A sweep that captures new evidence without clearing stale state leaves the vault gradually noisier.
 
