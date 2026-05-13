@@ -11,6 +11,7 @@ bash -n config/hooks/scripts/persomemory-agent-stop.sh
 bash -n config/hooks/scripts/persomemory-session-end.sh
 
 node -e "JSON.parse(require('fs').readFileSync('config/hooks/persomemory-session.json','utf8'))"
+node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config.example.json','utf8')); if (!config.mcpServers['workiq-teams']) throw new Error('missing workiq-teams MCP config')"
 
 tmpdir="$(mktemp -d)"
 cleanup() {
@@ -63,6 +64,8 @@ grep -q 'Do not delegate this workflow to a nested subagent' skills/persomemory/
 grep -q 'Do not use scheduled prompt tools' skills/persomemory/prompts/evening-sweep.md
 grep -q 'not captured' skills/persomemory/prompts/evening-sweep.md
 grep -q 'Execution Rule' skills/persomemory/SKILL.md
+grep -q 'workiq-teams' config/agents/persomemory-agent.agent.md
+grep -q 'Work IQ Teams is an action surface' skills/persomemory/SKILL.md
 grep -q 'not captured' skills/persomemory/SKILL.md
 grep -q 'Invocation boundary' config/agents/persomemory-agent.agent.md
 grep -q 'not captured' config/agents/persomemory-agent.agent.md

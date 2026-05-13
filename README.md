@@ -72,12 +72,13 @@ The helper runs the PersoMemory evening sweep with narrow Copilot permissions: r
 MCPs provide access. The `persomemory` skill provides judgment and routing. The `persomemory-agent` operates the workflow.
 
 1. WorkIQ retrieves Microsoft 365 evidence.
-2. Copilot conversation hooks queue transcript pointers as local evidence under `~/.local/share/persomemory`.
-3. MCPVault reads and writes the Obsidian vault.
-4. Smart Connections retrieves related notes.
-5. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
-6. The PersoMemory skill defines what to capture, route, defer, or promote.
-7. The PersoMemory agent runs the daily and weekly routines using those rules.
+2. Work IQ Teams sends or manages Teams chats and channel messages when explicit user intent is present.
+3. Copilot conversation hooks queue transcript pointers as local evidence under `~/.local/share/persomemory`.
+4. MCPVault reads and writes the Obsidian vault.
+5. Smart Connections retrieves related notes.
+6. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
+7. The PersoMemory skill defines what to capture, route, defer, or promote.
+8. The PersoMemory agent runs the daily and weekly routines using those rules.
 
 The durable memory store is the Obsidian vault. The local queue is disposable working state and can be rebuilt only by future activity.
 

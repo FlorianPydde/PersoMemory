@@ -31,10 +31,11 @@ The PersoMemory repo is the source of truth for setup, skills, docs, templates, 
 ## MCP Tool Roles
 
 1. WorkIQ retrieves Microsoft 365 evidence from Teams, email, meetings, calendar, and transcripts.
-2. MCPVault performs deterministic reads and writes in the Obsidian vault.
-3. Smart Connections retrieves semantically related notes when exact paths are unknown.
+2. Work IQ Teams sends or manages Teams chats and channel messages when Florian explicitly asks for that action.
+3. MCPVault performs deterministic reads and writes in the Obsidian vault.
+4. Smart Connections retrieves semantically related notes when exact paths are unknown.
 
-WorkIQ output is evidence, not durable memory. MCPVault writes files, but does not decide what should be remembered. Smart Connections retrieves context, but does not promote memory.
+WorkIQ output is evidence, not durable memory. Work IQ Teams is an action surface, not memory evidence. MCPVault writes files, but does not decide what should be remembered. Smart Connections retrieves context, but does not promote memory.
 
 ## Execution Rule
 

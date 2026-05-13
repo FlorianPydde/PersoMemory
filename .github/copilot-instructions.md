@@ -9,8 +9,9 @@ The runtime implementation of this workflow is the `persomemory` skill. Invoke i
 ## MCP Servers
 
 1. **WorkIQ** (`workiq`): Queries Microsoft 365 data such as Teams chats, emails, calendar, meeting context, and call transcripts. Use for daily intake and M365 reconstruction only.
-2. **MCPVault** (`mcpvault`): Reads and writes Markdown notes in the Obsidian vault. Use for deterministic file operations.
-3. **Smart Connections** (`smart-connections`): Semantic retrieval over the vault using local Obsidian Smart Connections embeddings. Use for discovery when exact note paths are unknown.
+2. **Work IQ Teams** (`workiq-teams`): Sends or manages Teams chats and channel messages. Use only when the user explicitly asks to send, edit, or manage Teams content.
+3. **MCPVault** (`mcpvault`): Reads and writes Markdown notes in the Obsidian vault. Use for deterministic file operations.
+4. **Smart Connections** (`smart-connections`): Semantic retrieval over the vault using local Obsidian Smart Connections embeddings. Use for discovery when exact note paths are unknown.
 
 ## Retrieval Strategy
 
@@ -21,6 +22,7 @@ The runtime implementation of this workflow is the `persomemory` skill. Invoke i
 | Find notes related to an unknown topic | Smart Connections search | Retrieval by topic |
 | Find notes similar to a known note | Smart Connections similar notes | Semantic neighborhood |
 | Reconstruct a day from M365 | WorkIQ | Source data lives outside the vault |
+| Send a Teams chat or channel message | Work IQ Teams | Official Teams MCP exposes message write tools |
 
 **Key rule:** WorkIQ output is not durable memory until it is summarized and written into the vault.
 

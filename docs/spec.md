@@ -5,11 +5,12 @@
 Build a personal, evolving memory system that:
 1. Uses **Copilot CLI** as the primary agent interface
 2. Reads daily work context from Microsoft 365 via **WorkIQ MCP server** (Teams, emails, calls, calendar)
-3. Extracts and stores signal as structured Markdown in an **Obsidian vault** (synced via OneDrive)
-4. Reads/writes the vault via **MCPVault MCP server**
-5. Uses **Smart Connections** (free Obsidian plugin) for semantic search inside Obsidian
-6. Runs a nightly ingestion pipeline via **GitHub Actions** (private repo)
-7. Over time, consolidates into durable knowledge: project playbooks, decision patterns, org context, career trajectory
+3. Uses **Work IQ Teams MCP server** for explicit Teams chat or channel message actions
+4. Extracts and stores signal as structured Markdown in an **Obsidian vault** (synced via OneDrive)
+5. Reads/writes the vault via **MCPVault MCP server**
+6. Uses **Smart Connections** (free Obsidian plugin) for semantic search inside Obsidian
+7. Runs a nightly ingestion pipeline via **GitHub Actions** (private repo)
+8. Over time, consolidates into durable knowledge: project playbooks, decision patterns, org context, career trajectory
 
 **User:** Solo, knowledge worker at Microsoft with M365 Copilot license.
 
@@ -92,6 +93,7 @@ Runtime behavior is provided by global Copilot instructions, MCP configuration, 
 | Sync | OneDrive | Included with M365 |
 | Semantic Search | Smart Connections plugin (core) | Free |
 | M365 Data Access | WorkIQ MCP (`@microsoft/workiq`) | Free (M365 Copilot license required) |
+| Teams Actions | Work IQ Teams MCP (`mcp_TeamsServer`) | Free (M365 Copilot license required) |
 | Vault Access | MCPVault (`@bitbonsai/mcpvault`) | Free, open source |
 | CLI Agent | Copilot CLI | Existing subscription |
 | CI/CD | GitHub Actions (private repo) | Free tier (2000 min/month) |
@@ -125,6 +127,10 @@ node scripts/sweep.js
     "workiq": {
       "command": "npx",
       "args": ["-y", "@microsoft/workiq", "mcp"]
+    },
+    "workiq-teams": {
+      "type": "http",
+      "url": "https://agent365.svc.cloud.microsoft/agents/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47/servers/mcp_TeamsServer"
     },
     "mcpvault": {
       "command": "npx",
