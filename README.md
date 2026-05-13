@@ -13,17 +13,22 @@ It is not the active memory store. The active memory content lives in the Obsidi
 1. `~/.copilot/copilot-instructions.md`: global Copilot behavior.
 2. `~/.copilot/mcp-config.json`: runtime MCP configuration.
 3. `~/.copilot/skills/persomemory/SKILL.md`: runtime PersoMemory skill.
-4. Obsidian vault: memory content.
-5. This repo: versioned recovery source.
+4. `~/.copilot/agents/persomemory-agent.agent.md`: runtime PersoMemory operator agent.
+5. `~/.copilot/hooks/persomemory-session.json`: optional session start and session end hooks.
+6. Obsidian vault: memory content.
+7. This repo: versioned recovery source.
 
 ## Repository Layout
 
 ```text
 .github/copilot-instructions.md     Repo instructions for agents working on PersoMemory
 config/                             Recovery copies and examples for runtime config
+config/agents/                      Personal Copilot agent profiles
+config/hooks/                       User-level Copilot hook templates and scripts
 docs/                               Spec, ontology, hooks, and recovery docs
 scripts/                            Install and validation scripts
 skills/persomemory/SKILL.md         Source copy of the runtime skill
+skills/persomemory/prompts/         Reusable PersoMemory prompt templates
 templates/                          Vault note templates
 ```
 
@@ -41,9 +46,11 @@ templates/                          Vault note templates
 
 ## Operating Model
 
-MCPs provide access. The `persomemory` skill provides judgment and routing.
+MCPs provide access. The `persomemory` skill provides judgment and routing. The `persomemory-agent` operates the workflow.
 
 1. WorkIQ retrieves Microsoft 365 evidence.
 2. MCPVault reads and writes the Obsidian vault.
 3. Smart Connections retrieves related notes.
-4. The PersoMemory skill decides what to capture, route, defer, or promote.
+4. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
+5. The PersoMemory skill defines what to capture, route, defer, or promote.
+6. The PersoMemory agent runs the daily and weekly routines using those rules.

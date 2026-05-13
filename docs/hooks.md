@@ -4,42 +4,50 @@
 
 Hooks are optional orchestration aids. They should not be the main memory system.
 
-Use global Copilot instructions and MCP configuration for generic behavior. Use hooks only when a repository should actively influence sessions started from that repository.
+Use global Copilot instructions, the PersoMemory skill, the PersoMemory agent, and MCP configuration for generic behavior. Use hooks only for lightweight session orchestration.
+
+## User-level hooks
+
+Copilot CLI supports user-level hooks in `~/.copilot/hooks/*.json`. PersoMemory installs a user-level hook file:
+
+```text
+~/.copilot/hooks/persomemory-session.json
+```
+
+The hook does two things:
+
+1. `sessionStart`: injects `MEMORY.md`, `memory/active/now.md`, and `memory/commitments/open-loops.md` as background context.
+2. `sessionEnd`: records a lightweight pending session review entry under `~/.copilot/plugin-data/persomemory/`.
+
+The session end hook deliberately does not write memory. Closing a session with Ctrl+C can fire `sessionEnd`, but the session is ending, so the hook cannot naturally continue the same conversation. It can run a command, log state, or queue a review for the next PersoMemory run.
 
 ## Why not put hooks in every work repo?
 
-Copilot CLI loads hook configuration from `.github/hooks/*.json` in the current repository. A hook in an unrelated project makes memory behavior look project-specific and can accidentally become cloud-agent behavior if committed to that repo.
+Copilot CLI also loads hook configuration from `.github/hooks/*.json` in the current repository. A hook in an unrelated project makes memory behavior look project-specific and can accidentally become cloud-agent behavior if committed to that repo.
 
 The correct generic setup is:
 
 1. Global Copilot instructions define memory behavior.
-2. MCP config exposes WorkIQ, MCPVault, and Smart Connections.
-3. PersoMemory documents optional hook templates.
-4. Work repos stay free of memory-system hooks unless intentionally opted in.
+2. MCP config exposes WorkIQ, MCPVault, Smart Connections, and persomemory-lifecycle.
+3. The persomemory-agent operates the routine.
+4. User-level hooks load lightweight context and queue session reviews.
+5. Work repos stay free of memory-system hooks unless intentionally opted in.
 
-## Optional Session Start Hook Template
+## Session start context hook
 
-Use this only in PersoMemory or another repo where memory bootstrapping is intentional.
+The installed session start hook uses `additionalContext`, not an auto-submitted prompt. This keeps startup quiet while still making memory context available.
 
-```json
-{
-  "version": 1,
-  "hooks": {
-    "sessionStart": [
-      {
-        "type": "prompt",
-        "prompt": "Before working on user tasks in this interactive session, load personal memory context from the Obsidian vault. Read MEMORY.md, memory/active/now.md, and memory/commitments/open-loops.md. Use Smart Connections or MCPVault search only for topic-specific context. Treat memory/daily as episodic evidence, not durable memory."
-      }
-    ]
-  }
-}
-```
+Source files:
+
+1. `config/hooks/persomemory-session.json`
+2. `config/hooks/scripts/persomemory-session-start.sh`
+3. `config/hooks/scripts/persomemory-session-end.sh`
 
 ## Source
 
-GitHub documentation states that Copilot CLI hook configuration files are loaded from `.github/hooks/*.json` in the current repository, and that prompt hooks are supported only on `sessionStart` for new interactive sessions.
+GitHub documentation states that Copilot CLI hook configuration files are loaded from user-level `~/.copilot/hooks/*.json`, repository `.github/hooks/*.json`, inline settings, and plugin hooks. `sessionStart` can inject `additionalContext` or use a prompt hook. `sessionEnd` can run a command and receives the reason, including `user_exit`.
 
 References:
 
 1. https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/use-hooks
-2. https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-hooks-reference
+2. https://docs.github.com/en/copilot/reference/hooks-reference

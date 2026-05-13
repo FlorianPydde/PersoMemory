@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/hooks/scripts/persomemory-session-start.sh",
+        "timeoutSec": 5,
+        "env": {
+          "PERSOMEMORY_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+        }
+      }
+    ],
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/hooks/scripts/persomemory-session-end.sh",
+        "timeoutSec": 5,
+        "env": {
+          "PERSOMEMORY_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+        }
+      }
+    ]
+  }
+}

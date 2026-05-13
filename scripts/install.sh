@@ -5,8 +5,19 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 COPILOT_DIR="${HOME}/.copilot"
 
 mkdir -p "${COPILOT_DIR}/skills/persomemory"
-cp "${REPO_DIR}/skills/persomemory/SKILL.md" "${COPILOT_DIR}/skills/persomemory/SKILL.md"
+cp -r "${REPO_DIR}/skills/persomemory/." "${COPILOT_DIR}/skills/persomemory/"
 echo "Installed persomemory skill to ${COPILOT_DIR}/skills/persomemory/SKILL.md"
+
+mkdir -p "${COPILOT_DIR}/agents"
+cp "${REPO_DIR}/config/agents/persomemory-agent.agent.md" "${COPILOT_DIR}/agents/persomemory-agent.agent.md"
+echo "Installed persomemory-agent to ${COPILOT_DIR}/agents/persomemory-agent.agent.md"
+
+mkdir -p "${COPILOT_DIR}/hooks/scripts"
+cp "${REPO_DIR}/config/hooks/persomemory-session.json" "${COPILOT_DIR}/hooks/persomemory-session.json"
+cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh"
+cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-end.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
+chmod +x "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
+echo "Installed PersoMemory hooks to ${COPILOT_DIR}/hooks/persomemory-session.json"
 
 LIFECYCLE_MCP_DIR="${HOME}/persomemory-lifecycle-mcp"
 mkdir -p "${LIFECYCLE_MCP_DIR}"
