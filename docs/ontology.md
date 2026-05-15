@@ -22,7 +22,7 @@ Fast and local. Capture what changed in the conversation and route only operatio
 
 ### Daily WorkIQ Intake
 
-Broad and evidential. Reconstruct the day from M365 and write a daily note. Update active memory and commitments only for obvious current changes.
+Unbundled and evidential. Reconstruct the day from M365 using three separate evidence calls: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit. Merge and deduplicate the outputs before writing a daily note. Update active memory and commitments only for obvious current changes.
 
 ### Dreaming
 
@@ -41,6 +41,8 @@ Slow and durable. Review multiple daily notes and promote repeated signals.
 9. `memory/career/`: accomplishment, feedback, goal, or growth evidence.
 10. `memory/career/evidence/`: atomic proof notes, Connect/promotion threshold only.
 
+Career direction and career evidence are different routes. Manager or mentor guidance that changes goals, role scope, exposure, or 1-3 year trajectory belongs in `memory/career/feedback.md` or `memory/career/goals.md` through an approval-gated update. Proof strong enough for Connect or promotion belongs in `memory/career/evidence/`.
+
 ## Failure Modes
 
 1. Over promoting fresh thoughts into durable memory.
@@ -49,6 +51,8 @@ Slow and durable. Review multiple daily notes and promote repeated signals.
 4. Letting `MEMORY.md` become stale project status.
 5. Retrieving daily notes by default and flooding context.
 6. Creating atomic evidence notes for ordinary work; threshold is Connect/promotion/leadership proof only.
+7. Compressing explicit action items into broad themes and losing the owner, due timing, expected output, or source.
+8. Collapsing manager career conversations into recognition evidence while missing future role direction, goals, and 1-3 year trajectory.
 
 ---
 

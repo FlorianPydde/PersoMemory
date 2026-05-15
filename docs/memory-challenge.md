@@ -208,6 +208,18 @@ Possible answers:
 2. Mark closed loops explicitly, then remove them after consolidation.
 3. Distinguish explicit promises from vague discussion.
 4. Use lifecycle tooling to surface aged loops.
+5. Run a separate zero-miss Action Item Audit WorkIQ call during sweeps. Inspect meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for concrete deliverables, including lower-profile actions that are not top daily signals.
+
+#### Challenge: Direction-setting conversations can be undercaptured
+
+Manager, mentor, leadership, and career conversations often contain two different signals: recognition of past impact and guidance about future direction. If these are merged, the system may preserve evidence while losing the 1-3 year trajectory or behavior change.
+
+Possible answers:
+
+1. Split career conversations into recognition, evidence, and future direction.
+2. Route recognition to daily notes and, when strong enough, career evidence approval items.
+3. Route future guidance to `memory/career/feedback.md` or `memory/career/goals.md` through an approval-gated career direction update.
+4. Capture role direction, exposure, skills, behaviors to start/stop/continue, and expected positioning.
 
 #### Challenge: The graph can become inconsistent
 
@@ -434,7 +446,7 @@ Purpose: route the day's evidence into memory.
 
 Inputs:
 
-1. WorkIQ evidence.
+1. WorkIQ evidence from three separate calls: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit.
 2. Copilot conversation pointers with captured transcripts.
 3. Current active memory and open loops.
 4. Project registry.
@@ -446,6 +458,7 @@ Outputs:
 3. Updated active context when explicit.
 4. Approval inbox items for gated decisions.
 5. Lifecycle check follow ups.
+6. Explicit Action Item Audit and Direction Setting Audit results, even when no durable write is made.
 
 ### Weekly Consolidation
 
@@ -465,6 +478,7 @@ Outputs:
 3. Stale or noisy memory to disregard.
 4. Reusable patterns.
 5. Career evidence candidates.
+6. Career direction and feedback update candidates.
 
 ## Design Principles
 

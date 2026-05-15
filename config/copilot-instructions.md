@@ -162,6 +162,14 @@ When the user asks for a daily summary, daily memory update, or WorkIQ sweep:
 6. Update `memory/active/now.md` only when current priorities or active project status materially change.
 7. Do not promote daily facts into `MEMORY.md`, `projects`, `people`, `patterns`, `decisions`, `toolkits`, or `career` unless they are repeated, identity shaping, relationship shaping, strategy changing, career relevant, or reusable.
 
+During any WorkIQ sweep, run three separate WorkIQ evidence calls before summarizing or writing:
+
+1. **Broad Evidence Scan**: reconstruct daily context, project movement, risks, people signals, reusable assets, and surprise items.
+2. **Action Item Audit**: inspect meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for every concrete deliverable. Mirror still-open obligations into `memory/commitments/open-loops.md`.
+3. **Direction Setting Audit**: inspect manager, mentor, leadership, and career conversations for future role direction, goals, exposure, skills, or behavior changes. Separate this from recognition or career evidence.
+
+Merge and deduplicate the three evidence outputs before routing memory. If one WorkIQ evidence call fails, continue with the other streams and write a Sweep Failures approval item.
+
 ## Durable Memory Update Workflow
 
 When a conversation creates durable memory:
@@ -176,6 +184,8 @@ When a conversation creates durable memory:
 8. Store feedback, accomplishments, and growth evidence in `memory/career/`.
 9. Store atomic proof (Connect/promotion threshold) in `memory/career/evidence/`.
 10. Update `DREAMS.md` during consolidation, not for every raw daily fact.
+
+Manager or mentor guidance that changes the next 1-3 year direction belongs in `memory/career/feedback.md` or `memory/career/goals.md` through an approval-gated career direction update, not only in daily notes or career evidence candidates.
 
 ## Key Files
 

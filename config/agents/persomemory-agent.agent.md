@@ -96,10 +96,13 @@ Trigger phrases include:
 Process:
 
 1. Prime with active context, open loops, and project registry.
-2. Query WorkIQ for evidence across meetings, transcripts, Teams, email, files, and calendar.
+2. Query WorkIQ as an evidence bundle with three separate calls:
+   1. **Broad Evidence Scan** across meetings, transcripts, Teams, email, files, and calendar for daily context, project movement, risks, people signals, reusable assets, and surprise items.
+   2. **Action Item Audit** across meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for every concrete deliverable.
+   3. **Direction Setting Audit** across manager, mentor, leadership, and career conversations for future goals, role direction, exposure, skills, positioning, or behavior changes.
 3. Read pending Copilot conversation review pointers from `~/.local/share/persomemory/session-reviews/`.
 4. Read referenced Copilot transcripts when available. Skip queue entries whose transcript is missing, empty, or `not captured`.
-5. Treat WorkIQ and Copilot conversations as two evidence streams into the same memory layer.
+5. Treat the three WorkIQ calls and Copilot conversations as separate evidence streams into the same memory layer.
 6. Keep only signals with future consequence:
    1. State changes.
    2. Decisions and rationale.
@@ -109,21 +112,24 @@ Process:
    6. Reusable assets.
    7. Emerging patterns.
    8. Promotion candidates.
-7. Deduplicate against the current vault before writing.
+   9. Direction-setting career, role, or leadership guidance.
+7. Deduplicate across all evidence streams and the current vault before writing.
 8. Write or merge `memory/daily/YYYY-MM-DD.md`.
 9. Route low-risk operational changes immediately:
    1. Active priorities to `memory/active/now.md`.
    2. Commitments to `memory/commitments/open-loops.md`.
+   3. Every still-open concrete action to `memory/commitments/open-loops.md`, including one-slide summaries, review tasks, next-meeting deliverables, follow-ups, and delegated asks.
 10. Mark processed local queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
 11. Run lifecycle_check after routing.
 12. Ask before high-impact changes:
    1. Editing `MEMORY.md`.
    2. Creating career evidence.
-   3. Promoting durable project, people, pattern, decision, or toolkit notes.
-   4. Closing projects.
-   5. Closing ambiguous commitments.
-   6. Resolving conflicting evidence.
-   7. Capturing potentially sensitive content.
+   3. Updating durable career goals or feedback from manager/mentor direction.
+   4. Promoting durable project, people, pattern, decision, or toolkit notes.
+   5. Closing projects.
+   6. Closing ambiguous commitments.
+   7. Resolving conflicting evidence.
+   8. Capturing potentially sensitive content.
 13. In unattended mode, write high-impact decisions to `memory/inbox/approvals/YYYY-MM-DD.md` instead of asking.
 14. If WorkIQ, MCP, permission, or vault access fails, write a `Sweep Failures` approval item if possible.
 
@@ -191,6 +197,8 @@ Before any write, answer these internally:
 4. Does the target note have correct frontmatter?
 5. Are inline wikilinks present for every meaningful relationship?
 6. Is the source attribution present?
+7. Have all concrete action items been mirrored into open loops or deliberately discarded with a reason?
+8. Have manager/mentor career signals been split into recognition, evidence, and future direction instead of merged into one vague note?
 
 If any answer is weak, ask or do not write.
 

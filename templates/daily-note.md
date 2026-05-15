@@ -20,10 +20,12 @@ Decisions with rationale. Exclude meeting chatter.
 ## Commitments and Open Loops
 
 Promises, follow ups, delegated actions, pending reviews, and obligations. Mirror durable open loops into `memory/commitments/open-loops.md`.
+For each still-open action, include owner, expected output, due date or timing, source, and whether it was explicit or inferred. Do not omit lower-profile meeting tasks just because they were not top signals.
 
 ## People Signals
 
 Durable signals about how people work, decide, influence, or partner. Do not record every interaction.
+For manager, mentor, leadership, and career conversations, separate recognition of past impact from future direction, role guidance, goals, exposure, skills, or behavior changes.
 
 ## Evidence of Impact
 
@@ -41,6 +43,7 @@ Repeated behavior, preference, risk, decision habit, strategic theme, or growth 
 ## Promotion Candidates
 
 Candidate facts for `MEMORY.md`, `projects`, `people`, `patterns`, `decisions`, `career`, or `toolkits`. Include why each candidate is durable.
+Keep career evidence candidates separate from career direction or feedback updates.
 
 ## Source
 

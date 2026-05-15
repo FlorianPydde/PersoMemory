@@ -70,6 +70,14 @@ When the user asks for a daily summary, daily memory update, WorkIQ sweep, or si
 5. Update `memory/active/now.md` only when current priorities or active project status materially change.
 6. Do not promote daily facts into durable memory unless they are repeated, identity shaping, relationship shaping, strategy changing, career relevant, or reusable.
 
+Daily intake must use three separate WorkIQ evidence calls:
+
+1. **Broad Evidence Scan**: reconstruct daily context, project movement, risks, people signals, reusable assets, and surprise items.
+2. **Action Item Audit**: inspect meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for every concrete deliverable, including lower-profile asks that are not top daily signals. Mirror still-open obligations into `memory/commitments/open-loops.md`.
+3. **Direction Setting Audit**: inspect manager, mentor, leadership, and career conversations for future role direction, goals, exposure, skills, or behavior changes. Keep this separate from recognition and career evidence.
+
+Merge and deduplicate the three evidence outputs before routing memory.
+
 ## Daily Note Ontology
 
 Daily notes are relevant as intake and evidence. They are not long term memory.

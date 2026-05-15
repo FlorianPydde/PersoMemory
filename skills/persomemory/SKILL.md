@@ -102,9 +102,19 @@ Before querying WorkIQ, load the active context needed to construct an informed 
 2. Read `memory/commitments/open-loops.md` — extract open commitments and pending follow ups.
 3. Skim `memory/PROJECTS.md` — note active project slugs and names for wikilink matching.
 
-**Phase 2: Construct and run the WorkIQ query**
+**Phase 2: Construct and run the WorkIQ evidence bundle**
 
-Use the template below. Inject the memory context from Phase 1 into the [INJECT] placeholders before sending.
+Do not rely on one broad WorkIQ query. Run three separate WorkIQ evidence calls, then merge the outputs before routing memory:
+
+1. **Broad Evidence Scan** — daily context, project movement, people signals, risks, reusable assets, surprise items.
+2. **Action Item Audit** — every concrete ask, owner, expected artifact, due date or timing, format, source, confidence, explicit vs inferred.
+3. **Direction Setting Audit** — manager, mentor, leadership, and career guidance that changes future goals, role direction, exposure, skills, positioning, or behavior.
+
+WorkIQ remains evidence only. PersoMemory performs memory routing after all three calls are complete.
+
+### WorkIQ call 1: Broad Evidence Scan
+
+Inject the memory context from Phase 1 into the [INJECT] placeholders before sending.
 
 ```
 Analyze the Microsoft 365 activity around Florian for [DATE].
@@ -127,11 +137,13 @@ What were the 3 to 5 most consequential things that happened today? For each: wh
 2. Important interactions
 Which conversations, meetings, chats, or emails changed context, created alignment, exposed risk, or required follow up?
 
-3. Asks and commitments
-What was asked of Florian, what did Florian commit to, what dependencies or follow ups were created or closed?
+3. High-level asks and commitments
+Which asks or commitments were visible enough to affect the daily narrative? Do not perform the detailed action audit here; that is WorkIQ call 2.
 
 4. Leadership, manager, customer, and partner signals
 Did any manager, senior stakeholder, customer, partner, or influential colleague signal priority, concern, recognition, escalation, or direction?
+
+Do not perform the detailed direction-setting audit here; that is WorkIQ call 3.
 
 5. Project and workstream movement
 Which projects or workstreams moved forward, changed direction, got blocked, or gained new evidence of progress or risk?
@@ -157,9 +169,83 @@ For each retained signal, return:
 At the end, list items discarded as low value and why (scheduling noise, admin, duplicates, no future consequence).
 ```
 
+### WorkIQ call 2: Action Item Audit
+
+```
+Audit Microsoft 365 activity around Florian for [DATE] for concrete action items only.
+
+Look across meeting tasks, transcript action items, Teams asks, email asks, shared-file comments, and calendar context.
+
+Do not summarize the day. Do not judge importance by seniority or visibility. Return every concrete ask or obligation that could matter later, including lower-profile meeting tasks.
+
+Known context:
+- Active projects: [INJECT active project names from now.md]
+- Open commitments: [INJECT open loops from open-loops.md]
+
+For each action item, return:
+- Title
+- Owner
+- Expected output or artifact
+- Due date or timing
+- Source type and source detail
+- People involved
+- Project or topic
+- Explicit or inferred
+- Confidence
+- Reason it should be kept or discarded
+
+At the end, include:
+- All still-open actions that should be mirrored into open loops.
+- Ambiguous actions that need approval or clarification.
+- Discarded items and why.
+```
+
+### WorkIQ call 3: Direction Setting Audit
+
+```
+Audit Microsoft 365 activity around Florian for [DATE] for direction-setting conversations only.
+
+Focus on manager, mentor, leadership, customer, and partner conversations that change future goals, role direction, positioning, exposure, skills to build, behaviors to start/stop/continue, or 1-3 year trajectory.
+
+Do not summarize ordinary project status. Do not merge recognition of past impact with future guidance.
+
+Known context:
+- Key people: [INJECT key people from now.md]
+- Current priorities: [INJECT priorities from now.md]
+
+For each direction-setting signal, return:
+- Title
+- Who gave the signal
+- Past-impact recognition, if any
+- Future direction or guidance
+- Implication for goals, feedback, career evidence, active context, or open loops
+- Source type and source detail
+- People involved
+- Projects or topics
+- Confidence
+- Whether it is approval-gated
+
+At the end, include:
+- Career direction or feedback candidates.
+- Career evidence candidates, separately from direction.
+- Ambiguous items that need approval or clarification.
+- Discarded items and why.
+```
+
+### Merge contract
+
+After all three WorkIQ calls complete:
+
+1. Deduplicate across the three outputs and existing vault state.
+2. Preserve source attribution from the originating evidence call.
+3. Mirror still-open concrete actions into `memory/commitments/open-loops.md`.
+4. Keep direction-setting guidance separate from career evidence.
+5. Write approval-gated items to `memory/inbox/approvals/YYYY-MM-DD.md`.
+6. If one WorkIQ call fails, continue with the other evidence streams and add a `Sweep Failures` approval item.
+
 **Phase 3: Evidence extraction**
 
-WorkIQ returns structured signal candidates. Accept them as evidence, not decisions. Do not use WorkIQ's framing to classify career impact or memory priority — that judgment belongs to PersoMemory.
+The WorkIQ evidence bundle returns structured signal candidates. Accept them as evidence, not decisions. Do not use WorkIQ's framing to classify career impact or memory priority — that judgment belongs to PersoMemory.
 
 **Phase 4: Copilot conversation evidence**
 
@@ -189,6 +275,10 @@ For each relevant pointer:
 7. Preserve source attribution as "Automated sweep via WorkIQ" or "Manual WorkIQ sweep".
 8. Mark processed local conversation queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
 
+Do not bury operational actions in the daily note. Mirror every still-open concrete action into `memory/commitments/open-loops.md`, including small artifacts such as one-slide summaries, review tasks, follow-ups, and next-meeting deliverables. If ownership, timing, or obligation status is ambiguous, keep the daily evidence and create an approval inbox item instead of silently dropping it.
+
+Do not collapse career conversations into "recognition" only. If a manager, mentor, or leader gives future role guidance, write it to the daily note and create a `Career Direction and Feedback Updates` approval item for `memory/career/feedback.md` or `memory/career/goals.md` unless Florian has explicitly approved the durable update. If the same conversation is also Connect or promotion proof, create a separate `Career Evidence Candidates` approval item.
+
 The evening sweep should ask for input only at approval gates, not during routine capture.
 
 When running unattended through `copilot -p`, do not ask. Write approval-gated decisions to `memory/inbox/approvals/YYYY-MM-DD.md` and leave them with status `pending`. If the approval inbox directory does not exist and there are no approval-gated items, treat it as an empty inbox. If approval-gated items exist, create the directory and inbox note.
@@ -211,9 +301,10 @@ Approval inbox sections:
 2. Commitment Closures.
 3. Durable Promotions.
 4. Career Evidence Candidates.
-5. Sensitive or Ambiguous Items.
-6. Discard Recommendations.
-7. Sweep Failures.
+5. Career Direction and Feedback Updates.
+6. Sensitive or Ambiguous Items.
+7. Discard Recommendations.
+8. Sweep Failures.
 
 **Phase 6: Lifecycle check**
 
@@ -442,6 +533,7 @@ Route daily note sections as follows:
 | Decisions Made | `memory/decisions/{slug}.md` | Changes future behavior and has rationale |
 | People Signals | `memory/people/{person}.md` | Durable working style, ownership, preference, or influence |
 | Evidence of Impact | `memory/career/accomplishments.md` or `memory/career/evidence/` | Summary goes in accomplishments; atomic proof in evidence if Connect-threshold |
+| Career Direction and Feedback | `memory/career/feedback.md` or `memory/career/goals.md` | Manager/mentor guidance that changes role direction, goals, or 1-3 year trajectory; approval-gated unless explicitly requested |
 | Reusable Assets | `memory/toolkits/` | Used 2+ times or clearly saves future effort |
 | Emerging Patterns | `memory/patterns/` | Repeated or strongly generalizable |
 | Promotion Candidates | `DREAMS.md` | Needs review before durable promotion |
@@ -473,6 +565,8 @@ impact-areas: []
 
 ## Commitments and Open Loops
 
+Include every concrete still-open ask with owner, expected output, due date or timing, source, and whether it was explicit or inferred. Mirror active obligations into `memory/commitments/open-loops.md`.
+
 ## People Signals
 
 ## Evidence of Impact
@@ -482,6 +576,8 @@ impact-areas: []
 ## Emerging Patterns
 
 ## Promotion Candidates
+
+Include approval-gated durable updates separately from ordinary evidence. Career recognition, career direction, and career evidence are different candidates and should not be merged into one vague item.
 
 ## Source
 ```
@@ -500,6 +596,7 @@ Keep:
 6. Reusable prompts, playbooks, checklists, and workshop formats.
 7. Repeated patterns and operating heuristics.
 8. Structural knowledge about systems and processes.
+9. Direction-setting guidance from managers, mentors, leaders, or customers that changes future goals, positioning, role scope, or behavior.
 
 Discard:
 
