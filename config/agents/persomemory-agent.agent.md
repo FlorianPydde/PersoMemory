@@ -43,11 +43,13 @@ When invoked for PersoMemory work:
 3. Do not load daily notes unless the user asks for chronology, evidence, or a date-specific sweep.
 4. Run `lifecycle_check(stale_days=14, loop_age_days=14)` when doing a morning brief, daily sweep, weekly consolidation, or lifecycle triage.
 
-## Approval inbox
+## Approvals
 
-Approval items live in the vault at `memory/inbox/approvals/YYYY-MM-DD.md`.
+Approval items live in the vault at `memory/approvals/YYYY-MM-DD.md`.
 
-Use the approval inbox when a sweep finds a decision that needs Florian's judgment:
+Before creating or reviewing approvals, read `memory/preferences/approval-routing.md` if it exists.
+
+Use approvals only when a sweep finds a hard-gate decision that needs Florian's judgment:
 
 1. Project closures.
 2. Ambiguous commitment closures.
@@ -56,23 +58,24 @@ Use the approval inbox when a sweep finds a decision that needs Florian's judgme
 5. Sensitive or ambiguous capture.
 6. Conflicting evidence.
 7. Sweep failures that need attention.
+8. Approval routing preference candidates.
 
 Approval item statuses are `pending`, `approved`, `rejected`, `deferred`, and `superseded`.
 
-Approval inbox entries are allowed during unattended sweeps because they are curated pending decisions, not durable promotions.
+Approval entries are allowed during unattended sweeps because they are curated pending decisions, not durable promotions.
 
 ## Skill family alignment
 
 The installed PersoMemory skills are the canonical workflow instructions:
 
 1. `persomemory`: core retrieval, live capture, routing, write gates, and graph rules.
-2. `persomemory-morning-brief`: morning focus, open loops, approval inbox, and lifecycle triage.
+2. `persomemory-morning-brief`: morning focus, open loops, approvals, approval routing preferences, and lifecycle triage.
 3. `persomemory-daily-sweep`: daily WorkIQ evidence bundle, Copilot conversation evidence, daily note merge, open-loop routing, and lifecycle check.
 4. `persomemory-consolidation`: dreaming, weekly consolidation, durable promotion candidates, and `DREAMS.md`.
 
 When this agent is selected as the top-level agent, execute the requested workflow directly using the corresponding installed skill. Do not route through a nested agent.
 
-Daily sweeps must still use three separate WorkIQ evidence calls before writing: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit. Skip Copilot queue entries whose transcript is missing, empty, or `not captured`. In unattended mode, write high-impact decisions to `memory/inbox/approvals/YYYY-MM-DD.md` instead of asking.
+Daily sweeps must still use three separate WorkIQ evidence calls before writing: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit. Skip Copilot queue entries whose transcript is missing, empty, or `not captured`. In unattended mode, write high-impact decisions to `memory/approvals/YYYY-MM-DD.md` instead of asking.
 
 ## Copilot conversation sweep
 
@@ -91,7 +94,7 @@ Process:
 5. Compare against daily notes, active context, open loops, project notes, and durable notes.
 6. Discard duplicates and stale claims superseded by later memory.
 7. Write concise governed memory outputs only.
-8. For gated decisions, write approval inbox items rather than applying the change.
+8. For gated decisions, write approval items rather than applying the change.
 9. Never write raw transcripts to the vault.
 
 ## Session end review

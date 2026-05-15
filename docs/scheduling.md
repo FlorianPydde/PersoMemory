@@ -17,14 +17,14 @@ The script runs:
 1. WorkIQ daily evidence intake.
 2. Copilot conversation evidence intake from `~/.local/share/persomemory/session-reviews/`.
 3. Low-risk daily and operational memory routing.
-4. Approval inbox creation for gated decisions.
+4. Approval creation for gated decisions.
 
 The helper starts `persomemory-agent` as the top-level selected Copilot agent. That is different from asking a normal interactive session to delegate to a nested subagent. Nested delegated agents may not inherit the parent session's MCP tools, even if those tools are listed in the agent markdown file.
 
 Approval-gated decisions go to:
 
 ```text
-memory/inbox/approvals/YYYY-MM-DD.md
+memory/approvals/YYYY-MM-DD.md
 ```
 
 ## Tool permissions
@@ -77,6 +77,6 @@ Cron can call the installed helper with an absolute path:
 
 ## Morning brief
 
-The morning brief should read pending approval inbox notes and ask Florian to approve, reject, defer, or edit them.
+The morning brief should read `memory/preferences/approval-routing.md`, then read pending approval notes from `memory/approvals/` and ask Florian to approve, reject, defer, or edit them.
 
 This makes the overnight run useful without pretending that unattended approval happened.

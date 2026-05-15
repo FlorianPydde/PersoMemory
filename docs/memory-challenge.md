@@ -90,7 +90,7 @@ WorkIQ, Copilot conversations, and existing vault notes may disagree. A project 
 Possible answers:
 
 1. Treat existing curated memory as stronger than raw evidence unless new evidence is explicit.
-2. Use approval inbox items for conflicts instead of resolving them silently.
+2. Use approval items for conflicts instead of resolving them silently.
 3. Preserve source attribution so future review can trace why a change was made.
 4. Prefer "needs confirmation" over forced closure.
 
@@ -112,7 +112,7 @@ A cron or scheduled sweep may discover something that needs judgment, such as a 
 Possible answers:
 
 1. Allow low risk daily and operational writes.
-2. Route gated decisions to `memory/inbox/approvals/YYYY-MM-DD.md`.
+2. Route gated decisions to `memory/approvals/YYYY-MM-DD.md`.
 3. Review pending approval items during the morning brief.
 4. Avoid `--yolo` and `--allow-all-tools` for unattended memory work by default.
 
@@ -161,7 +161,7 @@ The main note types are:
 9. `memory/toolkits/*.md`: reusable prompts, checklists, playbooks, and assets.
 10. `memory/career/*.md`: accomplishments, feedback, goals, and growth evidence.
 11. `memory/career/evidence/*.md`: atomic career evidence strong enough for Connect or promotion.
-12. `memory/inbox/approvals/*.md`: pending human decisions from unattended sweeps.
+12. `memory/approvals/*.md`: pending human decisions from unattended sweeps.
 
 ### Memory Management Challenges
 
@@ -294,7 +294,7 @@ Possible answers:
 
 1. Treat durable notes as stable until new evidence is explicit.
 2. Use active memory for temporary status changes.
-3. Use approval inbox for conflicts.
+3. Use approval items for conflicts.
 4. Promote changes during consolidation when patterns repeat.
 
 #### Challenge: Agent execution boundaries are confusing
@@ -339,7 +339,7 @@ It answers:
 Current mechanisms include:
 
 1. Approval gates for high impact memory writes.
-2. Approval inbox files for unattended sweeps.
+2. Approval files for unattended sweeps.
 3. Lifecycle checks for stale projects and aged loops.
 4. Controlled schemas and frontmatter.
 5. Source attribution for every memory write.
@@ -359,7 +359,7 @@ The system should ask before:
 6. Resolving conflicting evidence.
 7. Capturing potentially sensitive content.
 
-In unattended mode, the system should write pending items to the approval inbox rather than applying the decision.
+In unattended mode, the system should write pending items to approvals rather than applying the decision.
 
 ### Governance Challenges
 
@@ -372,7 +372,7 @@ Possible answers:
 1. Store high impact decisions as pending approval items.
 2. Preserve confidence and source type.
 3. Separate "what evidence suggests" from "what memory should change".
-4. Review approval inbox items during the morning brief.
+4. Review approval items during the morning brief.
 
 #### Challenge: Stale memory silently degrades retrieval
 
@@ -429,7 +429,7 @@ Inputs:
 1. Startup context.
 2. Active memory.
 3. Open loops.
-4. Pending approval inbox items.
+4. Pending approval items.
 5. Lifecycle check output.
 
 Outputs:
@@ -456,7 +456,7 @@ Outputs:
 1. Daily note.
 2. Updated open loops when clear.
 3. Updated active context when explicit.
-4. Approval inbox items for gated decisions.
+4. Approval items for gated decisions.
 5. Lifecycle check follow ups.
 6. Explicit Action Item Audit and Direction Setting Audit results, even when no durable write is made.
 
@@ -496,7 +496,7 @@ Outputs:
 ## Open Design Questions
 
 1. How should the system score memory usefulness after retrieval?
-2. Should approval inbox items have a maximum age before automatic deferral or discard recommendation?
+2. Should approval items have a maximum age before automatic deferral or discard recommendation?
 3. What is the right threshold for creating new project or people notes from repeated daily evidence?
 4. How should contradictions between WorkIQ, Copilot conversations, and user statements be displayed?
 5. Should scheduled sweeps produce a short audit summary in addition to vault writes?

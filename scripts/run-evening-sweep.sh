@@ -43,7 +43,7 @@ Run the skill's structured Copilot Conversation Evidence Bundle before memory ro
 5. Direction-Setting and Feedback Audit: capture career, role, leadership, manager, customer, or strategy guidance separately from recognition or impact evidence.
 6. Reusable Asset and Pattern Audit: capture prompts, scripts, checklists, workflow changes, tests, docs, playbooks, and reusable reasoning patterns.
 7. Risk and Weak Signal Audit: capture unresolved uncertainty, shallow-capture risk, missing data, conflicting evidence, fragile assumptions, and follow-ups that could be lost.
-8. Routing and Approval Audit: route each retained signal as daily evidence, open loop update, active context update, durable promotion candidate, approval inbox item, or discard.
+8. Routing and Approval Audit: route each retained signal as daily evidence, open loop update, active context update, durable promotion candidate, approval item, approval routing preference candidate, or discard.
 
 Apply low-risk daily and operational writes:
 1. Merge the daily note for ${DATE}.
@@ -53,7 +53,9 @@ Apply low-risk daily and operational writes:
 
 For anything requiring Florian approval, do not resolve it. Write a pending approval item to:
 
-memory/inbox/approvals/${DATE}.md
+memory/approvals/${DATE}.md
+
+Before creating approval items, read memory/preferences/approval-routing.md if it exists. Approvals are hard gates, not a suggestion inbox. Suppress weak approval candidates according to those preferences.
 
 Approval gates:
 1. Editing MEMORY.md.
@@ -65,9 +67,13 @@ Approval gates:
 7. Resolving conflicting evidence.
 8. Capturing potentially sensitive content.
 
-Use an approval inbox section named "Career Direction and Feedback Updates" when a manager, mentor, or leader gives future role or career guidance that should update memory/career/feedback.md or memory/career/goals.md.
+Each approval item must include Decision required, Recommended answer, Why this is gated, Evidence, If approved, If rejected, Default if no answer, and Preference signal to watch.
 
-If WorkIQ, MCP, permission, vault, or transcript access fails, write a Sweep Failures item in the approval inbox if possible and continue with whatever evidence is available.
+Use an approval section named "Career Direction and Feedback Updates" when a manager, mentor, or leader gives future role or career guidance that should update memory/career/feedback.md or memory/career/goals.md.
+
+If Florian explicitly asks to remember an approval-routing preference, or at least three matching approval decisions suggest the same preference, create an "Approval Routing Preference Candidates" item with the proposed rule, supporting examples, risks of learning it, risks of not learning it, and a recommendation. Do not update memory/preferences/approval-routing.md without approval.
+
+If WorkIQ, MCP, permission, vault, or transcript access fails, write a Sweep Failures item in approvals if possible and continue with whatever evidence is available.
 
 Do not use scheduled prompt tools or schedule management tools during this sweep.
 PROMPT

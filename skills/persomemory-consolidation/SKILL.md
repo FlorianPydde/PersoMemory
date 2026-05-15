@@ -28,7 +28,8 @@ Read:
 1. `DREAMS.md` to find the last consolidation point.
 2. Daily notes since the last consolidation point.
 3. Pending Copilot conversation queue entries that were not processed by evening sweeps. Skip entries whose transcript is missing, empty, or `not captured`.
-4. Related project, people, pattern, decision, toolkit, and career notes only when needed.
+4. `memory/preferences/approval-routing.md`, if it exists.
+5. Related project, people, pattern, decision, toolkit, and career notes only when needed.
 
 Use Smart Connections only to discover related durable notes. Do not rely on semantic search alone when explicit wikilinks or frontmatter fields exist.
 
@@ -54,6 +55,7 @@ Return a draft consolidation report with:
 4. Reusable patterns.
 5. Career evidence candidates.
 6. Decisions that need Florian approval.
+7. Approval routing preference candidates when explicit or repeated approval decisions suggest a durable routing preference.
 
 ## Approved Routing
 
@@ -67,6 +69,7 @@ After Florian approves specific changes, route durable signals:
 6. Reusable assets go to `memory/toolkits/`.
 7. Career evidence goes to `memory/career/`.
 8. Proof strong enough for Connect or promotion becomes an atomic note in `memory/career/evidence/`.
+9. Approved approval-routing preferences update `memory/preferences/approval-routing.md`.
 
 When writing or updating durable notes, always include frontmatter and inline wikilinks. Record the reasoning and outcome in `DREAMS.md`.
 

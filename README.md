@@ -74,7 +74,7 @@ bash ./scripts/test-runtime.sh
 ./scripts/run-evening-sweep.sh
 ```
 
-The helper runs the PersoMemory evening sweep with narrow Copilot permissions: read access to the local queue plus the required MCP servers. Approval-gated decisions are written to `memory/inbox/approvals/YYYY-MM-DD.md` and picked up by the morning brief.
+The helper runs the PersoMemory evening sweep with narrow Copilot permissions: read access to the local queue plus the required MCP servers. Approval-gated decisions are written to `memory/approvals/YYYY-MM-DD.md` and picked up by the morning brief.
 
 ## Operating Model
 
@@ -92,6 +92,6 @@ MCPs provide access. The PersoMemory skill family provides judgment, routing, an
 
 The durable memory store is the Obsidian vault. The local queue is disposable working state and can be rebuilt only by future activity.
 
-Approval inbox items are stored in the vault under `memory/inbox/approvals/` because they are curated pending decisions, not raw local queue data.
+Approval items are stored in the vault under `memory/approvals/` because they are curated hard-gate decisions, not raw local queue data or nice-to-have suggestions. PersoMemory workflows load `memory/preferences/approval-routing.md` before creating or reviewing approvals so repeated Florian decisions can become explicit preference candidates.
 
 For interactive memory work, the current MCP-enabled session should run PersoMemory workflows directly. The agent markdown can list MCP tools, but it does not by itself grant a nested delegated agent access to the parent session's MCP connections or permissions.

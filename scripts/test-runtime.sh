@@ -133,12 +133,20 @@ grep -q 'Routing and Approval Audit' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Sweep Failures' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'not captured' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'memory/approvals/YYYY-MM-DD.md' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'memory/preferences/approval-routing.md' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Approvals are hard gates, not a suggestion inbox' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Approval Routing Preference Candidates' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'dream' skills/persomemory-consolidation/SKILL.md
 grep -q 'DREAMS.md' skills/persomemory-consolidation/SKILL.md
 grep -q 'ObsidianVaultPersoMemory' skills/persomemory-consolidation/SKILL.md
 grep -q 'vault-relative paths' skills/persomemory-consolidation/SKILL.md
 grep -q 'Do not resolve them relative to the current working directory or the PersoMemory setup repo' skills/persomemory-consolidation/SKILL.md
+grep -q 'memory/preferences/approval-routing.md' skills/persomemory-consolidation/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory/SKILL.md
+grep -q 'memory/approvals/YYYY-MM-DD.md' skills/persomemory/SKILL.md
+grep -q 'memory/preferences/approval-routing.md' skills/persomemory/SKILL.md
+grep -q 'Approvals are hard gates, not a suggestion inbox' skills/persomemory/SKILL.md
 grep -q 'workiq-teams' config/agents/persomemory-agent.agent.md
 grep -q 'Work IQ Teams is an action surface' skills/persomemory/SKILL.md
 grep -q 'not captured' skills/persomemory/SKILL.md
@@ -147,7 +155,16 @@ grep -q 'not captured' config/agents/persomemory-agent.agent.md
 grep -q 'Broad Evidence Scan' config/agents/persomemory-agent.agent.md
 grep -q 'Action Item Audit' config/agents/persomemory-agent.agent.md
 grep -q 'Direction Setting Audit' config/agents/persomemory-agent.agent.md
-grep -q 'Career Direction and Feedback Updates' templates/approval-inbox.md
+grep -q 'Career Direction and Feedback Updates' templates/approvals.md
+grep -q 'Decision required' templates/approvals.md
+grep -q 'Recommended answer' templates/approvals.md
+grep -q 'Why this is gated' templates/approvals.md
+grep -q 'Default if no answer' templates/approvals.md
+grep -q 'Preference signal to watch' templates/approvals.md
+grep -q 'Approval Routing Preference Candidates' templates/approvals.md
+grep -q 'memory/approvals/YYYY-MM-DD.md' README.md
+grep -q 'memory/preferences/approval-routing.md' README.md
+! grep -R -q 'memory/inbox/approvals' README.md docs scripts config skills templates
 
 PERSOMEMORY_DATA_HOME="${tmpdir}/runtime" COPILOT_BIN=/bin/echo ./scripts/run-evening-sweep.sh 2026-05-13 >"${tmpdir}/sweep.out"
 grep -q -- '--agent persomemory-agent' "${tmpdir}/sweep.out"
@@ -171,6 +188,10 @@ grep -q 'Risk and Weak Signal Audit' "${tmpdir}/sweep.out"
 grep -q 'Routing and Approval Audit' "${tmpdir}/sweep.out"
 grep -q 'Merge contract' "${tmpdir}/sweep.out"
 grep -q 'Career Direction and Feedback Updates' "${tmpdir}/sweep.out"
+grep -q 'memory/approvals/2026-05-13.md' "${tmpdir}/sweep.out"
+grep -q 'memory/preferences/approval-routing.md' "${tmpdir}/sweep.out"
+grep -q 'Approvals are hard gates, not a suggestion inbox' "${tmpdir}/sweep.out"
+grep -q 'Approval Routing Preference Candidates' "${tmpdir}/sweep.out"
 
 ./scripts/validate-memory-vault.sh
 

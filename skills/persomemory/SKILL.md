@@ -236,18 +236,38 @@ Ask before:
 6. Resolving conflicting evidence.
 7. Capturing potentially sensitive content.
 
-Approval inbox item statuses are `pending`, `approved`, `rejected`, `deferred`, and `superseded`.
+Approval items live in `memory/approvals/YYYY-MM-DD.md`.
 
-Approval inbox sections are:
+Load `memory/preferences/approval-routing.md` before creating or reviewing approval items. Apply those preferences to suppress weak approval candidates, rank pending decisions, and identify repeated decision patterns.
+
+Approvals are hard gates, not a suggestion inbox. Create an approval item only when a wrong decision would materially affect future retrieval, judgment, durable memory, career/project history, or future agent behavior.
+
+Every approval item should include:
+
+1. Decision required.
+2. Recommended answer.
+3. Why this is gated.
+4. Evidence.
+5. If approved.
+6. If rejected.
+7. Default if no answer.
+8. Preference signal to watch.
+
+Do not silently turn approval answers into durable preferences. When Florian explicitly asks to remember a routing preference, or when at least three matching approval decisions suggest the same preference, create an `Approval Routing Preference Candidates` item with the proposed rule, examples, risks, and recommendation. Only update `memory/preferences/approval-routing.md` after Florian approves that preference candidate.
+
+Approval item statuses are `pending`, `approved`, `rejected`, `deferred`, and `superseded`.
+
+Approval sections are:
 
 1. Project Closures.
 2. Commitment Closures.
 3. Durable Promotions.
 4. Career Evidence Candidates.
 5. Career Direction and Feedback Updates.
-6. Sensitive or Ambiguous Items.
-7. Discard Recommendations.
-8. Sweep Failures.
+6. Approval Routing Preference Candidates.
+7. Sensitive or Ambiguous Items.
+8. Discard Recommendations.
+9. Sweep Failures.
 
 ## Safety Rules
 

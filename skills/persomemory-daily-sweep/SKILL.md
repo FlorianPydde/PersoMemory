@@ -30,6 +30,7 @@ Before querying WorkIQ, load the active context needed to construct informed que
 1. Read `memory/active/now.md` and extract active projects, key people, and current priorities.
 2. Read `memory/commitments/open-loops.md` and extract open commitments and pending follow ups.
 3. Skim `memory/PROJECTS.md` and note active project slugs and names for wikilink matching.
+4. Read `memory/preferences/approval-routing.md`, if it exists, and apply it before creating approval items.
 
 ## Phase 2: WorkIQ Evidence Bundle
 
@@ -146,7 +147,7 @@ After all three WorkIQ calls complete:
 3. Preserve source attribution from the originating evidence stream.
 4. Mirror still-open concrete actions into `memory/commitments/open-loops.md`.
 5. Keep direction-setting guidance separate from career evidence.
-6. Write approval-gated items to `memory/inbox/approvals/YYYY-MM-DD.md`.
+6. Write approval-gated items to `memory/approvals/YYYY-MM-DD.md`.
 7. If one WorkIQ call fails, continue with the other evidence streams and add a `Sweep Failures` approval item.
 8. If WorkIQ and Copilot evidence conflict, do not resolve it silently. Write a `Sensitive or Ambiguous Items` or `Sweep Failures` approval item with both sources.
 9. If a Copilot session closes a loop raised in Teams or email, mirror the closure into open loops and cite both evidence streams when available.
@@ -184,7 +185,7 @@ For each `reviewable` Copilot session, extract evidence under these lenses befor
 5. **Direction-Setting and Feedback Audit**: career, role, leadership, manager, customer, or strategy guidance surfaced in the conversation. Keep future guidance separate from recognition and evidence of impact.
 6. **Reusable Asset and Pattern Audit**: prompts, scripts, checklists, workflow changes, tests, docs, playbooks, or reusable reasoning patterns created or improved.
 7. **Risk and Weak Signal Audit**: unresolved uncertainty, shallow-capture risk, missing data, conflicting evidence, fragile assumptions, or follow ups that could be lost.
-8. **Routing and Approval Audit**: classify each retained signal as daily evidence, open loop update, active context update, durable promotion candidate, approval inbox item, or discard.
+8. **Routing and Approval Audit**: classify each retained signal as daily evidence, open loop update, active context update, durable promotion candidate, approval item, preference candidate, or discard.
 
 Keep only signals that change future action, judgment, or retrieval. Discard implementation noise, tool logs, duplicate status narration, stale claims, and transient discussion.
 
@@ -229,9 +230,15 @@ Ask before:
 7. Resolving conflicting evidence.
 8. Capturing potentially sensitive content.
 
-When running unattended through `copilot -p`, do not ask. Write approval-gated decisions to `memory/inbox/approvals/YYYY-MM-DD.md` and leave them with status `pending`.
+When running unattended through `copilot -p`, do not ask. Write approval-gated decisions to `memory/approvals/YYYY-MM-DD.md` and leave them with status `pending`.
 
-Approval inbox sections are Project Closures, Commitment Closures, Durable Promotions, Career Evidence Candidates, Career Direction and Feedback Updates, Sensitive or Ambiguous Items, Discard Recommendations, and Sweep Failures.
+Approvals are hard gates, not a suggestion inbox. Use `memory/preferences/approval-routing.md` to suppress weak approval candidates before writing the approval file.
+
+Every approval item should include: Decision required, Recommended answer, Why this is gated, Evidence, If approved, If rejected, Default if no answer, and Preference signal to watch.
+
+If Florian explicitly asks to remember an approval-routing preference, or at least three matching approval decisions suggest the same preference, create an `Approval Routing Preference Candidates` item. Include the proposed rule, supporting examples, risks of learning the rule, risks of not learning it, and a recommendation. Do not update `memory/preferences/approval-routing.md` without approval.
+
+Approval sections are Project Closures, Commitment Closures, Durable Promotions, Career Evidence Candidates, Career Direction and Feedback Updates, Approval Routing Preference Candidates, Sensitive or Ambiguous Items, Discard Recommendations, and Sweep Failures.
 
 ## Phase 6: Lifecycle Check
 

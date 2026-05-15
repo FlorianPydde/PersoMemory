@@ -28,7 +28,8 @@ Load the minimum memory context:
 1. `MEMORY.md`.
 2. `memory/active/now.md`.
 3. `memory/commitments/open-loops.md`.
-4. `memory/inbox/approvals/*.md` with `status: pending`, if the approval inbox exists.
+4. `memory/preferences/approval-routing.md`, if it exists.
+5. `memory/approvals/*.md` with `status: pending`, if approvals exist.
 
 If hook-loaded PersoMemory startup context is already present, use it instead of reloading unless it is stale.
 
@@ -47,6 +48,7 @@ Do not load daily notes by default. Use daily notes only when the user asks for 
    6. One question: "What is the one outcome that makes today successful?"
 4. Ask Florian to approve, reject, defer, or edit pending approval items that still matter.
 5. Apply approved items through normal PersoMemory write rules and update their status.
+6. If an approved item is an `Approval Routing Preference Candidates` item, update `memory/preferences/approval-routing.md` with the approved rule and preserve its evidence.
 
 Do not otherwise write to memory unless Florian explicitly approves.
 
