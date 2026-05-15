@@ -112,9 +112,15 @@ grep -q 'Core PersoMemory operations' skills/persomemory/SKILL.md
 ! grep -q 'WorkIQ Call 3: Direction Setting Audit' skills/persomemory/SKILL.md
 grep -q 'morning sweep' skills/persomemory-morning-brief/SKILL.md
 grep -q 'pending approval' skills/persomemory-morning-brief/SKILL.md
+grep -q 'ObsidianVaultPersoMemory' skills/persomemory-morning-brief/SKILL.md
+grep -q 'vault-relative paths' skills/persomemory-morning-brief/SKILL.md
+grep -q 'Do not resolve them relative to the current working directory or the PersoMemory setup repo' skills/persomemory-morning-brief/SKILL.md
 grep -q 'Broad Evidence Scan' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Action Item Audit' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Direction Setting Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'ObsidianVaultPersoMemory' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'vault-relative paths' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Do not resolve them relative to the current working directory or the PersoMemory setup repo' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Merge Contract' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Copilot Conversation Evidence Bundle' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Session Inventory and Coverage Check' skills/persomemory-daily-sweep/SKILL.md
@@ -129,6 +135,9 @@ grep -q 'not captured' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'dream' skills/persomemory-consolidation/SKILL.md
 grep -q 'DREAMS.md' skills/persomemory-consolidation/SKILL.md
+grep -q 'ObsidianVaultPersoMemory' skills/persomemory-consolidation/SKILL.md
+grep -q 'vault-relative paths' skills/persomemory-consolidation/SKILL.md
+grep -q 'Do not resolve them relative to the current working directory or the PersoMemory setup repo' skills/persomemory-consolidation/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory/SKILL.md
 grep -q 'workiq-teams' config/agents/persomemory-agent.agent.md
 grep -q 'Work IQ Teams is an action surface' skills/persomemory/SKILL.md

@@ -15,6 +15,14 @@ Run this workflow in the current session when MCP tools are available. Do not de
 
 Do not use scheduled prompt tools during a sweep. Scheduling is configured separately.
 
+## Memory Store
+
+The active memory store is the Obsidian vault configured for MCPVault:
+
+`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
+
+All `memory/...`, `DREAMS.md`, and `MEMORY.md` paths in this workflow are vault-relative paths. Read and write them through MCPVault or the configured Obsidian vault path. Do not resolve them relative to the current working directory or the PersoMemory setup repo.
+
 ## Phase 1: Memory Priming
 
 Before querying WorkIQ, load the active context needed to construct informed queries:

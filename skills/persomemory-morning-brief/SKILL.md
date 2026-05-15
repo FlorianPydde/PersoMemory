@@ -13,6 +13,14 @@ Produce a concise morning operating brief from active memory, open commitments, 
 
 Run this workflow in the current session when MCP tools are available. Do not delegate to a nested subagent from an interactive Copilot session because nested agents may not inherit MCPVault, Smart Connections, or persomemory-lifecycle access. Use `persomemory-agent` only when it is the top-level selected agent.
 
+## Memory Store
+
+The active memory store is the Obsidian vault configured for MCPVault:
+
+`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
+
+All `memory/...`, `DREAMS.md`, and `MEMORY.md` paths in this workflow are vault-relative paths. Read and write them through MCPVault or the configured Obsidian vault path. Do not resolve them relative to the current working directory or the PersoMemory setup repo.
+
 ## Inputs
 
 Load the minimum memory context:
