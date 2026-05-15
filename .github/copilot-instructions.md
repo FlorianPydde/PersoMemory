@@ -4,7 +4,7 @@
 
 # PersoMemory Router
 
-When the user asks about personal memory, WorkIQ daily sweeps, memory writes, Obsidian vault recall, active context, commitments, dreaming, consolidation, or PersoMemory setup, invoke the `persomemory` skill before acting.
+When the user asks about personal memory, WorkIQ daily sweeps, memory writes, Obsidian vault recall, active context, commitments, dreaming, or consolidation, invoke the `persomemory` skill before acting.
 
 Detailed PersoMemory behavior belongs in the installed skill and its workflow prompts, not in this always loaded instruction file.
 

@@ -22,6 +22,8 @@ grep -q 'Backed up existing Copilot instructions' scripts/install.sh
 for forbidden in \
   'Session Naming' \
   '/rename' \
+  'PersoMemory setup' \
+  'Discuss or modify the memory ontology' \
   '~/.copilot/skills' \
   'prompts/morning-brief.md' \
   'prompts/evening-sweep.md' \

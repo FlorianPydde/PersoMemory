@@ -18,7 +18,6 @@ Use this skill immediately when the user asks to:
 3. Write something to memory.
 4. Update `MEMORY.md`, active memory, commitments, project notes, people notes, patterns, decisions, career notes, or toolkits.
 5. Consolidate, dream, or promote daily notes.
-6. Discuss or modify the memory ontology, retrieval flow, MCP setup, or PersoMemory repo.
 
 ## Memory Store
 
