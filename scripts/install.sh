@@ -67,6 +67,19 @@ install_skills() {
   done < <(find "${source_root}" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
 }
 
+install_agents() {
+  local source_root="${REPO_DIR}/config/agents"
+  local target_root="${COPILOT_DIR}/agents"
+  local agent_file
+
+  mkdir -p "${target_root}"
+
+  while IFS= read -r -d '' agent_file; do
+    cp "${agent_file}" "${target_root}/$(basename "${agent_file}")"
+    echo "Installed $(basename "${agent_file}" .agent.md) agent to ${target_root}/$(basename "${agent_file}")"
+  done < <(find "${source_root}" -maxdepth 1 -type f -name '*.agent.md' -print0 | sort -z)
+}
+
 migrate_persomemory_queue() {
   local old_dir="${COPILOT_DIR}/plugin-data/persomemory"
   local new_dir="${PERSOMEMORY_DATA_HOME}"
@@ -113,9 +126,7 @@ main() {
   chmod +x "${HOME}/.local/bin/persomemory-evening-sweep"
   echo "Installed PersoMemory evening sweep helper to ${HOME}/.local/bin/persomemory-evening-sweep"
 
-  mkdir -p "${COPILOT_DIR}/agents"
-  cp "${REPO_DIR}/config/agents/persomemory-agent.agent.md" "${COPILOT_DIR}/agents/persomemory-agent.agent.md"
-  echo "Installed persomemory-agent to ${COPILOT_DIR}/agents/persomemory-agent.agent.md"
+  install_agents
 
   mkdir -p "${COPILOT_DIR}/hooks/scripts"
   cp "${REPO_DIR}/config/hooks/persomemory-session.json" "${COPILOT_DIR}/hooks/persomemory-session.json"

@@ -92,6 +92,14 @@ for skill in persomemory persomemory-morning-brief persomemory-daily-sweep perso
   test -f "skills/${skill}/SKILL.md"
   grep -q "name: ${skill}" "skills/${skill}/SKILL.md"
 done
+test -f skills/persomemory-graph-steward/SKILL.md
+grep -q 'name: persomemory-graph-steward' skills/persomemory-graph-steward/SKILL.md
+grep -q 'Version 1 is dry-run over linked memory notes' skills/persomemory-graph-steward/SKILL.md
+grep -q 'memory/maintenance/YYYY-MM-DD-{topic}.md' skills/persomemory-graph-steward/SKILL.md
+grep -q 'Entity Disposition' skills/persomemory-graph-steward/SKILL.md
+grep -q 'Durable Entity Creation Threshold' skills/persomemory-graph-steward/SKILL.md
+grep -q 'Monthly Compression' skills/persomemory-graph-steward/SKILL.md
+grep -q 'Never silently reopen a closed project' skills/persomemory-graph-steward/SKILL.md
 test ! -e skills/persomemory/prompts
 
 install_home="${tmpdir}/install-home"
@@ -103,6 +111,14 @@ HOME="${install_home}" bash -c '
   test ! -e "${COPILOT_DIR}/skills/persomemory-old-workflow"
   test -d "${COPILOT_DIR}/skills/unrelated-skill"
   test -f "${COPILOT_DIR}/skills/persomemory-daily-sweep/SKILL.md"
+'
+
+HOME="${install_home}" bash -c '
+  set -euo pipefail
+  source scripts/install.sh
+  install_agents >/dev/null
+  test -f "${COPILOT_DIR}/agents/persomemory-agent.agent.md"
+  test -f "${COPILOT_DIR}/agents/persomemory-graph-steward.agent.md"
 '
 
 grep -q 'Execution Rule' skills/persomemory/SKILL.md
@@ -155,6 +171,10 @@ grep -q 'not captured' config/agents/persomemory-agent.agent.md
 grep -q 'Broad Evidence Scan' config/agents/persomemory-agent.agent.md
 grep -q 'Action Item Audit' config/agents/persomemory-agent.agent.md
 grep -q 'Direction Setting Audit' config/agents/persomemory-agent.agent.md
+grep -q 'name: persomemory-graph-steward' config/agents/persomemory-graph-steward.agent.md
+grep -q 'persomemory-graph-steward' config/agents/persomemory-graph-steward.agent.md
+grep -q 'Version 1 is dry-run over linked memory notes' config/agents/persomemory-graph-steward.agent.md
+grep -q 'memory/maintenance/' config/agents/persomemory-graph-steward.agent.md
 grep -q 'Career Direction and Feedback Updates' templates/approvals.md
 grep -q 'Decision required' templates/approvals.md
 grep -q 'Recommended answer' templates/approvals.md
@@ -162,6 +182,10 @@ grep -q 'Why this is gated' templates/approvals.md
 grep -q 'Default if no answer' templates/approvals.md
 grep -q 'Preference signal to watch' templates/approvals.md
 grep -q 'Approval Routing Preference Candidates' templates/approvals.md
+grep -q 'type: maintenance-report' templates/maintenance-report.md
+grep -q 'Entity Disposition' templates/maintenance-report.md
+grep -q 'Cold Evidence / Daily Notes' templates/maintenance-report.md
+grep -q 'memory/approvals/YYYY-MM-DD.md' templates/maintenance-report.md
 grep -q 'memory/approvals/YYYY-MM-DD.md' README.md
 grep -q 'memory/preferences/approval-routing.md' README.md
 ! grep -R -q 'memory/inbox/approvals' README.md docs scripts config skills templates
