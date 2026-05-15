@@ -13,6 +13,23 @@ bash -n config/hooks/scripts/persomemory-session-end.sh
 node -e "JSON.parse(require('fs').readFileSync('config/hooks/persomemory-session.json','utf8'))"
 node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config.example.json','utf8')); if (!config.mcpServers['workiq-teams']) throw new Error('missing workiq-teams MCP config')"
 
+cmp -s config/copilot-instructions.md .github/copilot-instructions.md
+test "$(wc -c < config/copilot-instructions.md)" -le 4000
+grep -q 'invoke the `persomemory` skill' config/copilot-instructions.md
+grep -q 'source of truth' config/copilot-instructions.md
+grep -q 'Backed up existing Copilot instructions' scripts/install.sh
+
+for forbidden in \
+  'WorkIQ call 1: Broad Evidence Scan' \
+  'Graph-Writing Contract' \
+  'Career Evidence Impact Taxonomy' \
+  'Frontmatter examples' \
+  'Daily Intake Workflow' \
+  'Durable Memory Update Workflow'; do
+  ! grep -q "${forbidden}" config/copilot-instructions.md
+  ! grep -q "${forbidden}" .github/copilot-instructions.md
+done
+
 tmpdir="$(mktemp -d)"
 cleanup() {
   rm -rf "${tmpdir}"

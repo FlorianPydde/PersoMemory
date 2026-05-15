@@ -8,9 +8,17 @@ It is not the active memory store. The active memory content lives in the Obsidi
 
 `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
 
+## Replication Model
+
+This repository exists to replicate the local PersoMemory setup from one machine to another. Runtime files should be changed in this repository first, then installed locally with `./scripts/install.sh`.
+
+`config/copilot-instructions.md` is the canonical source for the local global file at `~/.copilot/copilot-instructions.md`. The repository `.github/copilot-instructions.md` intentionally matches it because this repo is a recovery source, not a separate product with different agent behavior.
+
+Detailed memory behavior belongs in `skills/persomemory/SKILL.md` and the prompt files under `skills/persomemory/prompts/`. The Copilot instructions are only a concise router into those assets.
+
 ## Runtime Pieces
 
-1. `~/.copilot/copilot-instructions.md`: global Copilot behavior.
+1. `~/.copilot/copilot-instructions.md`: concise global Copilot router installed from `config/copilot-instructions.md`.
 2. `~/.copilot/mcp-config.json`: runtime MCP configuration.
 3. `~/.copilot/skills/persomemory/SKILL.md`: runtime PersoMemory skill.
 4. `~/.copilot/agents/persomemory-agent.agent.md`: runtime PersoMemory operator agent.
@@ -39,6 +47,8 @@ templates/                          Vault note templates
 ```bash
 ./scripts/install.sh
 ```
+
+The installer copies the global Copilot instructions, PersoMemory skill, PersoMemory agent, hooks, evening sweep helper, and lifecycle MCP into the local runtime locations. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
 
 ## Validate Vault Structure
 

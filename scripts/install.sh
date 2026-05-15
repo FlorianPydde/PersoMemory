@@ -29,6 +29,23 @@ append_jsonl_once() {
   rm -f "${tmp_file}"
 }
 
+install_copilot_instructions() {
+  local source_file="${REPO_DIR}/config/copilot-instructions.md"
+  local target_file="${COPILOT_DIR}/copilot-instructions.md"
+  local backup_file
+
+  mkdir -p "${COPILOT_DIR}"
+
+  if [ -f "${target_file}" ] && ! cmp -s "${source_file}" "${target_file}"; then
+    backup_file="${target_file}.bak.$(date +%Y%m%d%H%M%S).$$"
+    cp "${target_file}" "${backup_file}"
+    echo "Backed up existing Copilot instructions to ${backup_file}"
+  fi
+
+  cp "${source_file}" "${target_file}"
+  echo "Installed Copilot instructions to ${target_file}"
+}
+
 migrate_persomemory_queue() {
   local old_dir="${COPILOT_DIR}/plugin-data/persomemory"
   local new_dir="${PERSOMEMORY_DATA_HOME}"
@@ -65,6 +82,8 @@ migrate_persomemory_queue() {
   echo "Migrated PersoMemory queue data to ${new_dir}"
 }
 
+install_copilot_instructions
+
 mkdir -p "${COPILOT_DIR}/skills/persomemory"
 cp -r "${REPO_DIR}/skills/persomemory/." "${COPILOT_DIR}/skills/persomemory/"
 echo "Installed persomemory skill to ${COPILOT_DIR}/skills/persomemory/SKILL.md"
@@ -95,4 +114,3 @@ echo "Installed persomemory-lifecycle MCP to ${LIFECYCLE_MCP_DIR}"
 echo "Register it in ${COPILOT_DIR}/mcp-config.json — see config/mcp-config.example.json for the entry."
 
 echo "Review config/mcp-config.example.json before copying it to ${COPILOT_DIR}/mcp-config.json"
-echo "Review config/copilot-instructions.md before copying it to ${COPILOT_DIR}/copilot-instructions.md"
