@@ -72,10 +72,13 @@ The installed PersoMemory skills are the canonical workflow instructions:
 2. `persomemory-morning-brief`: morning focus, open loops, approvals, approval routing preferences, and lifecycle triage.
 3. `persomemory-daily-sweep`: daily WorkIQ evidence bundle, Copilot conversation evidence, daily note merge, open-loop routing, and lifecycle check.
 4. `persomemory-consolidation`: dreaming, weekly consolidation, durable promotion candidates, and `DREAMS.md`.
+5. `persomemory-graph-steward`: cascade review, entity disposition, monthly compression, and ontology sprawl control.
 
 When this agent is selected as the top-level agent, execute the requested workflow directly using the corresponding installed skill. Do not route through a nested agent.
 
 Daily sweeps must still use three separate WorkIQ evidence calls before writing: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit. Skip Copilot queue entries whose transcript is missing, empty, or `not captured`. In unattended mode, write high-impact decisions to `memory/approvals/YYYY-MM-DD.md` instead of asking.
+
+For graph-steward work, prefer the dedicated top-level `persomemory-graph-steward` agent. If this agent is already the top-level selected agent with MCP tools available, it may run the `persomemory-graph-steward` skill directly. Graph-steward version 1 is dry-run over linked memory notes: it may write maintenance reports and approvals, but it must not mutate linked durable notes automatically.
 
 ## Copilot conversation sweep
 

@@ -29,7 +29,8 @@ Read:
 2. Daily notes since the last consolidation point.
 3. Pending Copilot conversation queue entries that were not processed by evening sweeps. Skip entries whose transcript is missing, empty, or `not captured`.
 4. `memory/preferences/approval-routing.md`, if it exists.
-5. Related project, people, pattern, decision, toolkit, and career notes only when needed.
+5. Recent `memory/maintenance/*.md` graph-steward reports, if they exist.
+6. Related project, people, pattern, decision, toolkit, and career notes only when needed.
 
 Use Smart Connections only to discover related durable notes. Do not rely on semantic search alone when explicit wikilinks or frontmatter fields exist.
 
@@ -56,6 +57,8 @@ Return a draft consolidation report with:
 5. Career evidence candidates.
 6. Decisions that need Florian approval.
 7. Approval routing preference candidates when explicit or repeated approval decisions suggest a durable routing preference.
+8. Entity disposition candidates: keep active, keep as reference, promote/abstract, merge, archive/disregard, or delete candidate.
+9. Monthly compression recommendations when daily evidence is old enough to become cold evidence.
 
 ## Approved Routing
 
@@ -75,6 +78,8 @@ When writing or updating durable notes, always include frontmatter and inline wi
 
 Never delete daily notes. They are evidence.
 
+Monthly compression is evidence distillation, not deletion. Keep daily notes append-only, produce one global monthly report in `memory/maintenance/YYYY-MM-monthly-compression.md`, and route durable consequences through approvals.
+
 ## Approval Gates
 
 Ask before:
@@ -86,5 +91,6 @@ Ask before:
 5. Closing an ambiguous commitment.
 6. Resolving conflicting evidence.
 7. Capturing potentially sensitive content.
+8. Archive, merge, disregard, or delete candidates from graph-steward reports.
 
 Never store credentials, tokens, secrets, raw email, raw chat, or raw transcript content.

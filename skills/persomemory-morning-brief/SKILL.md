@@ -30,6 +30,7 @@ Load the minimum memory context:
 3. `memory/commitments/open-loops.md`.
 4. `memory/preferences/approval-routing.md`, if it exists.
 5. `memory/approvals/*.md` with `status: pending`, if approvals exist.
+6. Recent `memory/maintenance/*.md` reports with `status: draft` or unresolved approval items, if maintenance reports exist.
 
 If hook-loaded PersoMemory startup context is already present, use it instead of reloading unless it is stale.
 
@@ -44,13 +45,16 @@ Do not load daily notes by default. Use daily notes only when the user asks for 
    2. Open follow ups that matter today.
    3. Stale projects or overdue reviews.
    4. Pending approval items grouped by decision type.
-   5. One risk Florian may be underweighting.
-   6. One question: "What is the one outcome that makes today successful?"
+   5. Pending graph-steward maintenance reports that need review.
+   6. One risk Florian may be underweighting.
+   7. One question: "What is the one outcome that makes today successful?"
 4. Ask Florian to approve, reject, defer, or edit pending approval items that still matter.
 5. Apply approved items through normal PersoMemory write rules and update their status.
 6. If an approved item is an `Approval Routing Preference Candidates` item, update `memory/preferences/approval-routing.md` with the approved rule and preserve its evidence.
 
 Do not otherwise write to memory unless Florian explicitly approves.
+
+If a maintenance report proposes archive, merge, disregard, delete, closure, reactivation, or durable promotion, treat it as approval-gated. Do not apply graph-steward recommendations silently.
 
 ## Approval and Safety
 

@@ -123,11 +123,16 @@ HOME="${install_home}" bash -c '
 
 grep -q 'Execution Rule' skills/persomemory/SKILL.md
 grep -q 'Core PersoMemory operations' skills/persomemory/SKILL.md
+grep -q 'persomemory-graph-steward' skills/persomemory/SKILL.md
+grep -q 'Graph Stewardship' skills/persomemory/SKILL.md
+grep -q 'retrieval-status' skills/persomemory/SKILL.md
 ! grep -q 'WorkIQ Call 1: Broad Evidence Scan' skills/persomemory/SKILL.md
 ! grep -q 'WorkIQ Call 2: Action Item Audit' skills/persomemory/SKILL.md
 ! grep -q 'WorkIQ Call 3: Direction Setting Audit' skills/persomemory/SKILL.md
 grep -q 'morning sweep' skills/persomemory-morning-brief/SKILL.md
 grep -q 'pending approval' skills/persomemory-morning-brief/SKILL.md
+grep -F -q 'memory/maintenance/*.md' skills/persomemory-morning-brief/SKILL.md
+grep -q 'Pending graph-steward maintenance reports' skills/persomemory-morning-brief/SKILL.md
 grep -q 'ObsidianVaultPersoMemory' skills/persomemory-morning-brief/SKILL.md
 grep -q 'vault-relative paths' skills/persomemory-morning-brief/SKILL.md
 grep -q 'Do not resolve them relative to the current working directory or the PersoMemory setup repo' skills/persomemory-morning-brief/SKILL.md
@@ -159,6 +164,8 @@ grep -q 'ObsidianVaultPersoMemory' skills/persomemory-consolidation/SKILL.md
 grep -q 'vault-relative paths' skills/persomemory-consolidation/SKILL.md
 grep -q 'Do not resolve them relative to the current working directory or the PersoMemory setup repo' skills/persomemory-consolidation/SKILL.md
 grep -q 'memory/preferences/approval-routing.md' skills/persomemory-consolidation/SKILL.md
+grep -F -q 'memory/maintenance/*.md' skills/persomemory-consolidation/SKILL.md
+grep -q 'Monthly compression is evidence distillation' skills/persomemory-consolidation/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory/SKILL.md
 grep -q 'memory/approvals/YYYY-MM-DD.md' skills/persomemory/SKILL.md
 grep -q 'memory/preferences/approval-routing.md' skills/persomemory/SKILL.md
@@ -171,6 +178,8 @@ grep -q 'not captured' config/agents/persomemory-agent.agent.md
 grep -q 'Broad Evidence Scan' config/agents/persomemory-agent.agent.md
 grep -q 'Action Item Audit' config/agents/persomemory-agent.agent.md
 grep -q 'Direction Setting Audit' config/agents/persomemory-agent.agent.md
+grep -q 'persomemory-graph-steward' config/agents/persomemory-agent.agent.md
+grep -q 'Graph-steward version 1 is dry-run over linked memory notes' config/agents/persomemory-agent.agent.md
 grep -q 'name: persomemory-graph-steward' config/agents/persomemory-graph-steward.agent.md
 grep -q 'persomemory-graph-steward' config/agents/persomemory-graph-steward.agent.md
 grep -q 'Version 1 is dry-run over linked memory notes' config/agents/persomemory-graph-steward.agent.md

@@ -14,6 +14,7 @@ Workflow-specific tasks have their own skills:
 1. Use `persomemory-morning-brief` for morning briefs and morning sweeps.
 2. Use `persomemory-daily-sweep` for daily or end-of-day WorkIQ sweeps.
 3. Use `persomemory-consolidation` for dreaming, weekly consolidation, and durable promotions.
+4. Use `persomemory-graph-steward` for cascade reviews, entity disposition, monthly compression, and ontology sprawl control.
 
 Do not use this skill for PersoMemory repo changes, MCP setup changes, or ontology refactoring unless the task is also asking to operate memory. Those are ordinary engineering or documentation tasks.
 
@@ -120,6 +121,8 @@ Daily notes include: `type`, `date`, and any `projects` or `people` clearly ment
 
 Decision notes include: `type`, `date`, `status`, `projects`, `people`, `patterns`, `supersedes`, `superseded-by`, and `tags`.
 
+Maintenance reports include: `type`, `date`, `status`, `scope`, `anchor`, `projects`, `people`, `decisions`, `patterns`, and `source`.
+
 ### Inline Wikilink Rules
 
 After writing frontmatter, embed wikilinks in prose where they add context. Use `[[folder/slug]]` syntax. Wikilink paths use lowercase hyphenated slugs matching the filename without `.md`.
@@ -151,6 +154,22 @@ Route daily note sections as follows:
 | Stable identity or operating truth | `MEMORY.md` | Repeated evidence or explicit user approval |
 
 Route immediately only when the target is operational. Promote later when the target is durable.
+
+## Graph Stewardship
+
+Use `persomemory-graph-steward` when a change may cascade across linked notes or when entity usefulness is unclear.
+
+Graph steward version 1 is dry-run over linked memory notes:
+
+1. It may write maintenance reports to `memory/maintenance/`.
+2. It may write approval items to `memory/approvals/YYYY-MM-DD.md`.
+3. It must not mutate project, person, pattern, decision, career, active-context, commitment, `MEMORY.md`, or `DREAMS.md` notes automatically.
+
+For durable entity sprawl, classify notes as keep active, keep as reference, promote/abstract, merge, archive/disregard, or delete candidate. Archive, merge, disregard, and delete candidates require approval.
+
+Use a strict durable-entity creation threshold. Create or recommend a durable note only for active operational state, open commitments, durable decisions, repeated/reusable patterns, career-grade evidence, future-relevant people signals, or projects likely to be referenced again.
+
+Keep inactive but useful durable notes in place. Use selective `retrieval-status` markers instead of moving linked notes into archive folders by default.
 
 ## Daily Note Schema
 
