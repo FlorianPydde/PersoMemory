@@ -14,12 +14,20 @@ node -e "JSON.parse(require('fs').readFileSync('config/hooks/persomemory-session
 node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config.example.json','utf8')); if (!config.mcpServers['workiq-teams']) throw new Error('missing workiq-teams MCP config')"
 
 cmp -s config/copilot-instructions.md .github/copilot-instructions.md
-test "$(wc -c < config/copilot-instructions.md)" -le 4000
+test "$(wc -c < config/copilot-instructions.md)" -le 1200
 grep -q 'invoke the `persomemory` skill' config/copilot-instructions.md
-grep -q 'source of truth' config/copilot-instructions.md
+grep -q 'Detailed PersoMemory behavior belongs in the installed skill' config/copilot-instructions.md
 grep -q 'Backed up existing Copilot instructions' scripts/install.sh
 
 for forbidden in \
+  'Session Naming' \
+  '/rename' \
+  '~/.copilot/skills' \
+  'prompts/morning-brief.md' \
+  'prompts/evening-sweep.md' \
+  'prompts/weekly-consolidation.md' \
+  'ObsidianVaultPersoMemory' \
+  'ProjectArchive/PersoMemory' \
   'WorkIQ call 1: Broad Evidence Scan' \
   'Graph-Writing Contract' \
   'Career Evidence Impact Taxonomy' \
