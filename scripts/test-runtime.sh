@@ -116,6 +116,15 @@ grep -q 'Broad Evidence Scan' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Action Item Audit' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Direction Setting Audit' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Merge Contract' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Copilot Conversation Evidence Bundle' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Session Inventory and Coverage Check' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Outcome and Loop Closure Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Decision and Rationale Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Direction-Setting and Feedback Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Reusable Asset and Pattern Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Risk and Weak Signal Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Routing and Approval Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Sweep Failures' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'not captured' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory-daily-sweep/SKILL.md
 grep -q 'dream' skills/persomemory-consolidation/SKILL.md
@@ -143,6 +152,14 @@ grep -q 'not captured' "${tmpdir}/sweep.out"
 grep -q 'Broad Evidence Scan' "${tmpdir}/sweep.out"
 grep -q 'Action Item Audit' "${tmpdir}/sweep.out"
 grep -q 'Direction Setting Audit' "${tmpdir}/sweep.out"
+grep -q 'Copilot Conversation Evidence Bundle' "${tmpdir}/sweep.out"
+grep -q 'Session Inventory and Coverage Check' "${tmpdir}/sweep.out"
+grep -q 'Outcome and Loop Closure Audit' "${tmpdir}/sweep.out"
+grep -q 'Decision and Rationale Audit' "${tmpdir}/sweep.out"
+grep -q 'Direction-Setting and Feedback Audit' "${tmpdir}/sweep.out"
+grep -q 'Reusable Asset and Pattern Audit' "${tmpdir}/sweep.out"
+grep -q 'Risk and Weak Signal Audit' "${tmpdir}/sweep.out"
+grep -q 'Routing and Approval Audit' "${tmpdir}/sweep.out"
 grep -q 'Merge contract' "${tmpdir}/sweep.out"
 grep -q 'Career Direction and Feedback Updates' "${tmpdir}/sweep.out"
 

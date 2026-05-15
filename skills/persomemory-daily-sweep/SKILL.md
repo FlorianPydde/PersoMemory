@@ -133,14 +133,17 @@ At the end, include:
 
 After all three WorkIQ calls complete:
 
-1. Deduplicate across the three WorkIQ outputs, Copilot conversation evidence, and existing vault state.
-2. Preserve source attribution from the originating evidence call.
-3. Mirror still-open concrete actions into `memory/commitments/open-loops.md`.
-4. Keep direction-setting guidance separate from career evidence.
-5. Write approval-gated items to `memory/inbox/approvals/YYYY-MM-DD.md`.
-6. If one WorkIQ call fails, continue with the other evidence streams and add a `Sweep Failures` approval item.
+1. Keep WorkIQ evidence and Copilot conversation evidence as independent streams until both have been audited.
+2. Deduplicate across the three WorkIQ outputs, Copilot conversation evidence, and existing vault state.
+3. Preserve source attribution from the originating evidence stream.
+4. Mirror still-open concrete actions into `memory/commitments/open-loops.md`.
+5. Keep direction-setting guidance separate from career evidence.
+6. Write approval-gated items to `memory/inbox/approvals/YYYY-MM-DD.md`.
+7. If one WorkIQ call fails, continue with the other evidence streams and add a `Sweep Failures` approval item.
+8. If WorkIQ and Copilot evidence conflict, do not resolve it silently. Write a `Sensitive or Ambiguous Items` or `Sweep Failures` approval item with both sources.
+9. If a Copilot session closes a loop raised in Teams or email, mirror the closure into open loops and cite both evidence streams when available.
 
-## Phase 4: Copilot Conversation Evidence
+## Phase 4: Copilot Conversation Evidence Bundle
 
 Read pending conversation review pointers from:
 
@@ -148,14 +151,47 @@ Read pending conversation review pointers from:
 ~/.local/share/persomemory/session-reviews/
 ```
 
-For each relevant pointer:
+Hooks queue pointer-only evidence. The daily sweep performs the actual conversation audit. Do not treat a pointer as memory, and do not copy raw transcript text into the vault.
 
-1. Read the referenced transcript if available.
-2. Skip the pointer if its transcript is missing, empty, or `not captured`.
-3. Extract only signals that change future action, judgment, or retrieval.
-4. Deduplicate against current vault state.
-5. Discard implementation noise, tool logs, duplicates, stale claims, and transient discussion.
-6. Never write raw transcripts to the vault.
+### Session Inventory and Coverage Check
+
+For each queued session pointer:
+
+1. Classify it as `reviewable` when the referenced transcript exists and can be read.
+2. Classify it as `not captured` when the transcript path is missing, empty, unreadable, or explicitly says `not captured`.
+3. Classify it as `duplicate or superseded` when the session was already processed or clearly covered by a later memory write.
+4. For queued `not captured` items, add a `Sweep Failures` approval item instead of silently skipping the session.
+5. For duplicate or superseded items, record the discard reason in the sweep notes when useful.
+
+The current hook may log some sessions with missing transcript breadcrumbs only in diagnostics rather than the review queue. Do not infer unseen sessions. Only audit queued pointers and report missing queued transcripts as sweep failures.
+
+### Structured Conversation Audit
+
+For each `reviewable` Copilot session, extract evidence under these lenses before routing:
+
+1. **Session Context**: cwd, repo or folder, apparent project, branch if visible, source pointer, and session end reason.
+2. **Outcome and Loop Closure Audit**: what loop, Teams ask, repo task, bug, feature, plan, or decision moved; whether anything was closed; what evidence shows closure.
+3. **Action Item Audit**: concrete follow ups, owner, expected output, due date or timing, source, explicit vs inferred status, confidence, and keep or discard reason.
+4. **Decision and Rationale Audit**: decisions made, tradeoffs considered, options rejected, constraints discovered, and why the choice matters later.
+5. **Direction-Setting and Feedback Audit**: career, role, leadership, manager, customer, or strategy guidance surfaced in the conversation. Keep future guidance separate from recognition and evidence of impact.
+6. **Reusable Asset and Pattern Audit**: prompts, scripts, checklists, workflow changes, tests, docs, playbooks, or reusable reasoning patterns created or improved.
+7. **Risk and Weak Signal Audit**: unresolved uncertainty, shallow-capture risk, missing data, conflicting evidence, fragile assumptions, or follow ups that could be lost.
+8. **Routing and Approval Audit**: classify each retained signal as daily evidence, open loop update, active context update, durable promotion candidate, approval inbox item, or discard.
+
+Keep only signals that change future action, judgment, or retrieval. Discard implementation noise, tool logs, duplicate status narration, stale claims, and transient discussion.
+
+### Conversation Routing Rules
+
+Route conversation-derived signals as follows:
+
+1. Daily evidence goes to `memory/daily/YYYY-MM-DD.md`.
+2. New or closed operational loops go to `memory/commitments/open-loops.md`.
+3. Material current status changes go to `memory/active/now.md`.
+4. Decisions, durable patterns, durable people signals, project note updates, toolkits, and career evidence become approval items unless Florian explicitly approved the durable update in the conversation.
+5. Career direction and feedback become `Career Direction and Feedback Updates` approval items unless explicitly approved.
+6. Career evidence strong enough for Connect or promotion becomes a separate `Career Evidence Candidates` approval item.
+7. Raw transcript, raw email, raw chat, credentials, secrets, and sensitive data are never copied into the vault.
+8. Mark processed queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
 
 ## Phase 5: Memory Routing
 
@@ -165,7 +201,7 @@ For each relevant pointer:
 4. Update `memory/commitments/open-loops.md` for open or closed obligations.
 5. Update `memory/active/now.md` only for material current context changes.
 6. Flag promotion candidates in the daily note. Do not blindly promote into durable memory.
-7. Preserve source attribution as `Automated sweep via WorkIQ` or `Manual WorkIQ sweep`.
+7. Preserve source attribution as `Automated sweep via WorkIQ`, `Manual WorkIQ sweep`, or `Copilot conversation sweep`.
 8. Mark processed local conversation queue entries as reviewed or superseded when permissions allow.
 
 Do not bury operational actions in the daily note. Mirror every still-open concrete action into `memory/commitments/open-loops.md`, including small artifacts such as one-slide summaries, review tasks, follow ups, and next-meeting deliverables.

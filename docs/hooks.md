@@ -70,6 +70,10 @@ The evening sweep should process both streams. WorkIQ covers external work activ
 
 Hooks only queue transcript pointers. The PersoMemory agent performs the actual conversation sweep, deduplicates against current vault state, and asks before durable or ambiguous changes.
 
+The daily sweep skill must treat Copilot conversation evidence as a structured evidence bundle, not a shallow summary. For each queued session, it should classify coverage, then audit session context, outcome and loop closure, action items, decisions and rationale, direction-setting feedback, reusable assets and patterns, risks, and routing. This is what connects a Teams-raised loop to work completed later in a Copilot session without burying the closure in a transcript.
+
+Queued missing, empty, unreadable, or `not captured` transcripts should become `Sweep Failures` approval items rather than silent skips. The hook itself remains pointer-only and does not decide memory meaning.
+
 ## Cleanup
 
 The session end hook runs conservative cleanup under `~/.local/share/persomemory`:

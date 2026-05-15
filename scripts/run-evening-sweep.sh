@@ -22,7 +22,7 @@ Use the persomemory-daily-sweep skill to run the PersoMemory evening sweep for $
 Process both evidence streams:
 1. WorkIQ evidence for ${DATE}, collected as three separate evidence calls.
 2. Copilot conversation evidence from pointer-only queue entries in ${PERSOMEMORY_DATA_HOME}/session-reviews/.
-3. Skip any queue item whose transcript is missing, empty, or "not captured".
+3. Treat queued missing, empty, unreadable, or "not captured" transcripts as Sweep Failures rather than silent skips.
 
 Run the skill's three separate WorkIQ evidence calls before summarizing or writing:
 1. Broad Evidence Scan: reconstruct daily context, project movement, risks, people signals, reusable assets, and surprise items. This is not the action audit and not the direction-setting audit.
@@ -33,6 +33,17 @@ Merge contract:
 1. Deduplicate across all three WorkIQ outputs, Copilot conversation evidence, and current vault state.
 2. Preserve source attribution from the originating evidence call.
 3. If one WorkIQ call fails, continue with the other evidence streams and write a Sweep Failures approval item.
+4. If WorkIQ and Copilot evidence conflict, do not resolve it silently. Write an approval item with both sources.
+
+Run the skill's structured Copilot Conversation Evidence Bundle before memory routing:
+1. Session Inventory and Coverage Check: classify queued sessions as reviewable, not captured, or duplicate/superseded.
+2. Outcome and Loop Closure Audit: identify the loop, Teams ask, repo task, bug, feature, plan, or decision moved or closed.
+3. Action Item Audit: capture concrete follow-ups with owner, expected output, timing, explicit/inferred status, confidence, and keep/discard reason.
+4. Decision and Rationale Audit: capture decisions, tradeoffs, rejected options, constraints, and why the choice matters later.
+5. Direction-Setting and Feedback Audit: capture career, role, leadership, manager, customer, or strategy guidance separately from recognition or impact evidence.
+6. Reusable Asset and Pattern Audit: capture prompts, scripts, checklists, workflow changes, tests, docs, playbooks, and reusable reasoning patterns.
+7. Risk and Weak Signal Audit: capture unresolved uncertainty, shallow-capture risk, missing data, conflicting evidence, fragile assumptions, and follow-ups that could be lost.
+8. Routing and Approval Audit: route each retained signal as daily evidence, open loop update, active context update, durable promotion candidate, approval inbox item, or discard.
 
 Apply low-risk daily and operational writes:
 1. Merge the daily note for ${DATE}.
