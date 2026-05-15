@@ -46,6 +46,27 @@ install_copilot_instructions() {
   echo "Installed Copilot instructions to ${target_file}"
 }
 
+install_skills() {
+  local source_root="${REPO_DIR}/skills"
+  local target_root="${COPILOT_DIR}/skills"
+  local managed_dir
+  local skill_dir
+  local skill_name
+
+  mkdir -p "${target_root}"
+
+  while IFS= read -r -d '' managed_dir; do
+    rm -rf "${managed_dir}"
+  done < <(find "${target_root}" -mindepth 1 -maxdepth 1 -type d \( -name 'persomemory' -o -name 'persomemory-*' \) -print0)
+
+  while IFS= read -r -d '' skill_dir; do
+    skill_name="$(basename "${skill_dir}")"
+    mkdir -p "${target_root}/${skill_name}"
+    cp -r "${skill_dir}/." "${target_root}/${skill_name}/"
+    echo "Installed ${skill_name} skill to ${target_root}/${skill_name}/SKILL.md"
+  done < <(find "${source_root}" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
+}
+
 migrate_persomemory_queue() {
   local old_dir="${COPILOT_DIR}/plugin-data/persomemory"
   local new_dir="${PERSOMEMORY_DATA_HOME}"
@@ -82,35 +103,39 @@ migrate_persomemory_queue() {
   echo "Migrated PersoMemory queue data to ${new_dir}"
 }
 
-install_copilot_instructions
+main() {
+  install_copilot_instructions
 
-mkdir -p "${COPILOT_DIR}/skills/persomemory"
-cp -r "${REPO_DIR}/skills/persomemory/." "${COPILOT_DIR}/skills/persomemory/"
-echo "Installed persomemory skill to ${COPILOT_DIR}/skills/persomemory/SKILL.md"
+  install_skills
 
-mkdir -p "${HOME}/.local/bin"
-cp "${REPO_DIR}/scripts/run-evening-sweep.sh" "${HOME}/.local/bin/persomemory-evening-sweep"
-chmod +x "${HOME}/.local/bin/persomemory-evening-sweep"
-echo "Installed PersoMemory evening sweep helper to ${HOME}/.local/bin/persomemory-evening-sweep"
+  mkdir -p "${HOME}/.local/bin"
+  cp "${REPO_DIR}/scripts/run-evening-sweep.sh" "${HOME}/.local/bin/persomemory-evening-sweep"
+  chmod +x "${HOME}/.local/bin/persomemory-evening-sweep"
+  echo "Installed PersoMemory evening sweep helper to ${HOME}/.local/bin/persomemory-evening-sweep"
 
-mkdir -p "${COPILOT_DIR}/agents"
-cp "${REPO_DIR}/config/agents/persomemory-agent.agent.md" "${COPILOT_DIR}/agents/persomemory-agent.agent.md"
-echo "Installed persomemory-agent to ${COPILOT_DIR}/agents/persomemory-agent.agent.md"
+  mkdir -p "${COPILOT_DIR}/agents"
+  cp "${REPO_DIR}/config/agents/persomemory-agent.agent.md" "${COPILOT_DIR}/agents/persomemory-agent.agent.md"
+  echo "Installed persomemory-agent to ${COPILOT_DIR}/agents/persomemory-agent.agent.md"
 
-mkdir -p "${COPILOT_DIR}/hooks/scripts"
-cp "${REPO_DIR}/config/hooks/persomemory-session.json" "${COPILOT_DIR}/hooks/persomemory-session.json"
-cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh"
-cp "${REPO_DIR}/config/hooks/scripts/persomemory-agent-stop.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-agent-stop.sh"
-cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-end.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
-chmod +x "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-agent-stop.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
-echo "Installed PersoMemory hooks to ${COPILOT_DIR}/hooks/persomemory-session.json"
-migrate_persomemory_queue
+  mkdir -p "${COPILOT_DIR}/hooks/scripts"
+  cp "${REPO_DIR}/config/hooks/persomemory-session.json" "${COPILOT_DIR}/hooks/persomemory-session.json"
+  cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh"
+  cp "${REPO_DIR}/config/hooks/scripts/persomemory-agent-stop.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-agent-stop.sh"
+  cp "${REPO_DIR}/config/hooks/scripts/persomemory-session-end.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
+  chmod +x "${COPILOT_DIR}/hooks/scripts/persomemory-session-start.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-agent-stop.sh" "${COPILOT_DIR}/hooks/scripts/persomemory-session-end.sh"
+  echo "Installed PersoMemory hooks to ${COPILOT_DIR}/hooks/persomemory-session.json"
+  migrate_persomemory_queue
 
-LIFECYCLE_MCP_DIR="${HOME}/persomemory-lifecycle-mcp"
-mkdir -p "${LIFECYCLE_MCP_DIR}"
-cp -r "${REPO_DIR}/mcp/lifecycle/." "${LIFECYCLE_MCP_DIR}/"
-(cd "${LIFECYCLE_MCP_DIR}" && npm install --silent)
-echo "Installed persomemory-lifecycle MCP to ${LIFECYCLE_MCP_DIR}"
-echo "Register it in ${COPILOT_DIR}/mcp-config.json — see config/mcp-config.example.json for the entry."
+  LIFECYCLE_MCP_DIR="${HOME}/persomemory-lifecycle-mcp"
+  mkdir -p "${LIFECYCLE_MCP_DIR}"
+  cp -r "${REPO_DIR}/mcp/lifecycle/." "${LIFECYCLE_MCP_DIR}/"
+  (cd "${LIFECYCLE_MCP_DIR}" && npm install --silent)
+  echo "Installed persomemory-lifecycle MCP to ${LIFECYCLE_MCP_DIR}"
+  echo "Register it in ${COPILOT_DIR}/mcp-config.json — see config/mcp-config.example.json for the entry."
 
-echo "Review config/mcp-config.example.json before copying it to ${COPILOT_DIR}/mcp-config.json"
+  echo "Review config/mcp-config.example.json before copying it to ${COPILOT_DIR}/mcp-config.json"
+}
+
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+  main "$@"
+fi

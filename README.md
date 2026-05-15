@@ -2,7 +2,7 @@
 
 PersoMemory is the source of truth for Florian's personal memory system setup.
 
-It stores the artifacts needed to rebuild the system on a new machine: Copilot instructions, MCP config examples, the PersoMemory skill, templates, ontology docs, recovery docs, optional hook guidance, and setup scripts.
+It stores the artifacts needed to rebuild the system on a new machine: Copilot instructions, MCP config examples, PersoMemory skills, templates, ontology docs, recovery docs, optional hook guidance, and setup scripts.
 
 It is not the active memory store. The active memory content lives in the Obsidian vault:
 
@@ -14,13 +14,13 @@ This repository exists to replicate the local PersoMemory setup from one machine
 
 `config/copilot-instructions.md` is the canonical source for the local global file at `~/.copilot/copilot-instructions.md`. The repository `.github/copilot-instructions.md` intentionally matches it because this repo is a recovery source, not a separate product with different agent behavior.
 
-Detailed memory behavior belongs in `skills/persomemory/SKILL.md` and the prompt files under `skills/persomemory/prompts/`. The Copilot instructions are only a concise router into those assets.
+Detailed memory behavior belongs in the PersoMemory skill family under `skills/*/SKILL.md`. The Copilot instructions are only a concise router into those assets.
 
 ## Runtime Pieces
 
 1. `~/.copilot/copilot-instructions.md`: concise global Copilot router installed from `config/copilot-instructions.md`.
 2. `~/.copilot/mcp-config.json`: runtime MCP configuration.
-3. `~/.copilot/skills/persomemory/SKILL.md`: runtime PersoMemory skill.
+3. `~/.copilot/skills/persomemory*/SKILL.md`: runtime PersoMemory skill family.
 4. `~/.copilot/agents/persomemory-agent.agent.md`: runtime PersoMemory operator agent.
 5. `~/.copilot/hooks/persomemory-session.json`: optional session start and session end hooks.
 6. `~/.local/share/persomemory`: disposable local queue and hook runtime state.
@@ -37,18 +37,17 @@ config/hooks/                       User-level Copilot hook templates and script
 docs/                               Spec, ontology, hooks, and recovery docs
 scripts/                            Install and validation scripts
 scripts/run-evening-sweep.sh         Cron/systemd helper for unattended evening sweep
-skills/persomemory/SKILL.md         Source copy of the runtime skill
-skills/persomemory/prompts/         Reusable PersoMemory prompt templates
+skills/persomemory*/SKILL.md        Source copies of the runtime skill family
 templates/                          Vault note templates
 ```
 
-## Install Runtime Skill
+## Install Runtime Skills
 
 ```bash
 ./scripts/install.sh
 ```
 
-The installer copies the global Copilot instructions, PersoMemory skill, PersoMemory agent, hooks, evening sweep helper, and lifecycle MCP into the local runtime locations. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
+The installer copies the global Copilot instructions, all PersoMemory skills, PersoMemory agent, hooks, evening sweep helper, and lifecycle MCP into the local runtime locations. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
 
 ## Validate Vault Structure
 
@@ -79,7 +78,7 @@ The helper runs the PersoMemory evening sweep with narrow Copilot permissions: r
 
 ## Operating Model
 
-MCPs provide access. The `persomemory` skill provides judgment and routing. The `persomemory-agent` operates the workflow.
+MCPs provide access. The PersoMemory skill family provides judgment, routing, and workflow-specific instructions. The `persomemory-agent` operates the workflow.
 
 1. WorkIQ retrieves Microsoft 365 evidence.
 2. Work IQ Teams sends or manages Teams chats and channel messages when explicit user intent is present.
@@ -87,8 +86,9 @@ MCPs provide access. The `persomemory` skill provides judgment and routing. The 
 4. MCPVault reads and writes the Obsidian vault.
 5. Smart Connections retrieves related notes.
 6. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
-7. The PersoMemory skill defines what to capture, route, defer, or promote.
-8. The PersoMemory agent runs the daily and weekly routines using those rules.
+7. `persomemory` defines core retrieval, live capture, routing, write gates, and graph rules.
+8. `persomemory-morning-brief`, `persomemory-daily-sweep`, and `persomemory-consolidation` define the recurring workflows.
+9. The PersoMemory agent runs the routines using those rules.
 
 The durable memory store is the Obsidian vault. The local queue is disposable working state and can be rebuilt only by future activity.
 

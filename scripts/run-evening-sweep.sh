@@ -17,14 +17,14 @@ fi
 PROMPT="$(cat <<PROMPT
 You are running as the top-level persomemory-agent. Do not delegate this sweep to a nested subagent.
 
-Run the PersoMemory evening sweep for ${DATE}.
+Use the persomemory-daily-sweep skill to run the PersoMemory evening sweep for ${DATE}.
 
 Process both evidence streams:
 1. WorkIQ evidence for ${DATE}, collected as three separate evidence calls.
 2. Copilot conversation evidence from pointer-only queue entries in ${PERSOMEMORY_DATA_HOME}/session-reviews/.
 3. Skip any queue item whose transcript is missing, empty, or "not captured".
 
-Run three separate WorkIQ evidence calls before summarizing or writing:
+Run the skill's three separate WorkIQ evidence calls before summarizing or writing:
 1. Broad Evidence Scan: reconstruct daily context, project movement, risks, people signals, reusable assets, and surprise items. This is not the action audit and not the direction-setting audit.
 2. Action Item Audit: inspect meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for every concrete deliverable. Capture owner, expected output, due date or timing, format, source, confidence, and whether the action is explicit or inferred. Do not limit this pass to top signals.
 3. Direction Setting Audit: inspect manager, mentor, leadership, and career conversations for guidance that changes future goals, role direction, positioning, exposure, skills, or behavior. Separate past-impact recognition from future direction.

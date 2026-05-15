@@ -15,8 +15,8 @@ node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config
 
 cmp -s config/copilot-instructions.md .github/copilot-instructions.md
 test "$(wc -c < config/copilot-instructions.md)" -le 1200
-grep -q 'invoke the `persomemory` skill' config/copilot-instructions.md
-grep -q 'Detailed PersoMemory behavior belongs in the installed skill' config/copilot-instructions.md
+grep -q 'invoke the relevant PersoMemory skill' config/copilot-instructions.md
+grep -q 'Detailed PersoMemory behavior belongs in the installed PersoMemory skills' config/copilot-instructions.md
 grep -q 'Backed up existing Copilot instructions' scripts/install.sh
 
 for forbidden in \
@@ -25,6 +25,7 @@ for forbidden in \
   'PersoMemory setup' \
   'Discuss or modify the memory ontology' \
   '~/.copilot/skills' \
+  'workflow prompts' \
   'prompts/morning-brief.md' \
   'prompts/evening-sweep.md' \
   'prompts/weekly-consolidation.md' \
@@ -87,19 +88,38 @@ test -f "${tmpdir}/session-reviews/2026-05-13.md"
 grep -q '/tmp/transcript.jsonl' "${tmpdir}/session-reviews/2026-05-13.md"
 grep -q '"hasTranscriptPath":true' "${tmpdir}/agent-stop-events.jsonl"
 
-grep -q 'Do not delegate this workflow to a nested subagent' skills/persomemory/prompts/evening-sweep.md
-grep -q 'Do not use scheduled prompt tools' skills/persomemory/prompts/evening-sweep.md
-grep -q 'not captured' skills/persomemory/prompts/evening-sweep.md
-grep -q 'Broad Evidence Scan' skills/persomemory/prompts/evening-sweep.md
-grep -q 'Action Item Audit' skills/persomemory/prompts/evening-sweep.md
-grep -q 'Direction Setting Audit' skills/persomemory/prompts/evening-sweep.md
-grep -q 'Merge contract' skills/persomemory/prompts/evening-sweep.md
-grep -q 'Career Direction and Feedback Updates' skills/persomemory/prompts/evening-sweep.md
+for skill in persomemory persomemory-morning-brief persomemory-daily-sweep persomemory-consolidation; do
+  test -f "skills/${skill}/SKILL.md"
+  grep -q "name: ${skill}" "skills/${skill}/SKILL.md"
+done
+test ! -e skills/persomemory/prompts
+
+install_home="${tmpdir}/install-home"
+HOME="${install_home}" bash -c '
+  set -euo pipefail
+  source scripts/install.sh
+  mkdir -p "${COPILOT_DIR}/skills/persomemory-old-workflow" "${COPILOT_DIR}/skills/unrelated-skill"
+  install_skills >/dev/null
+  test ! -e "${COPILOT_DIR}/skills/persomemory-old-workflow"
+  test -d "${COPILOT_DIR}/skills/unrelated-skill"
+  test -f "${COPILOT_DIR}/skills/persomemory-daily-sweep/SKILL.md"
+'
+
 grep -q 'Execution Rule' skills/persomemory/SKILL.md
-grep -q 'WorkIQ call 1: Broad Evidence Scan' skills/persomemory/SKILL.md
-grep -q 'WorkIQ call 2: Action Item Audit' skills/persomemory/SKILL.md
-grep -q 'WorkIQ call 3: Direction Setting Audit' skills/persomemory/SKILL.md
-grep -q 'Merge contract' skills/persomemory/SKILL.md
+grep -q 'Core PersoMemory operations' skills/persomemory/SKILL.md
+! grep -q 'WorkIQ Call 1: Broad Evidence Scan' skills/persomemory/SKILL.md
+! grep -q 'WorkIQ Call 2: Action Item Audit' skills/persomemory/SKILL.md
+! grep -q 'WorkIQ Call 3: Direction Setting Audit' skills/persomemory/SKILL.md
+grep -q 'morning sweep' skills/persomemory-morning-brief/SKILL.md
+grep -q 'pending approval' skills/persomemory-morning-brief/SKILL.md
+grep -q 'Broad Evidence Scan' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Action Item Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Direction Setting Audit' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Merge Contract' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'not captured' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'Career Direction and Feedback Updates' skills/persomemory-daily-sweep/SKILL.md
+grep -q 'dream' skills/persomemory-consolidation/SKILL.md
+grep -q 'DREAMS.md' skills/persomemory-consolidation/SKILL.md
 grep -q 'Career Direction and Feedback Updates' skills/persomemory/SKILL.md
 grep -q 'workiq-teams' config/agents/persomemory-agent.agent.md
 grep -q 'Work IQ Teams is an action surface' skills/persomemory/SKILL.md
@@ -118,6 +138,7 @@ grep -q -- '--allow-tool=mcpvault' "${tmpdir}/sweep.out"
 grep -q -- '--allow-tool=smart-connections' "${tmpdir}/sweep.out"
 grep -q -- '--allow-tool=persomemory-lifecycle' "${tmpdir}/sweep.out"
 grep -q 'Do not delegate this sweep to a nested subagent' "${tmpdir}/sweep.out"
+grep -q 'Use the persomemory-daily-sweep skill' "${tmpdir}/sweep.out"
 grep -q 'not captured' "${tmpdir}/sweep.out"
 grep -q 'Broad Evidence Scan' "${tmpdir}/sweep.out"
 grep -q 'Action Item Audit' "${tmpdir}/sweep.out"

@@ -61,77 +61,18 @@ Approval item statuses are `pending`, `approved`, `rejected`, `deferred`, and `s
 
 Approval inbox entries are allowed during unattended sweeps because they are curated pending decisions, not durable promotions.
 
-## Morning brief
+## Skill family alignment
 
-Trigger phrases include:
+The installed PersoMemory skills are the canonical workflow instructions:
 
-1. "Start my PersoMemory morning brief."
-2. "What should I focus on today?"
-3. "Morning memory brief."
+1. `persomemory`: core retrieval, live capture, routing, write gates, and graph rules.
+2. `persomemory-morning-brief`: morning focus, open loops, approval inbox, and lifecycle triage.
+3. `persomemory-daily-sweep`: daily WorkIQ evidence bundle, Copilot conversation evidence, daily note merge, open-loop routing, and lifecycle check.
+4. `persomemory-consolidation`: dreaming, weekly consolidation, durable promotion candidates, and `DREAMS.md`.
 
-Process:
+When this agent is selected as the top-level agent, execute the requested workflow directly using the corresponding installed skill. Do not route through a nested agent.
 
-1. Use startup context or load the three startup files.
-2. Read `memory/inbox/approvals/*.md` files whose frontmatter has `status: pending`, if the approval inbox exists.
-3. Run lifecycle_check.
-4. Return:
-   1. Top 3 focus areas.
-   2. Open follow ups that matter today.
-   3. Stale projects or overdue reviews.
-   4. Pending approval decisions grouped by type.
-   5. One risk Florian may be underweighting.
-   6. One sharp question: "What is the one outcome that makes today successful?"
-5. Ask Florian to approve, reject, defer, or edit pending approval items that still matter.
-6. Apply approved items through normal PersoMemory write rules and update their status.
-7. Do not otherwise write to memory during the morning brief unless Florian explicitly asks.
-
-## Daily evening sweep
-
-Trigger phrases include:
-
-1. "Sweep today."
-2. "Summarize my day into memory."
-3. "Run daily memory update."
-
-Process:
-
-1. Prime with active context, open loops, and project registry.
-2. Query WorkIQ as an evidence bundle with three separate calls:
-   1. **Broad Evidence Scan** across meetings, transcripts, Teams, email, files, and calendar for daily context, project movement, risks, people signals, reusable assets, and surprise items.
-   2. **Action Item Audit** across meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for every concrete deliverable.
-   3. **Direction Setting Audit** across manager, mentor, leadership, and career conversations for future goals, role direction, exposure, skills, positioning, or behavior changes.
-3. Read pending Copilot conversation review pointers from `~/.local/share/persomemory/session-reviews/`.
-4. Read referenced Copilot transcripts when available. Skip queue entries whose transcript is missing, empty, or `not captured`.
-5. Treat the three WorkIQ calls and Copilot conversations as separate evidence streams into the same memory layer.
-6. Keep only signals with future consequence:
-   1. State changes.
-   2. Decisions and rationale.
-   3. Open loops and closures.
-   4. Durable people signals.
-   5. Evidence of impact.
-   6. Reusable assets.
-   7. Emerging patterns.
-   8. Promotion candidates.
-   9. Direction-setting career, role, or leadership guidance.
-7. Deduplicate across all evidence streams and the current vault before writing.
-8. Write or merge `memory/daily/YYYY-MM-DD.md`.
-9. Route low-risk operational changes immediately:
-   1. Active priorities to `memory/active/now.md`.
-   2. Commitments to `memory/commitments/open-loops.md`.
-   3. Every still-open concrete action to `memory/commitments/open-loops.md`, including one-slide summaries, review tasks, next-meeting deliverables, follow-ups, and delegated asks.
-10. Mark processed local queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
-11. Run lifecycle_check after routing.
-12. Ask before high-impact changes:
-   1. Editing `MEMORY.md`.
-   2. Creating career evidence.
-   3. Updating durable career goals or feedback from manager/mentor direction.
-   4. Promoting durable project, people, pattern, decision, or toolkit notes.
-   5. Closing projects.
-   6. Closing ambiguous commitments.
-   7. Resolving conflicting evidence.
-   8. Capturing potentially sensitive content.
-13. In unattended mode, write high-impact decisions to `memory/inbox/approvals/YYYY-MM-DD.md` instead of asking.
-14. If WorkIQ, MCP, permission, or vault access fails, write a `Sweep Failures` approval item if possible.
+Daily sweeps must still use three separate WorkIQ evidence calls before writing: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit. Skip Copilot queue entries whose transcript is missing, empty, or `not captured`. In unattended mode, write high-impact decisions to `memory/inbox/approvals/YYYY-MM-DD.md` instead of asking.
 
 ## Copilot conversation sweep
 
@@ -152,30 +93,6 @@ Process:
 7. Write concise governed memory outputs only.
 8. For gated decisions, write approval inbox items rather than applying the change.
 9. Never write raw transcripts to the vault.
-
-## Weekly consolidation
-
-Trigger phrases include:
-
-1. "Consolidate this week."
-2. "Dream."
-3. "Run weekly memory consolidation."
-
-Process:
-
-1. Read `DREAMS.md` to find the last consolidation point.
-2. Read daily notes since that point.
-3. Use Smart Connections only to discover related durable notes.
-4. Score candidates by frequency, durability, actionability, relevance, and reuse.
-5. Produce a draft consolidation report with:
-   1. Promotions recommended.
-   2. Closures recommended.
-   3. Stale or noisy memory to disregard.
-   4. Reusable patterns.
-   5. Career evidence candidates.
-6. Ask for approval before durable writes, project closures, commitment closures, or changes to `MEMORY.md`.
-
-Weekly consolidation may draft without Florian's input. It must not mutate durable memory without approval.
 
 ## Session end review
 
