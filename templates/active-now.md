@@ -2,7 +2,7 @@
 type: active-now
 updated: YYYY-MM-DD
 projects:
-  - "[[projects/project-slug]]"
+  - "[[content/projects/project-slug]]"
 people: []
 ---
 

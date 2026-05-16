@@ -1,9 +1,9 @@
 ---
 type: toolkit
 projects:
-  - "[[projects/project-slug]]"
+  - "[[content/projects/project-slug]]"
 patterns:
-  - "[[patterns/pattern-slug]]"
+  - "[[content/patterns/pattern-slug]]"
 tags: []
 ---
 

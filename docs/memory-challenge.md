@@ -65,7 +65,7 @@ The current system uses:
 2. Copilot hooks for pointer only session review entries.
 3. MCPVault for deterministic vault reads and writes.
 4. Smart Connections for semantic discovery when exact filenames are unknown.
-5. The `persomemory` skill and `persomemory-agent` for policy and operation.
+5. The memory skill family for policy and operation.
 6. `~/.local/share/persomemory` for disposable local queue and hook runtime state.
 
 The most important design choice is that local queues store pointers only. They should not store extracted facts, summaries, commitments, decisions, project status, or career evidence.
@@ -112,7 +112,7 @@ A cron or scheduled sweep may discover something that needs judgment, such as a 
 Possible answers:
 
 1. Allow low risk daily and operational writes.
-2. Route gated decisions to `memory/approvals/YYYY-MM-DD.md`.
+2. Route gated decisions to `memory/governance/approvals/YYYY-MM-DD.md`.
 3. Review pending approval items during the morning brief.
 4. Avoid `--yolo` and `--allow-all-tools` for unattended memory work by default.
 
@@ -151,17 +151,17 @@ This separation matters because each layer has a different freshness and approva
 The main note types are:
 
 1. `MEMORY.md`: durable self model, stable working style, decision frameworks, and stable people context.
-2. `memory/active/now.md`: current priorities and short lived active context.
-3. `memory/commitments/open-loops.md`: obligations, follow ups, and recently closed loops.
-4. `memory/daily/YYYY-MM-DD.md`: episodic evidence and daily intake.
-5. `memory/projects/*.md`: structural project knowledge.
-6. `memory/people/*.md`: durable relationship context.
-7. `memory/patterns/*.md`: repeated heuristics and reusable patterns.
-8. `memory/decisions/*.md`: durable decisions and revisit triggers.
-9. `memory/toolkits/*.md`: reusable prompts, checklists, playbooks, and assets.
-10. `memory/career/*.md`: accomplishments, feedback, goals, and growth evidence.
-11. `memory/career/evidence/*.md`: atomic career evidence strong enough for Connect or promotion.
-12. `memory/approvals/*.md`: pending human decisions from unattended sweeps.
+2. `memory/content/active/now.md`: current priorities and short lived active context.
+3. `memory/content/commitments/open-loops.md`: obligations, follow ups, and recently closed loops.
+4. `memory/content/daily/YYYY-MM-DD.md`: episodic evidence and daily intake.
+5. `memory/content/projects/*.md`: structural project knowledge.
+6. `memory/content/people/*.md`: durable relationship context.
+7. `memory/content/patterns/*.md`: repeated heuristics and reusable patterns.
+8. `memory/content/decisions/*.md`: durable decisions and revisit triggers.
+9. `memory/content/toolkits/*.md`: reusable prompts, checklists, playbooks, and assets.
+10. `memory/content/career/*.md`: accomplishments, feedback, goals, and growth evidence.
+11. `memory/content/career/evidence/*.md`: atomic career evidence strong enough for Connect or promotion.
+12. `memory/governance/approvals/*.md`: pending human decisions from unattended sweeps.
 
 ### Memory Management Challenges
 
@@ -204,11 +204,11 @@ If commitments stay only in meeting notes or daily notes, they stop being action
 
 Possible answers:
 
-1. Mirror open obligations into `memory/commitments/open-loops.md`.
+1. Mirror open obligations into `memory/content/commitments/open-loops.md`.
 2. Mark closed loops explicitly, then remove them after consolidation.
 3. Distinguish explicit promises from vague discussion.
 4. Use lifecycle tooling to surface aged loops.
-5. Run a separate zero-miss Action Item Audit WorkIQ call during sweeps. Inspect meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for concrete deliverables, including lower-profile actions that are not top daily signals.
+5. Run a zero-miss obligations/request pass during `memory-sweep`. Inspect meeting tasks, transcript action items, Teams asks, email asks, and shared-file comments for concrete deliverables, including lower-profile actions that are not top daily signals.
 
 #### Challenge: Direction-setting conversations can be undercaptured
 
@@ -218,7 +218,7 @@ Possible answers:
 
 1. Split career conversations into recognition, evidence, and future direction.
 2. Route recognition to daily notes and, when strong enough, career evidence approval items.
-3. Route future guidance to `memory/career/feedback.md` or `memory/career/goals.md` through an approval-gated career direction update.
+3. Route future guidance to `memory/content/career/feedback.md` or `memory/content/career/goals.md` through an approval-gated career direction update.
 4. Capture role direction, exposure, skills, behaviors to start/stop/continue, and expected positioning.
 
 #### Challenge: The graph can become inconsistent
@@ -255,7 +255,7 @@ The goal is not to load everything. The goal is to provide the smallest context 
 
 PersoMemory uses several retrieval modes.
 
-1. Startup context: `MEMORY.md`, `memory/active/now.md`, and `memory/commitments/open-loops.md`.
+1. Startup context: `MEMORY.md`, `memory/content/active/now.md`, and `memory/content/commitments/open-loops.md`.
 2. Direct file lookup: read exact notes when the path is known.
 3. Linked note traversal: follow frontmatter and inline wikilinks.
 4. Property search: find notes by type, status, domain, or impact area.
@@ -270,7 +270,7 @@ Too much memory makes the agent less useful. It can bury current work under stal
 
 Possible answers:
 
-1. Load only startup context by default.
+1. Load only a pointer to skill-triggered memory retrieval by default.
 2. Search deeper only when the user mentions a project, person, topic, or prior discussion.
 3. Prefer direct and linked notes before semantic search.
 4. Avoid loading daily notes unless evidence or chronology matters.
@@ -297,16 +297,16 @@ Possible answers:
 3. Use approval items for conflicts.
 4. Promote changes during consolidation when patterns repeat.
 
-#### Challenge: Agent execution boundaries are confusing
+#### Challenge: Subagent execution boundaries are confusing
 
-An agent markdown file can list MCP tools, but that does not automatically grant a nested delegated agent access to the parent session's live MCP connections or permissions.
+A delegated subagent may not have access to the parent session's live MCP connections or permissions.
 
 Possible answers:
 
-1. Run interactive PersoMemory workflows in the current MCP enabled session.
-2. Use `persomemory-agent` as the top level selected agent when launching a dedicated session.
+1. Run PersoMemory workflows in the current MCP-enabled session.
+2. Invoke the relevant memory skill directly.
 3. Avoid delegating manual sweeps to nested subagents.
-4. Keep scheduled sweeps as top level `copilot --agent persomemory-agent` runs with explicit tool permissions.
+4. Keep scheduled sweeps as direct skill invocations with explicit tool permissions.
 
 #### Challenge: Hooks are not memory
 
@@ -314,10 +314,10 @@ Hooks can load context or queue pointers, but they should not make durable memor
 
 Possible answers:
 
-1. Use `sessionStart` for lightweight startup context.
+1. Use `sessionStart` for pointer-only startup context.
 2. Use `agentStop` and `sessionEnd` only for pointer and diagnostic capture.
 3. Keep hook state in `~/.local/share/persomemory`.
-4. Let the PersoMemory workflow decide what gets written to the vault.
+4. Let the memory skill workflow decide what gets written to the vault.
 
 ## Pillar 4: Governance, Lifecycle, and Quality Evaluation
 
@@ -446,7 +446,7 @@ Purpose: route the day's evidence into memory.
 
 Inputs:
 
-1. WorkIQ evidence from three separate calls: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit.
+1. WorkIQ evidence from the six `memory-sweep` candidate passes: obligations/requests, project or outcome changes, career/feedback/guidance, decisions/risks/dependencies, reusable artifacts/ideas, and direct mentions/questions.
 2. Copilot conversation pointers with captured transcripts.
 3. Current active memory and open loops.
 4. Project registry.
@@ -458,7 +458,7 @@ Outputs:
 3. Updated active context when explicit.
 4. Approval items for gated decisions.
 5. Lifecycle check follow ups.
-6. Explicit Action Item Audit and Direction Setting Audit results, even when no durable write is made.
+6. Explicit candidate evidence for obligations, career guidance, decisions, risks, reusable artifacts, and direct mentions, even when no durable write is made.
 
 ### Weekly Consolidation
 

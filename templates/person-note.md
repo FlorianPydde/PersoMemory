@@ -1,11 +1,11 @@
 ---
 type: person
 projects:
-  - "[[projects/project-slug]]"
+  - "[[content/projects/project-slug]]"
 decisions:
-  - "[[decisions/decision-slug]]"
+  - "[[content/decisions/decision-slug]]"
 patterns:
-  - "[[patterns/pattern-slug]]"
+  - "[[content/patterns/pattern-slug]]"
 tags: []
 ---
 

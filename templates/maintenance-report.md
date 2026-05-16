@@ -3,7 +3,7 @@ type: maintenance-report
 date: YYYY-MM-DD
 status: draft
 scope: cascade-review
-anchor: "[[projects/example]]"
+anchor: "[[content/projects/example]]"
 projects: []
 people: []
 decisions: []
@@ -46,7 +46,7 @@ Recommendations only in version 1. Do not apply linked-note changes automaticall
 
 ## Approval Items Created
 
-List any approval items written to `memory/approvals/YYYY-MM-DD.md`.
+List any approval items written to `memory/governance/approvals/YYYY-MM-DD.md`.
 
 ## Conflicts and Reactivation Candidates
 

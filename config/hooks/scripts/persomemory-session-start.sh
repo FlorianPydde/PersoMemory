@@ -10,8 +10,8 @@ const os = require('os');
 const path = require('path');
 
 const vaultPath = process.env.PERSOMEMORY_VAULT_PATH || '';
-const maxCharsPerFile = Number(process.env.PERSOMEMORY_HOOK_MAX_CHARS || 6000);
 const EVENT_LOG_RETENTION_DAYS = 30;
+const skills = ['memory', 'memory-brief', 'memory-sweep', 'memory-maintenance'];
 
 function resolveDataHome() {
   const configured = process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory');
@@ -43,20 +43,7 @@ function pruneJsonl(filePath, retentionDays) {
   fs.writeFileSync(filePath, retained.length > 0 ? `${retained.join('\n')}\n` : '', 'utf8');
 }
 
-function readIfExists(relativePath) {
-  if (!vaultPath) return null;
-  const absolutePath = path.join(vaultPath, relativePath);
-  if (!fs.existsSync(absolutePath)) return null;
-  const content = fs.readFileSync(absolutePath, 'utf8');
-  return {
-    path: relativePath,
-    content: content.length > maxCharsPerFile
-      ? `${content.slice(0, maxCharsPerFile)}\n\n[Truncated by PersoMemory sessionStart hook]`
-      : content,
-  };
-}
-
-function writeDiagnosticEvent(input, files) {
+function writeDiagnosticEvent(input) {
   try {
     const baseDir = resolveDataHome();
     fs.mkdirSync(baseDir, { recursive: true });
@@ -67,8 +54,10 @@ function writeDiagnosticEvent(input, files) {
       source: input.source || '',
       cwd: input.cwd || '',
       vaultPath,
-      filesLoaded: files.map(file => file.path),
-      additionalContext: files.length > 0,
+      filesLoaded: [],
+      memoryContentLoaded: false,
+      availableSkills: skills,
+      additionalContext: true,
       sourceHook: 'copilot-sessionStart-hook',
     };
     fs.appendFileSync(eventLogPath, `${JSON.stringify(event)}\n`, 'utf8');
@@ -85,33 +74,19 @@ try {
   input = {};
 }
 
-const files = [
-  readIfExists('MEMORY.md'),
-  readIfExists('memory/active/now.md'),
-  readIfExists('memory/commitments/open-loops.md'),
-].filter(Boolean);
-
-writeDiagnosticEvent(input, files);
-
-if (files.length === 0) {
-  process.stdout.write('{}');
-  process.exit(0);
-}
+writeDiagnosticEvent(input);
 
 const context = [
-  'PersoMemory startup context loaded by sessionStart hook.',
+  'Memory startup pointer loaded by sessionStart hook.',
   '',
-  'Use this as background context only. Do not write to memory because this hook ran.',
-  'For PersoMemory work, prefer the persomemory-agent and the persomemory skill.',
+  'No memory content was loaded. Use Agent Skills for intentional retrieval.',
+  'Use `memory` for ambiguous or scoped memory requests.',
+  'Use `memory-brief` for broad day-level focus.',
+  'Use `memory-sweep` for WorkIQ and Copilot evidence intake.',
+  'Use `memory-maintenance` for consolidation, stale-memory review, archive, merge, and cleanup.',
   `Session source: ${input.source || 'unknown'}`,
   `Session cwd: ${input.cwd || 'unknown'}`,
-  '',
-  ...files.flatMap(file => [
-    `## ${file.path}`,
-    '',
-    file.content,
-    '',
-  ]),
+  vaultPath ? `Vault path: ${vaultPath}` : 'Vault path: not configured',
 ].join('\n');
 
 process.stdout.write(JSON.stringify({ additionalContext: context }));

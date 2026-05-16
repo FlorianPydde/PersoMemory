@@ -4,15 +4,23 @@
 
 PersoMemory separates evidence, operational memory, and durable memory.
 
-1. Evidence lives in `memory/daily/`.
-2. Operational memory lives in `memory/active/now.md` and `memory/commitments/open-loops.md`.
+1. Evidence lives in `memory/content/daily/`.
+2. Operational memory lives in `memory/content/active/now.md` and `memory/content/commitments/open-loops.md`.
 3. Durable memory lives in `MEMORY.md`, projects, people, patterns, decisions, career, and toolkits.
-4. Consolidation reasoning lives in `DREAMS.md`.
-5. Atomic career evidence lives in `memory/career/evidence/`.
+4. Consolidation reasoning lives in `memory/governance/dreams.md`.
+5. Atomic career evidence lives in `memory/content/career/evidence/`.
 
 ## Main Rule
 
 Daily notes do not move into memory. They are routed into curated projections when the signal is strong enough.
+
+## Operational Contract
+
+The canonical live routing and maintenance policy is the vault note `memory/governance/ontology/contract.md`.
+
+This repository document remains the recovery and schema reference. The vault contract is what agents should read before ambiguous routing, durable promotion recommendations, graph stewardship, monthly compression, retrieval-policy changes, and ontology-maintenance decisions.
+
+Changes to the contract affect future agent behavior and are approval-gated unless Florian explicitly asks for the exact change in the current conversation.
 
 ## Process Boundaries
 
@@ -22,7 +30,7 @@ Fast and local. Capture what changed in the conversation and route only operatio
 
 ### Daily WorkIQ Intake
 
-Unbundled and evidential. Reconstruct the day from M365 using three separate evidence calls: Broad Evidence Scan, Action Item Audit, and Direction Setting Audit. Merge and deduplicate the outputs before writing a daily note. Update active memory and commitments only for obvious current changes.
+Unbundled and evidential. Reconstruct the day from M365 using the `memory-sweep` six-pass candidate battery: obligations/requests, project or outcome changes, career/feedback/guidance, decisions/risks/dependencies, reusable artifacts/ideas, and direct mentions/questions. Merge and deduplicate the outputs before writing a daily note. Update active memory and commitments only for obvious current changes.
 
 ### Dreaming
 
@@ -31,17 +39,17 @@ Slow and durable. Review multiple daily notes and promote repeated signals.
 ## Promotion Gates
 
 1. `MEMORY.md`: repeated evidence or explicit user approval.
-2. `memory/active/now.md`: useful current context.
-3. `memory/commitments/open-loops.md`: open or recently closed obligation.
-4. `memory/projects/`: structural project knowledge.
-5. `memory/people/`: durable relationship signal.
-6. `memory/patterns/`: repeated or generalizable heuristic.
-7. `memory/decisions/`: future behavior changes with rationale.
-8. `memory/toolkits/`: reused or clearly reusable asset.
-9. `memory/career/`: accomplishment, feedback, goal, or growth evidence.
-10. `memory/career/evidence/`: atomic proof notes, Connect/promotion threshold only.
+2. `memory/content/active/now.md`: useful current context.
+3. `memory/content/commitments/open-loops.md`: open or recently closed obligation.
+4. `memory/content/projects/`: structural project knowledge.
+5. `memory/content/people/`: durable relationship signal.
+6. `memory/content/patterns/`: repeated or generalizable heuristic.
+7. `memory/content/decisions/`: future behavior changes with rationale.
+8. `memory/content/toolkits/`: reused or clearly reusable asset.
+9. `memory/content/career/`: accomplishment, feedback, goal, or growth evidence.
+10. `memory/content/career/evidence/`: atomic proof notes, Connect/promotion threshold only.
 
-Career direction and career evidence are different routes. Manager or mentor guidance that changes goals, role scope, exposure, or 1-3 year trajectory belongs in `memory/career/feedback.md` or `memory/career/goals.md` through an approval-gated update. Proof strong enough for Connect or promotion belongs in `memory/career/evidence/`.
+Career direction and career evidence are different routes. Manager or mentor guidance that changes goals, role scope, exposure, or 1-3 year trajectory belongs in `memory/content/career/feedback.md` or `memory/content/career/goals.md` through an approval-gated update. Proof strong enough for Connect or promotion belongs in `memory/content/career/evidence/`.
 
 ## Failure Modes
 
@@ -83,9 +91,9 @@ Each schema specifies required fields, optional fields, and inline wikilink conv
 type: daily
 date: YYYY-MM-DD
 projects:
-  - "[[projects/otp-bank-agentic]]"
+  - "[[content/projects/otp-bank-agentic]]"
 people:
-  - "[[people/george-theologou]]"
+  - "[[content/people/george-theologou]]"
 decisions: []
 impact-areas: []
 ---
@@ -108,15 +116,15 @@ technologies:
   - Azure OpenAI
   - Cosmos DB
 people:
-  - "[[people/george-theologou]]"
-  - "[[people/harish-chandran]]"
+  - "[[content/people/george-theologou]]"
+  - "[[content/people/harish-chandran]]"
 decisions:
-  - "[[decisions/otp-storage-architecture]]"
+  - "[[content/decisions/otp-storage-architecture]]"
 patterns:
-  - "[[patterns/agentic-ai-delivery]]"
+  - "[[content/patterns/agentic-ai-delivery]]"
 toolkits: []
 related:
-  - "[[projects/premier-league]]"
+  - "[[content/projects/premier-league]]"
 tags:
   - regulated-fsi
   - human-in-the-loop
@@ -137,12 +145,12 @@ tags:
 ---
 type: person
 projects:
-  - "[[projects/otp-bank-agentic]]"
-  - "[[projects/premier-league]]"
+  - "[[content/projects/otp-bank-agentic]]"
+  - "[[content/projects/premier-league]]"
 decisions:
-  - "[[decisions/otp-storage-architecture]]"
+  - "[[content/decisions/otp-storage-architecture]]"
 patterns:
-  - "[[patterns/agentic-ai-delivery]]"
+  - "[[content/patterns/agentic-ai-delivery]]"
 tags:
   - stakeholder
   - customer-facing
@@ -159,10 +167,10 @@ Only add decisions and patterns when the person was directly involved in making 
 ---
 type: pattern
 projects:
-  - "[[projects/otp-bank-agentic]]"
-  - "[[projects/premier-league]]"
+  - "[[content/projects/otp-bank-agentic]]"
+  - "[[content/projects/premier-league]]"
 decisions:
-  - "[[decisions/pl-agent-flow-simplification]]"
+  - "[[content/decisions/pl-agent-flow-simplification]]"
 toolkits: []
 tags:
   - agentic-ai
@@ -182,11 +190,11 @@ type: decision
 date: YYYY-MM-DD
 status: active
 projects:
-  - "[[projects/otp-bank-agentic]]"
+  - "[[content/projects/otp-bank-agentic]]"
 people:
-  - "[[people/george-theologou]]"
+  - "[[content/people/george-theologou]]"
 patterns:
-  - "[[patterns/agentic-ai-delivery]]"
+  - "[[content/patterns/agentic-ai-delivery]]"
 supersedes: []
 superseded-by: ""
 tags: []
@@ -205,9 +213,9 @@ tags: []
 ---
 type: toolkit
 projects:
-  - "[[projects/otp-bank-agentic]]"
+  - "[[content/projects/otp-bank-agentic]]"
 patterns:
-  - "[[patterns/agentic-ai-delivery]]"
+  - "[[content/patterns/agentic-ai-delivery]]"
 tags:
   - git
   - parallel-agents
@@ -228,15 +236,15 @@ impact-areas:
 so-what: "One sentence: what changed and why it matters for Florian's career."
 source-type: shipped-outcome
 observers:
-  - "[[people/george-theologou]]"
+  - "[[content/people/george-theologou]]"
 projects:
-  - "[[projects/otp-bank-agentic]]"
+  - "[[content/projects/otp-bank-agentic]]"
 people:
-  - "[[people/harish-chandran]]"
+  - "[[content/people/harish-chandran]]"
 patterns:
-  - "[[patterns/agentic-ai-delivery]]"
+  - "[[content/patterns/agentic-ai-delivery]]"
 decisions:
-  - "[[decisions/otp-storage-architecture]]"
+  - "[[content/decisions/otp-storage-architecture]]"
 tags: []
 ---
 ```
@@ -271,8 +279,8 @@ tags: []
 type: active-now
 updated: YYYY-MM-DD
 projects:
-  - "[[projects/otp-bank-agentic]]"
-  - "[[projects/premier-league]]"
+  - "[[content/projects/otp-bank-agentic]]"
+  - "[[content/projects/premier-league]]"
 people: []
 ---
 ```
@@ -298,19 +306,19 @@ Use Obsidian wikilink syntax `[[folder/slug]]` when referencing notes from other
 
 | Relationship | Wikilink pattern | Example |
 |---|---|---|
-| Reference a project | `[[projects/slug]]` | `[[projects/otp-bank-agentic]]` |
-| Reference a person | `[[people/slug]]` | `[[people/george-theologou]]` |
-| Reference a pattern | `[[patterns/slug]]` | `[[patterns/agentic-ai-delivery]]` |
-| Reference a decision | `[[decisions/slug]]` | `[[decisions/otp-storage-architecture]]` |
-| Reference a toolkit | `[[toolkits/slug]]` | `[[toolkits/git-worktrees-parallel-agents]]` |
-| Reference career evidence | `[[career/evidence/slug]]` | `[[career/evidence/otp-stage3-ecif-close]]` |
+| Reference a project | `[[content/projects/slug]]` | `[[content/projects/otp-bank-agentic]]` |
+| Reference a person | `[[content/people/slug]]` | `[[content/people/george-theologou]]` |
+| Reference a pattern | `[[content/patterns/slug]]` | `[[content/patterns/agentic-ai-delivery]]` |
+| Reference a decision | `[[content/decisions/slug]]` | `[[content/decisions/otp-storage-architecture]]` |
+| Reference a toolkit | `[[content/toolkits/slug]]` | `[[content/toolkits/git-worktrees-parallel-agents]]` |
+| Reference career evidence | `[[content/career/evidence/slug]]` | `[[content/career/evidence/otp-stage3-ecif-close]]` |
 
 **Both conventions apply simultaneously:** add the wikilink in the frontmatter list field AND use it inline in prose when giving context. This makes the link machine-readable (frontmatter) and human-readable (inline).
 
 Example (project note body):
 ```markdown
-This architecture was shaped by [[people/george-theologou]] and locked in [[decisions/otp-storage-architecture]].
-The pattern generalizes across [[patterns/agentic-ai-delivery]] and overlaps with [[projects/premier-league]].
+This architecture was shaped by [[content/people/george-theologou]] and locked in [[content/decisions/otp-storage-architecture]].
+The pattern generalizes across [[content/patterns/agentic-ai-delivery]] and overlaps with [[content/projects/premier-league]].
 ```
 
 ---
@@ -339,7 +347,7 @@ Backlinks in Obsidian automatically reveal the reverse direction. Do not duplica
 
 ## Atomic Career Evidence Model
 
-Evidence notes live under `memory/career/evidence/`. Each note:
+Evidence notes live under `memory/content/career/evidence/`. Each note:
 
 1. Captures one atomic proof unit — a single observable outcome or recognition event.
 2. Maps to one or more `impact-areas` from the rubric taxonomy.
@@ -347,7 +355,7 @@ Evidence notes live under `memory/career/evidence/`. Each note:
 4. Lists at least one proof source via `source-type` and optionally `observers`.
 5. Links back to the relevant project, people, patterns, or decisions.
 
-`memory/career/accomplishments.md` is the human-readable roll-up. It summarizes themes and pointers to evidence notes for Connect and quarterly impact writing. It is not the primary proof store.
+`memory/content/career/accomplishments.md` is the human-readable roll-up. It summarizes themes and pointers to evidence notes for Connect and quarterly impact writing. It is not the primary proof store.
 
 The capture threshold is strict: only create a standalone evidence note when the proof is strong enough to cite in Connect, a promotion case, or a leadership narrative.
 

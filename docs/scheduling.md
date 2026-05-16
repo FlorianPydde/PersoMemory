@@ -19,12 +19,14 @@ The script runs:
 3. Low-risk daily and operational memory routing.
 4. Approval creation for gated decisions.
 
-The helper starts `persomemory-agent` as the top-level selected Copilot agent. That is different from asking a normal interactive session to delegate to a nested subagent. Nested delegated agents may not inherit the parent session's MCP tools, even if those tools are listed in the agent markdown file.
+The helper invokes the `/memory-sweep` skill directly with explicit MCP tool permissions. It does not select a custom agent and does not delegate to a nested subagent, because nested agents may not inherit the parent session's MCP tools.
+
+`memory-sweep` uses six WorkIQ candidate-list passes: obligations/requests, project or outcome changes, career/feedback/guidance, decisions/risks/dependencies, reusable artifacts/ideas, and direct mentions/questions to Florian. Each pass asks for source-localizing evidence and `No candidates found` when empty.
 
 Approval-gated decisions go to:
 
 ```text
-memory/approvals/YYYY-MM-DD.md
+memory/governance/approvals/YYYY-MM-DD.md
 ```
 
 ## Tool permissions
@@ -77,6 +79,6 @@ Cron can call the installed helper with an absolute path:
 
 ## Morning brief
 
-The morning brief should read `memory/preferences/approval-routing.md`, then read pending approval notes from `memory/approvals/` and ask Florian to approve, reject, defer, or edit them.
+The morning brief should read `memory/governance/preferences/approval-routing.md`, then read pending approval notes from `memory/governance/approvals/` and ask Florian to approve, reject, defer, or edit them.
 
 This makes the overnight run useful without pretending that unattended approval happened.

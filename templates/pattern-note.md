@@ -1,9 +1,9 @@
 ---
 type: pattern
 projects:
-  - "[[projects/project-slug]]"
+  - "[[content/projects/project-slug]]"
 decisions:
-  - "[[decisions/decision-slug]]"
+  - "[[content/decisions/decision-slug]]"
 toolkits: []
 tags: []
 ---
@@ -24,7 +24,7 @@ Practical steps or conditions for applying this pattern.
 
 ## Source Projects
 
-Projects where this pattern originated or was validated: [[projects/project-slug]].
+Projects where this pattern originated or was validated: [[content/projects/project-slug]].
 
 ## Limitations
 
@@ -32,4 +32,4 @@ When this pattern does not apply or breaks down.
 
 ## Related Patterns
 
-[[patterns/related-pattern-slug]]
+[[content/patterns/related-pattern-slug]]

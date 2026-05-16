@@ -4,7 +4,7 @@
 
 Hooks are optional orchestration aids. They should not be the main memory system.
 
-Use global Copilot instructions, the PersoMemory skill, the PersoMemory agent, and MCP configuration for generic behavior. Use hooks only for lightweight session orchestration.
+Use global Copilot instructions, memory skills, and MCP configuration for generic behavior. Use hooks only for lightweight session orchestration.
 
 ## User-level hooks
 
@@ -16,7 +16,7 @@ Copilot CLI supports user-level hooks in `~/.copilot/hooks/*.json`. PersoMemory 
 
 The hook does three things:
 
-1. `sessionStart`: injects `MEMORY.md`, `memory/active/now.md`, and `memory/commitments/open-loops.md` as background context.
+1. `sessionStart`: returns a pointer-only `additionalContext` reminder that memory retrieval is skill-triggered. It does not load `MEMORY.md`, active context, open loops, or any vault memory content.
 2. `agentStop`: records the latest transcript path for the session.
 3. `sessionEnd`: records a lightweight pending session review entry under `~/.local/share/persomemory/session-reviews/`.
 
@@ -37,7 +37,7 @@ Directory layout:
 ```text
 session-reviews/              Pointer-only review queue by date
 session-transcripts/          Session id to transcript path breadcrumbs
-session-start-events.jsonl    Diagnostics for startup context injection
+session-start-events.jsonl    Diagnostics for startup pointer injection
 agent-stop-events.jsonl       Lightweight diagnostics for transcript capture
 session-end-events.jsonl      Lightweight diagnostics
 cleanup-errors.log            Cleanup diagnostics, if needed
@@ -47,13 +47,13 @@ This directory is disposable local working state. It should not be copied to a n
 
 The queue must be pointer-only. It should not contain extracted facts, conversation summaries, commitments, decisions, project status, or career evidence. If a session ends before a transcript breadcrumb is captured, the session end event is logged for diagnostics but no pending review item is created.
 
-To verify startup context injection without reading Copilot internal logs:
+To verify startup pointer injection without reading Copilot internal logs:
 
 ```bash
 tail ~/.local/share/persomemory/session-start-events.jsonl
 ```
 
-An event with `additionalContext: true` and `filesLoaded` containing `MEMORY.md`, `memory/active/now.md`, and `memory/commitments/open-loops.md` means the hook ran and returned context. The context may be injected silently and not shown as a visible timeline message.
+An event with `additionalContext: true`, `memoryContentLoaded: false`, and `filesLoaded: []` means the hook ran and returned pointer-only context. The context may be injected silently and not shown as a visible timeline message.
 
 Directly invoking `~/.copilot/hooks/scripts/persomemory-session-start.sh` is only a script smoke test. The real Copilot hook gets `PERSOMEMORY_VAULT_PATH` from `~/.copilot/hooks/persomemory-session.json`; pass that environment variable yourself when testing the script outside Copilot.
 
@@ -68,9 +68,9 @@ Copilot conversations are a second evidence source alongside WorkIQ:
 
 The evening sweep should process both streams. WorkIQ covers external work activity. Copilot conversation sweep covers what happened in agent sessions.
 
-Hooks only queue transcript pointers. The PersoMemory agent performs the actual conversation sweep, deduplicates against current vault state, and asks before durable or ambiguous changes.
+Hooks only queue transcript pointers. `memory-sweep` performs the actual conversation sweep, deduplicates against current vault state, and asks before durable or ambiguous changes.
 
-The daily sweep skill must treat Copilot conversation evidence as a structured evidence bundle, not a shallow summary. For each queued session, it should classify coverage, then audit session context, outcome and loop closure, action items, decisions and rationale, direction-setting feedback, reusable assets and patterns, risks, and routing. This is what connects a Teams-raised loop to work completed later in a Copilot session without burying the closure in a transcript.
+`memory-sweep` must treat Copilot conversation evidence as a structured evidence bundle, not a shallow summary. For each queued session, it should classify coverage, then audit session context, outcome and loop closure, action items, decisions and rationale, direction-setting feedback, reusable assets and patterns, risks, and routing. This is what connects a Teams-raised loop to work completed later in a Copilot session without burying the closure in a transcript.
 
 Queued missing, empty, unreadable, or `not captured` transcripts should become `Sweep Failures` approval items rather than silent skips. The hook itself remains pointer-only and does not decide memory meaning.
 
@@ -92,13 +92,13 @@ The correct generic setup is:
 
 1. Global Copilot instructions define memory behavior.
 2. MCP config exposes WorkIQ, MCPVault, Smart Connections, and persomemory-lifecycle.
-3. The persomemory-agent operates the routine.
-4. User-level hooks load lightweight context and queue Copilot conversation review pointers.
+3. Memory skills operate the routines.
+4. User-level hooks load pointer-only context and queue Copilot conversation review pointers.
 5. Work repos stay free of memory-system hooks unless intentionally opted in.
 
 ## Session start context hook
 
-The installed session start hook uses `additionalContext`, not an auto-submitted prompt. This keeps startup quiet while still making memory context available.
+The installed session start hook uses `additionalContext`, not an auto-submitted prompt. This keeps startup quiet while making the skill-triggered retrieval path visible without loading memory content.
 
 Source files:
 

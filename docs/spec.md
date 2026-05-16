@@ -145,15 +145,16 @@ node scripts/sweep.js
 ```text
 ObsidianVaultPersoMemory/             (on OneDrive)
   MEMORY.md                           Durable self model and stable context only
-  DREAMS.md                           Consolidation diary and promotion log
+  memory/governance/dreams.md                           Consolidation diary and promotion log
   memory/
     active/
       now.md                          Current priorities and live context
+    registries/
+      projects.md                     Cross-project registry and human browsing table
     commitments/
       open-loops.md                   Follow ups, promises, obligations
     daily/
       YYYY-MM-DD.md                   Daily episodic intake and evidence
-      TEMPLATE.md                     Daily intake schema
     projects/
       {project-name}.md               Durable project knowledge
     people/
@@ -168,10 +169,12 @@ ObsidianVaultPersoMemory/             (on OneDrive)
       decision-frameworks.md          Reusable heuristics extracted over time
       project-evaluation.md           How you evaluate new projects
     toolkits/
-      README.md                       Reusable working assets
+      {toolkit-name}.md               Reusable working assets
 ```
 
-**Ontology rule:** daily notes are intake and evidence. Durable retrieval should prefer `MEMORY.md`, `memory/active/now.md`, `memory/commitments/open-loops.md`, `memory/projects/`, `memory/people/`, `memory/patterns/`, `memory/decisions/`, `memory/toolkits/`, and `memory/career/` before falling back to daily notes.
+**Ontology rule:** daily notes are intake and evidence. Durable retrieval should prefer `MEMORY.md`, `memory/content/active/now.md`, `memory/content/commitments/open-loops.md`, `memory/content/projects/`, `memory/content/people/`, `memory/content/patterns/`, `memory/content/decisions/`, `memory/content/toolkits/`, and `memory/content/career/` before falling back to daily notes.
+
+**Policy ownership rule:** vault-side `README`, `INDEX`, and `TEMPLATE` files are not canonical policy. Category boundaries live in `memory/governance/ontology/contract.md`; workflow output shapes live in the relevant memory skill; reusable note templates live in this setup repo under `templates/`.
 
 ## GitHub Actions Pipeline
 
@@ -241,10 +244,17 @@ Two options for getting the generated Markdown back to your OneDrive-synced vaul
 
 ## Runtime Skill
 
-The `persomemory` skill is the procedural layer for the memory system. MCPs provide access, but the skill defines live capture, WorkIQ daily intake, routing rules, promotion gates, and dreaming.
+The memory skills are the procedural layer for the memory system. MCPs provide access, but the skills define live capture, WorkIQ daily intake, routing rules, promotion gates, and maintenance.
 
-Source copy: `skills/persomemory/SKILL.md`
-Runtime install: `~/.copilot/skills/persomemory/SKILL.md`
+Source copies: `skills/memory*/SKILL.md`
+Runtime install: `~/.copilot/skills/memory*/SKILL.md`
+
+The four runtime skills are:
+
+1. `memory`: router and policy layer for ambiguous, mixed, scoped recall/capture/commitment/focus requests.
+2. `memory-brief`: broad day-level attention brief.
+3. `memory-sweep`: WorkIQ and Copilot evidence intake.
+4. `memory-maintenance`: consolidation, promotion, stale review, archive, merge, supersede, and cleanup.
 
 ## Agent Workflows
 
@@ -252,13 +262,12 @@ Runtime install: `~/.copilot/skills/persomemory/SKILL.md`
 
 The sweep script:
 1. Authenticates to M365 using refresh token
-2. Queries WorkIQ: "Summarize my Teams conversations from today"
-3. Queries WorkIQ: "What emails did I send or receive today?"
-4. Queries WorkIQ: "What meetings did I have and what was discussed?"
-5. Filters: extracts only signal (facts, decisions, action items, goals, insights)
-6. Generates daily note Markdown (`memory/daily/YYYY-MM-DD.md`)
-7. Updates relevant project/people files if significant
-8. Commits and pushes to repo
+2. Runs six WorkIQ candidate-list passes: obligations/requests, project or outcome changes, career/feedback/guidance, decisions/risks/dependencies, reusable artifacts/ideas, and direct mentions/questions
+3. Requires source-localizing details and explicit `No candidates found` for empty passes
+4. Filters: extracts only signal (facts, decisions, action items, goals, insights)
+5. Generates daily note Markdown (`memory/content/daily/YYYY-MM-DD.md`)
+6. Updates relevant project/people files if significant
+7. Commits and pushes to repo
 
 ### 2. Interactive Memory (Copilot CLI, manual)
 
@@ -294,7 +303,7 @@ Can be automated (separate weekly cron) or manual:
 - [anything worth remembering long-term]
 
 ## Projects Touched
-- [[projects/ProjectX]]: [what happened]
+- [[content/projects/ProjectX]]: [what happened]
 
 ## Source
 - Teams: [channels/DMs referenced]
@@ -401,7 +410,7 @@ Use plain markdown index notes as the primary human browsing layer for v1. Defer
 
 #### Workflow 1: Find all active projects
 
-Entry point: `memory/PROJECTS.md`
+Entry point: `memory/registries/projects.md`
 
 This index note lists all project notes with their status and domain. It is manually maintained during consolidation and updated when project status changes.
 
@@ -409,13 +418,13 @@ Alternative: open Obsidian Graph view and filter by `type: project`. The local g
 
 #### Workflow 2: Trace impact from project to career
 
-Start at a project note (e.g., `memory/projects/otp-bank-agentic.md`). The backlinks pane shows career evidence notes that reference this project via their `projects` frontmatter. Follow the evidence note to its `impact-areas`, `so-what`, and `observers`.
+Start at a project note (e.g., `memory/content/projects/otp-bank-agentic.md`). The backlinks pane shows career evidence notes that reference this project via their `projects` frontmatter. Follow the evidence note to its `impact-areas`, `so-what`, and `observers`.
 
-Alternative path: open `memory/career/accomplishments.md` and follow links to specific evidence notes under `memory/career/evidence/`.
+Alternative path: open `memory/content/career/accomplishments.md` and follow links to specific evidence notes under `memory/content/career/evidence/`.
 
 #### Workflow 3: Trace one person across projects
 
-Open a person note (e.g., `memory/people/george-theologou.md`). The frontmatter `projects` field lists projects they appear in. The backlinks pane shows daily notes, evidence notes, and decision notes that reference them via their `people` field.
+Open a person note (e.g., `memory/content/people/george-theologou.md`). The frontmatter `projects` field lists projects they appear in. The backlinks pane shows daily notes, evidence notes, and decision notes that reference them via their `people` field.
 
 ### What Bases Can Do Later
 
@@ -427,7 +436,6 @@ Obsidian Bases (core plugin, already enabled) can create live queryable tables f
 
 This is a Phase 2 investment. Do not design Bases views until at least 80% of durable notes have frontmatter.
 
-### Index Notes to Create
+### Registry Notes to Create
 
-- `memory/INDEX.md` — vault entry point with links to all major sections
-- `memory/PROJECTS.md` — manually curated project registry with status, domains, and links
+- `memory/registries/projects.md` — manually curated project registry with status, domains, and links

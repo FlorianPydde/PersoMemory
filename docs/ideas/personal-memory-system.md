@@ -41,10 +41,10 @@ When a new project lands, the agent already knows: "This looks like the PoC you 
 **Phase 1: Conversational Memory (Week 1-2)**
 - Configure your CLI agent (Copilot CLI or Claude Code) to read from and write to an Obsidian vault
 - Define the memory file structure:
-  - `memory/daily/YYYY-MM-DD.md` for daily notes from conversations
-  - `memory/projects/{project-name}.md` for project-specific knowledge
-  - `memory/people/{person}.md` for relationship context
-  - `memory/decisions/` for decision logs
+  - `memory/content/daily/YYYY-MM-DD.md` for daily notes from conversations
+  - `memory/content/projects/{project-name}.md` for project-specific knowledge
+  - `memory/content/people/{person}.md` for relationship context
+  - `memory/content/decisions/` for decision logs
   - `MEMORY.md` as the top-level durable memory (loaded every session)
 - Build the agent's "memory write" behavior: after meaningful conversations, it extracts and saves relevant facts
 - Build the agent's "memory read" behavior: at session start, it loads MEMORY.md + recent daily notes + relevant project files

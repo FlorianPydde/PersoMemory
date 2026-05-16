@@ -57,7 +57,14 @@ install_skills() {
 
   while IFS= read -r -d '' managed_dir; do
     rm -rf "${managed_dir}"
-  done < <(find "${target_root}" -mindepth 1 -maxdepth 1 -type d \( -name 'persomemory' -o -name 'persomemory-*' \) -print0)
+  done < <(find "${target_root}" -mindepth 1 -maxdepth 1 -type d \( \
+    -name 'persomemory' -o \
+    -name 'persomemory-*' -o \
+    -name 'memory' -o \
+    -name 'memory-brief' -o \
+    -name 'memory-sweep' -o \
+    -name 'memory-maintenance' \
+  \) -print0)
 
   while IFS= read -r -d '' skill_dir; do
     skill_name="$(basename "${skill_dir}")"
@@ -73,6 +80,7 @@ install_agents() {
   local agent_file
 
   mkdir -p "${target_root}"
+  rm -f "${target_root}/persomemory-agent.agent.md" "${target_root}/persomemory-graph-steward.agent.md"
 
   while IFS= read -r -d '' agent_file; do
     cp "${agent_file}" "${target_root}/$(basename "${agent_file}")"

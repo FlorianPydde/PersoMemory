@@ -3,9 +3,9 @@ type: decision
 date: YYYY-MM-DD
 status: active
 projects:
-  - "[[projects/project-slug]]"
+  - "[[content/projects/project-slug]]"
 people:
-  - "[[people/person-slug]]"
+  - "[[content/people/person-slug]]"
 patterns: []
 supersedes: []
 superseded-by: ""

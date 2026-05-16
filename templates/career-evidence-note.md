@@ -6,15 +6,15 @@ impact-areas:
 so-what: "One sentence: what changed and why it matters."
 source-type: shipped-outcome
 observers:
-  - "[[people/person-slug]]"
+  - "[[content/people/person-slug]]"
 projects:
-  - "[[projects/project-slug]]"
+  - "[[content/projects/project-slug]]"
 people:
-  - "[[people/person-slug]]"
+  - "[[content/people/person-slug]]"
 patterns:
-  - "[[patterns/pattern-slug]]"
+  - "[[content/patterns/pattern-slug]]"
 decisions:
-  - "[[decisions/decision-slug]]"
+  - "[[content/decisions/decision-slug]]"
 tags: []
 ---
 
@@ -34,9 +34,9 @@ Source evidence: who said it, what was shipped, what was the measurable outcome.
 
 ## Connected Context
 
-- Project: [[projects/project-slug]]
-- Pattern applied: [[patterns/pattern-slug]]
-- Decision enabled: [[decisions/decision-slug]]
+- Project: [[content/projects/project-slug]]
+- Pattern applied: [[content/patterns/pattern-slug]]
+- Decision enabled: [[content/decisions/decision-slug]]
 
 ---
 

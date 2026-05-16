@@ -2,7 +2,7 @@
 
 PersoMemory is the source of truth for Florian's personal memory system setup.
 
-It stores the artifacts needed to rebuild the system on a new machine: Copilot instructions, MCP config examples, PersoMemory skills, templates, ontology docs, recovery docs, optional hook guidance, and setup scripts.
+It stores the artifacts needed to rebuild the system on a new machine: Copilot instructions, MCP config examples, memory skills, templates, ontology docs, recovery docs, optional hook guidance, and setup scripts.
 
 It is not the active memory store. The active memory content lives in the Obsidian vault:
 
@@ -14,17 +14,17 @@ This repository exists to replicate the local PersoMemory setup from one machine
 
 `config/copilot-instructions.md` is the canonical source for the local global file at `~/.copilot/copilot-instructions.md`. The repository `.github/copilot-instructions.md` intentionally matches it because this repo is a recovery source, not a separate product with different agent behavior.
 
-Detailed memory behavior belongs in the PersoMemory skill family under `skills/*/SKILL.md`. The Copilot instructions are only a concise router into those assets.
+Detailed memory behavior belongs in the memory skill family under `skills/*/SKILL.md`. The Copilot instructions are only a concise router into those assets.
 
 ## Runtime Pieces
 
 1. `~/.copilot/copilot-instructions.md`: concise global Copilot router installed from `config/copilot-instructions.md`.
 2. `~/.copilot/mcp-config.json`: runtime MCP configuration.
-3. `~/.copilot/skills/persomemory*/SKILL.md`: runtime PersoMemory skill family.
-4. `~/.copilot/agents/persomemory-agent.agent.md`: runtime PersoMemory operator agent.
-5. `~/.copilot/hooks/persomemory-session.json`: optional session start and session end hooks.
-6. `~/.local/share/persomemory`: disposable local queue and hook runtime state.
-7. Obsidian vault: durable memory content.
+3. `~/.copilot/skills/memory*/SKILL.md`: runtime memory skill family.
+4. `~/.copilot/hooks/persomemory-session.json`: optional session start and session end hooks.
+5. `~/.local/share/persomemory`: disposable local queue and hook runtime state.
+6. Obsidian vault: durable memory content.
+7. `memory/governance/ontology/contract.md`: vault-canonical live routing, retrieval, decay, and maintenance policy.
 8. This repo: versioned recovery source.
 
 ## Repository Layout
@@ -32,12 +32,13 @@ Detailed memory behavior belongs in the PersoMemory skill family under `skills/*
 ```text
 .github/copilot-instructions.md     Repo instructions for agents working on PersoMemory
 config/                             Recovery copies and examples for runtime config
-config/agents/                      Personal Copilot agent profiles
+config/agents/                      Optional non-PersoMemory personal agent profiles
 config/hooks/                       User-level Copilot hook templates and scripts
 docs/                               Spec, ontology, hooks, and recovery docs
+evals/                              Lightweight trigger-evaluation prompts
 scripts/                            Install and validation scripts
 scripts/run-evening-sweep.sh         Cron/systemd helper for unattended evening sweep
-skills/persomemory*/SKILL.md        Source copies of the runtime skill family
+skills/memory*/SKILL.md             Source copies of the runtime skill family
 templates/                          Vault note templates
 ```
 
@@ -47,7 +48,7 @@ templates/                          Vault note templates
 ./scripts/install.sh
 ```
 
-The installer copies the global Copilot instructions, all PersoMemory skills, PersoMemory agent, hooks, evening sweep helper, and lifecycle MCP into the local runtime locations. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
+The installer is a small local bootstrapper, not part of the memory model. It copies the global Copilot instructions, the four memory skills, hooks, evening sweep helper, optional non-memory agent profiles, and lifecycle MCP into local runtime locations. It also removes obsolete `persomemory*` runtime skills/custom agents and stale managed `memory*` skill installs. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
 
 ## Validate Vault Structure
 
@@ -58,7 +59,7 @@ The installer copies the global Copilot instructions, all PersoMemory skills, Pe
 ## Architecture Notes
 
 1. `docs/memory-challenge.md`: top down model of the personal memory problem.
-2. `docs/ontology.md`: note types, schemas, and graph rules.
+2. `docs/ontology.md`: note types, schemas, graph rules, and pointer to the vault-canonical ontology contract.
 3. `docs/hooks.md`: Copilot hook behavior and local queue design.
 4. `docs/scheduling.md`: unattended evening sweep setup.
 
@@ -74,11 +75,11 @@ bash ./scripts/test-runtime.sh
 ./scripts/run-evening-sweep.sh
 ```
 
-The helper runs the PersoMemory evening sweep with narrow Copilot permissions: read access to the local queue plus the required MCP servers. Approval-gated decisions are written to `memory/approvals/YYYY-MM-DD.md` and picked up by the morning brief.
+The helper runs the PersoMemory evening sweep with narrow Copilot permissions: read access to the local queue plus the required MCP servers. Approval-gated decisions are written to `memory/governance/approvals/YYYY-MM-DD.md` and picked up by the morning brief.
 
 ## Operating Model
 
-MCPs provide access. The PersoMemory skill family provides judgment, routing, and workflow-specific instructions. The `persomemory-agent` operates the workflow.
+MCPs provide access. The memory skill family provides judgment, routing, and workflow-specific instructions.
 
 1. WorkIQ retrieves Microsoft 365 evidence.
 2. Work IQ Teams sends or manages Teams chats and channel messages when explicit user intent is present.
@@ -86,12 +87,17 @@ MCPs provide access. The PersoMemory skill family provides judgment, routing, an
 4. MCPVault reads and writes the Obsidian vault.
 5. Smart Connections retrieves related notes.
 6. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
-7. `persomemory` defines core retrieval, live capture, routing, write gates, and graph rules.
-8. `persomemory-morning-brief`, `persomemory-daily-sweep`, and `persomemory-consolidation` define the recurring workflows.
-9. The PersoMemory agent runs the routines using those rules.
+7. `memory/governance/ontology/contract.md` defines live category boundaries, routing, retrieval triggers, decay rules, durable-entity thresholds, and graph-steward eval examples.
+8. `memory` defines core retrieval, live capture, routing, and write gates.
+9. `memory-brief` defines broad day-level attention.
+10. `memory-sweep` defines WorkIQ and Copilot evidence intake.
+11. `memory-maintenance` combines consolidation, promotion, stale review, archive, merge, supersede, and cleanup modes.
+12. Memory workflows run by invoking the relevant skill directly.
 
 The durable memory store is the Obsidian vault. The local queue is disposable working state and can be rebuilt only by future activity.
 
-Approval items are stored in the vault under `memory/approvals/` because they are curated hard-gate decisions, not raw local queue data or nice-to-have suggestions. PersoMemory workflows load `memory/preferences/approval-routing.md` before creating or reviewing approvals so repeated Florian decisions can become explicit preference candidates.
+Approval items are stored in the vault under `memory/governance/approvals/` because they are curated hard-gate decisions, not raw local queue data or nice-to-have suggestions. PersoMemory workflows load `memory/governance/preferences/approval-routing.md` before creating or reviewing approvals so repeated Florian decisions can become explicit preference candidates.
 
-For interactive memory work, the current MCP-enabled session should run PersoMemory workflows directly. The agent markdown can list MCP tools, but it does not by itself grant a nested delegated agent access to the parent session's MCP connections or permissions.
+The ontology contract is stored in the vault under `memory/governance/ontology/contract.md` because it is live memory governance, not only repo documentation. Runtime skills and agents read it when category boundaries, durable promotion, retrieval policy, or graph stewardship are ambiguous.
+
+For interactive memory work, the current MCP-enabled session should run PersoMemory workflows directly through the relevant skill. Do not route PersoMemory work through custom agents or nested subagents, because delegated agents may not inherit the parent session's MCP connections or permissions.

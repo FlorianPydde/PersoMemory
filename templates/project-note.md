@@ -7,11 +7,11 @@ domains:
 technologies:
   - Technology Name
 people:
-  - "[[people/person-slug]]"
+  - "[[content/people/person-slug]]"
 decisions:
-  - "[[decisions/decision-slug]]"
+  - "[[content/decisions/decision-slug]]"
 patterns:
-  - "[[patterns/pattern-slug]]"
+  - "[[content/patterns/pattern-slug]]"
 toolkits: []
 related: []
 tags: []
@@ -30,11 +30,11 @@ One paragraph description of the project: customer, context, objective.
 
 ## Key Decisions
 
-Bullet list of significant decisions made on this project. Link each to its decision note when one exists: [[decisions/decision-slug]].
+Bullet list of significant decisions made on this project. Link each to its decision note when one exists: [[content/decisions/decision-slug]].
 
 ## Key People
 
-Link people who are decision-makers, key collaborators, or strong relationship signals: [[people/person-slug]].
+Link people who are decision-makers, key collaborators, or strong relationship signals: [[content/people/person-slug]].
 
 ## Reusable Artifacts
 
@@ -42,7 +42,7 @@ Frameworks, playbooks, architectures, or patterns developed on this project that
 
 ## Lessons and Patterns
 
-Recurring observations that may generalize. Link to pattern notes when they exist: [[patterns/pattern-slug]].
+Recurring observations that may generalize. Link to pattern notes when they exist: [[content/patterns/pattern-slug]].
 
 ## Source
 
