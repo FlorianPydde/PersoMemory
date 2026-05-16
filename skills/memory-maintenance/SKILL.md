@@ -28,7 +28,7 @@ Active memory lives in the Obsidian vault:
 
 `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
-All `memory/...`, `memory/governance/dreams.md`, and `MEMORY.md` paths are vault-relative.
+All vault paths are relative to this vault. V2 does not use top-level `MEMORY.md` or `dreams.md`.
 
 ## Required Multi-Pass Checklist
 
@@ -38,7 +38,7 @@ Run the same checklist for every mode, scoped to the user's request.
 
 Read relevant evidence:
 
-1. Daily notes since the last review or within the requested period.
+1. Evidence notes in `evidence/` since the last review or within the requested period.
 2. WorkIQ candidate evidence written by `memory-sweep`.
 3. Copilot session evidence written by `memory-sweep`.
 4. Source details only when chronology, proof, or contradiction requires it.
@@ -49,19 +49,19 @@ Daily notes remain evidence. Do not delete them.
 
 Read current operational state:
 
-1. `memory/content/active/now.md`.
-2. `memory/content/commitments/open-loops.md`.
-3. Pending approvals in `memory/governance/approvals/`.
+1. `views/active-now.md`.
+2. `execution/open-loops.md`.
+3. Pending approvals in `governance/approvals/`.
 4. Lifecycle/staleness results from persomemory-lifecycle when available.
 
 ### 3. Durable-Memory Pass
 
 Read durable records only as needed:
 
-1. Anchor outcome, execution, or reusable memory records named by the user.
+1. Anchor outcome, execution, or reusable memory records named by the user in `outcomes/`, `execution/`, or `reusable/`.
 2. Explicit graph links from the anchor.
 3. Related records discovered by property search or Smart Connections, confirmed by exact reads.
-4. `MEMORY.md` only when durable identity or stable operating truths may change.
+4. `views/career-impact.md` or relevant reusable records only when durable identity, career-impact, or stable operating truths may change.
 
 ### 4. Conflict and Staleness Pass
 
@@ -112,16 +112,16 @@ Everything else remains evidence.
 
 Ask before:
 
-1. Editing `MEMORY.md`.
-2. Creating career evidence.
-3. Promoting durable outcomes, reusable memory, people context, decisions, patterns, or assets.
+1. Creating or changing durable self-model, career-impact, or operating-principle records.
+2. Creating career-impact evidence.
+3. Promoting durable outcomes or reusable memory.
 4. Closing or reopening outcomes.
 5. Closing ambiguous commitments.
 6. Resolving conflicting evidence.
 7. Archiving, merging, disregarding, deleting, or superseding durable records.
 8. Changing ontology, retrieval policy, approval routing, or skill behavior.
 
-Approval items live in `memory/governance/approvals/YYYY-MM-DD.md`.
+Approval items live in `governance/approvals/YYYY-MM-DD.md`.
 
 ## Output Format
 

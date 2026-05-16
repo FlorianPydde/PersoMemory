@@ -1,9 +1,8 @@
 ---
 type: daily
 date: YYYY-MM-DD
-projects: []
+outcomes: []
 people: []
-decisions: []
 impact-areas: []
 ---
 
@@ -19,7 +18,7 @@ Decisions with rationale. Exclude meeting chatter.
 
 ## Commitments and Open Loops
 
-Promises, follow ups, delegated actions, pending reviews, and obligations. Mirror durable open loops into `memory/content/commitments/open-loops.md`.
+Promises, follow ups, delegated actions, pending reviews, and obligations. Mirror durable open loops into `execution/open-loops.md`.
 For each still-open action, include owner, expected output, due date or timing, source, and whether it was explicit or inferred. Do not omit lower-profile meeting tasks just because they were not top signals.
 
 ## People Signals
@@ -30,7 +29,7 @@ For manager, mentor, leadership, and career conversations, separate recognition 
 ## Evidence of Impact
 
 Praise, shipped outcomes, stakeholder reactions, business movement, or visible influence.
-If strong enough for Connect/promotion, create a standalone note in `memory/content/career/evidence/`.
+If strong enough for Connect/promotion, create an approval item for `views/career-impact.md` or a durable outcome/reusable record.
 
 ## Reusable Assets
 
@@ -42,7 +41,7 @@ Repeated behavior, preference, risk, decision habit, strategic theme, or growth 
 
 ## Promotion Candidates
 
-Candidate facts for `MEMORY.md`, `projects`, `people`, `patterns`, `decisions`, `career`, or `toolkits`. Include why each candidate is durable.
+Candidate facts for `outcomes/`, `execution/`, `reusable/`, or `views/career-impact.md`. Include why each candidate is durable.
 Keep career evidence candidates separate from career direction or feedback updates.
 
 ## Source

@@ -1,11 +1,9 @@
 ---
 type: person
-projects:
-  - "[[content/projects/project-slug]]"
-decisions:
-  - "[[content/decisions/decision-slug]]"
-patterns:
-  - "[[content/patterns/pattern-slug]]"
+outcomes:
+  - "[[outcomes/outcome-slug]]"
+roles: []
+evidence: []
 tags: []
 ---
 
@@ -29,4 +27,4 @@ Behavioral patterns that influence how to work effectively with them.
 
 ## Source
 
-Notes, dates, or context this person note was consolidated from.
+Evidence, outcomes, dates, or context this person note was consolidated from.

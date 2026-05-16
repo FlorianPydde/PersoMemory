@@ -19,17 +19,17 @@ Active memory lives in the Obsidian vault:
 
 `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
-All `memory/...`, `memory/governance/dreams.md`, and `MEMORY.md` paths are vault-relative.
+All vault paths are relative to this vault. V2 does not use top-level `MEMORY.md` or `dreams.md`.
 
 ## Priming
 
 Before WorkIQ calls, load only what improves candidate retrieval and deduplication:
 
-1. `memory/content/active/now.md` for active outcomes and current priorities.
-2. `memory/content/commitments/open-loops.md` for open execution items.
-3. `memory/registries/projects.md`, if available, for project names and slugs.
-4. `memory/governance/ontology/contract.md` for ambiguous routing.
-5. `memory/governance/preferences/approval-routing.md`, if it exists.
+1. `views/active-now.md` for active outcomes and current priorities.
+2. `execution/open-loops.md` for open execution items.
+3. `outcomes/` for outcome names and slugs when needed.
+4. `governance/ontology/contract.md` for ambiguous routing.
+5. `governance/preferences/approval-routing.md`, if it exists.
 
 ## WorkIQ Contract
 
@@ -162,10 +162,10 @@ Do not copy raw transcript text into the vault.
 After collecting candidates:
 
 1. Deduplicate against existing daily evidence, active context, open loops, and pending approvals.
-2. Write or merge concise daily evidence to `memory/content/daily/YYYY-MM-DD.md`.
-3. Mirror still-open concrete obligations into `memory/content/commitments/open-loops.md`.
-4. Update `memory/content/active/now.md` only for material current-state changes.
-5. Queue durable promotions, career evidence, people judgments, closure, conflicting evidence, ontology changes, or ambiguous routing in `memory/governance/approvals/YYYY-MM-DD.md`.
+2. Write or merge concise daily evidence to `evidence/daily/YYYY-MM-DD.md`.
+3. Mirror still-open concrete obligations into `execution/open-loops.md`.
+4. Update `views/active-now.md` only for material current-state changes.
+5. Queue durable promotions, career-impact evidence, people judgments, closure, conflicting evidence, ontology changes, or ambiguous routing in `governance/approvals/YYYY-MM-DD.md`.
 6. Keep WorkIQ evidence and Copilot evidence separate until merged with source attribution.
 
 ## Safety

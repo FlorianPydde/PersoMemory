@@ -27,3 +27,4 @@ This repo is the source of truth for rebuilding the personal memory system on a 
 3. Ask "I am working on Phoenix. What should I focus on today?" and confirm `memory` handles scoped attention.
 4. Ask for a daily sweep only after WorkIQ authentication is confirmed.
 5. Tail `~/.local/share/persomemory/session-start-events.jsonl` and confirm startup loaded a pointer, not full memory content.
+6. Confirm `./scripts/validate-memory-vault.sh` passes without requiring `MEMORY.md`, `dreams.md`, or a `memory/` folder.

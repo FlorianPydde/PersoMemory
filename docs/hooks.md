@@ -63,8 +63,8 @@ Copilot conversations are a second evidence source alongside WorkIQ:
 
 | Evidence source | Intake process | Output |
 | --- | --- | --- |
-| Microsoft 365 activity | WorkIQ sweep | Daily note, active context, open loops, promotion candidates |
-| Copilot conversations | Conversation sweep | Daily note, active context, open loops, promotion candidates |
+| Microsoft 365 activity | WorkIQ sweep | Evidence note, active attention, open loops, promotion candidates |
+| Copilot conversations | Conversation sweep | Evidence note, active attention, open loops, promotion candidates |
 
 The evening sweep should process both streams. WorkIQ covers external work activity. Copilot conversation sweep covers what happened in agent sessions.
 

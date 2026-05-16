@@ -1,14 +1,15 @@
 ---
-type: decision
+type: reusable
+subtype: decision
 date: YYYY-MM-DD
 status: active
-projects:
-  - "[[content/projects/project-slug]]"
+outcomes:
+  - "[[outcomes/outcome-slug]]"
 people:
-  - "[[content/people/person-slug]]"
-patterns: []
+  - person-slug
 supersedes: []
-superseded-by: ""
+why_keep:
+retrieval_cues: []
 tags: []
 ---
 

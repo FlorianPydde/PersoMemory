@@ -1,10 +1,11 @@
 ---
-type: pattern
-projects:
-  - "[[content/projects/project-slug]]"
-decisions:
-  - "[[content/decisions/decision-slug]]"
-toolkits: []
+type: reusable
+subtype: pattern
+outcomes:
+  - "[[outcomes/outcome-slug]]"
+supports: []
+why_keep:
+retrieval_cues: []
 tags: []
 ---
 
@@ -24,7 +25,7 @@ Practical steps or conditions for applying this pattern.
 
 ## Source Projects
 
-Projects where this pattern originated or was validated: [[content/projects/project-slug]].
+Outcomes where this pattern originated or was validated: [[outcomes/outcome-slug]].
 
 ## Limitations
 
@@ -32,4 +33,4 @@ When this pattern does not apply or breaks down.
 
 ## Related Patterns
 
-[[content/patterns/related-pattern-slug]]
+[[reusable/related-reusable-slug]]

@@ -52,33 +52,33 @@ Run the skill's structured Copilot session sweep before memory routing:
 
 Apply low-risk daily and operational writes:
 1. Merge the daily note for ${DATE}.
-2. Add clear new open loops. Mirror every still-open concrete action into memory/content/commitments/open-loops.md, including one-slide summaries, review tasks, next-meeting deliverables, follow-ups, and delegated asks.
-3. Update active context only when explicit and low ambiguity.
+2. Add clear new open loops. Mirror every still-open concrete action into execution/open-loops.md, including one-slide summaries, review tasks, next-meeting deliverables, follow-ups, and delegated asks.
+3. Update views/active-now.md only when explicit and low ambiguity.
 4. Mark processed local conversation queue entries as reviewed or superseded when permissions allow. If not, rely on deduplication and local retention cleanup.
 
-Before routing ambiguous signals, read memory/governance/ontology/contract.md. Use it to decide whether a signal belongs in daily evidence, active context, commitments, durable memory, a maintenance report, approvals, or discard.
+Before routing ambiguous signals, read governance/ontology/contract.md. Use it to decide whether a signal belongs in evidence, active attention, execution, outcomes, reusable memory, a maintenance report, approvals, or discard.
 
 For anything requiring Florian approval, do not resolve it. Write a pending approval item to:
 
-memory/governance/approvals/${DATE}.md
+governance/approvals/${DATE}.md
 
-Before creating approval items, read memory/governance/preferences/approval-routing.md if it exists. Approvals are hard gates, not a suggestion inbox. Suppress weak approval candidates according to those preferences.
+Before creating approval items, read governance/preferences/approval-routing.md if it exists. Approvals are hard gates, not a suggestion inbox. Suppress weak approval candidates according to those preferences.
 
 Approval gates:
-1. Editing MEMORY.md.
-2. Creating career evidence.
-3. Updating durable career goals or feedback from manager/mentor direction.
-4. Promoting durable project, people, pattern, decision, or toolkit notes.
-5. Closing projects.
+1. Creating or changing durable self-model, career-impact, or operating-principle records.
+2. Creating career-impact evidence.
+3. Updating durable career goals or feedback from manager/mentor direction in views/career-impact.md or a durable outcome/reusable record.
+4. Promoting durable outcome or reusable records.
+5. Closing outcomes.
 6. Closing ambiguous commitments.
 7. Resolving conflicting evidence.
 8. Capturing potentially sensitive content.
 
 Each approval item must include Decision required, Recommended answer, Why this is gated, Evidence, If approved, If rejected, Default if no answer, and Preference signal to watch.
 
-Use an approval section named "Career Direction and Feedback Updates" when a manager, mentor, or leader gives future role or career guidance that should update memory/content/career/feedback.md or memory/content/career/goals.md.
+Use an approval section named "Career Direction and Feedback Updates" when a manager, mentor, or leader gives future role or career guidance that should update views/career-impact.md or a durable outcome/reusable record.
 
-If Florian explicitly asks to remember an approval-routing preference, or at least three matching approval decisions suggest the same preference, create an "Approval Routing Preference Candidates" item with the proposed rule, supporting examples, risks of learning it, risks of not learning it, and a recommendation. Do not update memory/governance/preferences/approval-routing.md without approval.
+If Florian explicitly asks to remember an approval-routing preference, or at least three matching approval decisions suggest the same preference, create an "Approval Routing Preference Candidates" item with the proposed rule, supporting examples, risks of learning it, risks of not learning it, and a recommendation. Do not update governance/preferences/approval-routing.md without approval.
 
 If WorkIQ, MCP, permission, vault, or transcript access fails, write a Sweep Failures item in approvals if possible and continue with whatever evidence is available.
 

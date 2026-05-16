@@ -1,8 +1,8 @@
 ---
 type: active-now
 updated: YYYY-MM-DD
-projects:
-  - "[[content/projects/project-slug]]"
+outcomes:
+  - "[[outcomes/outcome-slug]]"
 people: []
 ---
 
@@ -18,4 +18,4 @@ This file captures current working context. It is intentionally volatile and sho
 
 ## Review Rule
 
-Review weekly or when project status materially changes. Move durable lessons into the correct durable memory layer and delete stale operational detail.
+Review weekly or when outcome status materially changes. Move durable lessons into outcomes, execution, reusable memory, or career-impact views and delete stale operational detail.

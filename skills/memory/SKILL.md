@@ -23,7 +23,7 @@ Active memory lives in the Obsidian vault:
 
 `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
-All `memory/...`, `memory/governance/dreams.md`, and `MEMORY.md` paths are vault-relative.
+All vault paths are relative to this vault. V2 does not use top-level `MEMORY.md` or `dreams.md`.
 
 ## Tool Roles
 
@@ -57,10 +57,10 @@ Classify the user request before loading memory.
 | --- | --- | --- |
 | Attention scoped to outcome/topic | "working on X", "focus on X today", "what's next for X" | Named outcome or topic, linked execution, blockers/waiting items |
 | Broad attention | "morning brief", "what should I focus on today" with no scope | Route to `memory-brief` |
-| Outcome recall | "bring me up to speed on X", "what do we know about X" | Named outcome, explicit links, active execution |
-| Execution recall | "what do I owe", "open loops", "follow ups" | Open execution items filtered by scope/person/date |
-| Evidence recall | "what did X say", "what happened in meeting Y" | WorkIQ or daily evidence first, then linked records |
-| Reusable memory | "have I done this before", "use prior artifacts", "brainstorm with memory" | Reusable memory, similar outcomes, principles, assets |
+| Outcome recall | "bring me up to speed on X", "what do we know about X" | `outcomes/`, explicit links, active execution |
+| Execution recall | "what do I owe", "open loops", "follow ups" | `execution/open-loops.md` filtered by scope/person/date |
+| Evidence recall | "what did X say", "what happened in meeting Y" | WorkIQ, `evidence/`, then linked records |
+| Reusable memory | "have I done this before", "use prior artifacts", "brainstorm with memory" | `reusable/`, similar outcomes, principles, assets |
 | Capture/write | "remember this", "capture this", "write this to memory" | Current conversation signal plus relevant target note if obvious |
 | Lifecycle/maintenance | "clean up", "archive", "consolidate", "stale" | Route to `memory-maintenance` |
 
@@ -81,8 +81,8 @@ For live capture:
 1. Extract the smallest useful signal.
 2. Keep only facts that change future action, retrieval, judgment, or reuse.
 3. Prefer evidence first unless the update is operationally obvious.
-4. Obvious open obligations may update Execution/open loops.
-5. Obvious current status changes may update active context.
+4. Obvious open obligations may update `execution/open-loops.md`.
+5. Obvious current status changes may update `views/active-now.md`.
 6. Durable promotions, career evidence, closure, people judgments, ontology/routing changes, and ambiguous commitment closures require approval.
 
 Never store raw transcripts, raw email, raw chat, credentials, tokens, secrets, or sensitive raw data.
@@ -91,16 +91,16 @@ Never store raw transcripts, raw email, raw chat, credentials, tokens, secrets, 
 
 Ask before:
 
-1. Editing `MEMORY.md`.
-2. Creating career evidence.
-3. Promoting durable outcomes, reusable memory, people context, decisions, patterns, or assets.
+1. Creating or changing durable self-model, career-impact, or operating-principle records.
+2. Creating career-impact evidence.
+3. Promoting durable outcomes or reusable memory.
 4. Closing or reopening outcomes.
 5. Closing ambiguous commitments.
 6. Resolving conflicting evidence.
 7. Capturing sensitive content.
 8. Changing ontology, retrieval policy, or approval-routing preferences.
 
-Approval items live in `memory/governance/approvals/YYYY-MM-DD.md`.
+Approval items live in `governance/approvals/YYYY-MM-DD.md`.
 
 ## Output Rule
 

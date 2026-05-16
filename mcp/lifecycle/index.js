@@ -6,7 +6,7 @@
  * Exposes vault lifecycle management as MCP tools callable from any Copilot CLI session.
  *
  * Tools:
- *   lifecycle_check  — surface overdue review-by notes, stale active projects,
+ *   lifecycle_check  — surface overdue review-by notes, stale active outcomes,
  *                      and aged open-loop commitments
  *
  * Config:
@@ -25,8 +25,8 @@ if (!VAULT_PATH) {
   process.exit(1);
 }
 
-const PROJECTS_DIR = join(VAULT_PATH, 'memory', 'content', 'projects');
-const OPEN_LOOPS_PATH = join(VAULT_PATH, 'memory', 'content', 'commitments', 'open-loops.md');
+const OUTCOMES_DIR = join(VAULT_PATH, 'outcomes');
+const OPEN_LOOPS_PATH = join(VAULT_PATH, 'execution', 'open-loops.md');
 
 const STALE_DAYS_DEFAULT = 14;
 const LOOP_AGE_DAYS_DEFAULT = 14;
@@ -61,20 +61,20 @@ function daysDiff(from, to) {
   return Math.floor((to - from) / 86400000);
 }
 
-function checkProjects(staleDays) {
+function checkOutcomes(staleDays) {
   const overdue = [];
   const stale = [];
   const now = todayUTC();
 
   let files;
   try {
-    files = readdirSync(PROJECTS_DIR).filter(f => f.endsWith('.md')).sort();
+    files = readdirSync(OUTCOMES_DIR).filter(f => f.endsWith('.md')).sort();
   } catch {
     return { overdue, stale };
   }
 
   for (const file of files) {
-    const path = join(PROJECTS_DIR, file);
+    const path = join(OUTCOMES_DIR, file);
     let content;
     try { content = readFileSync(path, 'utf8'); } catch { continue; }
 
@@ -85,7 +85,7 @@ function checkProjects(staleDays) {
     const reviewBy = parseDate(fm['review-by']);
     if (reviewBy && reviewBy <= now) {
       overdue.push({
-        note: `content/projects/${name}`,
+        note: `outcomes/${name}`,
         status,
         reviewBy: reviewBy.toISOString().slice(0, 10),
         daysOverdue: daysDiff(reviewBy, now),
@@ -102,7 +102,7 @@ function checkProjects(staleDays) {
       const age = daysDiff(lastUpdated, now);
       if (age >= staleDays) {
         stale.push({
-          note: `content/projects/${name}`,
+          note: `outcomes/${name}`,
           status,
           lastUpdated: lastUpdated.toISOString().slice(0, 10),
           daysSinceUpdate: age,
@@ -152,8 +152,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       description: [
         'Check the PersoMemory vault for lifecycle issues.',
         'Returns three categories:',
-        '  overdue      — project notes whose review-by date has passed',
-        '  stale        — active/winding-down projects not updated in stale_days (default 14)',
+        '  overdue      — outcome notes whose review-by date has passed',
+        '  stale        — active/winding-down outcomes not updated in stale_days (default 14)',
         '  agedLoops    — open commitments with an explicit date older than loop_age_days (default 14)',
         'Use the results to triage: confirm still active, extend review-by, or close.',
       ].join('\n'),
@@ -162,7 +162,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         properties: {
           stale_days: {
             type: 'number',
-            description: 'Days without update before a project is stale (default 14)',
+              description: 'Days without update before an outcome is stale (default 14)',
           },
           loop_age_days: {
             type: 'number',
@@ -183,7 +183,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const staleDays = typeof args.stale_days === 'number' ? args.stale_days : STALE_DAYS_DEFAULT;
   const loopAgeDays = typeof args.loop_age_days === 'number' ? args.loop_age_days : LOOP_AGE_DAYS_DEFAULT;
 
-  const { overdue, stale } = checkProjects(staleDays);
+  const { overdue, stale } = checkOutcomes(staleDays);
   const agedLoops = checkOpenLoops(loopAgeDays);
   const totalIssues = overdue.length + stale.length + agedLoops.length;
 

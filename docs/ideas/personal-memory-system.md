@@ -14,7 +14,7 @@ The system has three layers:
 
 2. **Conversational Memory Layer**: When you talk to your CLI agent (Copilot CLI, Claude Code, etc.) about technical problems, projects, or strategy, the agent writes relevant context to the same Obsidian vault. This is organic, not a "debrief" ritual. The agent decides what's worth keeping based on the conversation.
 
-3. **Retrieval and Agent Layer**: The CLI agent loads relevant memory on each interaction. It uses semantic search (embeddings) over the vault to pull context. Over time, a "dreaming" process (inspired by OpenClaw) consolidates daily notes into durable knowledge: project histories, decision patterns, relationship context, career trajectory.
+3. **Retrieval and Agent Layer**: The CLI agent retrieves relevant memory deliberately through skills. It uses exact paths, links, and semantic search over the vault to pull context. Over time, a maintenance process consolidates daily notes into durable outcomes, reusable memory, execution state, and career-impact views.
 
 **Why Obsidian?** It's Markdown-native, human-readable, versionable, has a plugin ecosystem, and you can always read and edit your own memory. It's also not locked into any vendor.
 
@@ -41,13 +41,14 @@ When a new project lands, the agent already knows: "This looks like the PoC you 
 **Phase 1: Conversational Memory (Week 1-2)**
 - Configure your CLI agent (Copilot CLI or Claude Code) to read from and write to an Obsidian vault
 - Define the memory file structure:
-  - `memory/content/daily/YYYY-MM-DD.md` for daily notes from conversations
-  - `memory/content/projects/{project-name}.md` for project-specific knowledge
-  - `memory/content/people/{person}.md` for relationship context
-  - `memory/content/decisions/` for decision logs
-  - `MEMORY.md` as the top-level durable memory (loaded every session)
+  - `evidence/daily/YYYY-MM-DD.md` for daily notes from conversations
+  - `evidence/sessions/{session}.md` for CLI/session evidence
+  - `outcomes/{outcome}.md` for maintained projects, pursuits, deliverables, and workstreams
+  - `execution/open-loops.md` for commitments, blockers, and waiting items
+  - `reusable/` for decision records, patterns, prompts, narratives, principles, and reusable assets
+  - `views/active-now.md` and `views/career-impact.md` for curated projections
 - Build the agent's "memory write" behavior: after meaningful conversations, it extracts and saves relevant facts
-- Build the agent's "memory read" behavior: at session start, it loads MEMORY.md + recent daily notes + relevant project files
+- Build the agent's "memory read" behavior: at session start it loads only a pointer; skills retrieve relevant vault context on demand
 
 **Phase 2: Graph API Ingestion (Week 3-4)**
 - Build a Python script that pulls from Microsoft Graph API:
@@ -62,7 +63,7 @@ When a new project lands, the agent already knows: "This looks like the PoC you 
 **Phase 3: Consolidation / Dreaming (Week 5+)**
 - Build a periodic consolidation pass (weekly) that:
   - Reviews daily notes from the past week
-  - Promotes durable knowledge to project files, people files, MEMORY.md
+  - Promotes durable knowledge to outcomes, execution, reusable memory, and views
   - Identifies patterns and decision frameworks
   - Aggressively prunes noise
 - This is the "dreaming" concept from OpenClaw

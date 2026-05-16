@@ -32,12 +32,12 @@ Examples that do not belong here:
 
 Load only the context needed for a broad attention view:
 
-1. `memory/content/active/now.md`.
-2. `memory/content/commitments/open-loops.md`.
-3. Pending approval files in `memory/governance/approvals/`, if any.
-4. Recent unresolved maintenance reports in `memory/governance/maintenance/`, if any.
-5. `memory/governance/preferences/approval-routing.md`, if it exists.
-6. `memory/governance/ontology/contract.md` only if approval routing or memory category decisions are needed.
+1. `views/active-now.md`.
+2. `execution/open-loops.md`.
+3. Pending approval files in `governance/approvals/`, if any.
+4. Recent unresolved maintenance reports in `governance/maintenance/`, if any.
+5. `governance/preferences/approval-routing.md`, if it exists.
+6. `governance/ontology/contract.md` only if approval routing or memory category decisions are needed.
 
 Run persomemory-lifecycle checks when available to surface stale outcomes and aged open loops.
 

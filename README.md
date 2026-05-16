@@ -24,7 +24,7 @@ Detailed memory behavior belongs in the memory skill family under `skills/*/SKIL
 4. `~/.copilot/hooks/persomemory-session.json`: optional session start and session end hooks.
 5. `~/.local/share/persomemory`: disposable local queue and hook runtime state.
 6. Obsidian vault: durable memory content.
-7. `memory/governance/ontology/contract.md`: vault-canonical live routing, retrieval, decay, and maintenance policy.
+7. `governance/ontology/contract.md`: vault-canonical live routing, retrieval, decay, and maintenance policy.
 8. This repo: versioned recovery source.
 
 ## Repository Layout
@@ -75,7 +75,7 @@ bash ./scripts/test-runtime.sh
 ./scripts/run-evening-sweep.sh
 ```
 
-The helper runs the PersoMemory evening sweep with narrow Copilot permissions: read access to the local queue plus the required MCP servers. Approval-gated decisions are written to `memory/governance/approvals/YYYY-MM-DD.md` and picked up by the morning brief.
+The helper runs the PersoMemory evening sweep with narrow Copilot permissions: read access to the local queue plus the required MCP servers. Approval-gated decisions are written to `governance/approvals/YYYY-MM-DD.md` and picked up by the morning brief.
 
 ## Operating Model
 
@@ -87,7 +87,7 @@ MCPs provide access. The memory skill family provides judgment, routing, and wor
 4. MCPVault reads and writes the Obsidian vault.
 5. Smart Connections retrieves related notes.
 6. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
-7. `memory/governance/ontology/contract.md` defines live category boundaries, routing, retrieval triggers, decay rules, durable-entity thresholds, and graph-steward eval examples.
+7. `governance/ontology/contract.md` defines live category boundaries, routing, retrieval triggers, decay rules, durable-entity thresholds, and maintenance eval examples.
 8. `memory` defines core retrieval, live capture, routing, and write gates.
 9. `memory-brief` defines broad day-level attention.
 10. `memory-sweep` defines WorkIQ and Copilot evidence intake.
@@ -96,8 +96,8 @@ MCPs provide access. The memory skill family provides judgment, routing, and wor
 
 The durable memory store is the Obsidian vault. The local queue is disposable working state and can be rebuilt only by future activity.
 
-Approval items are stored in the vault under `memory/governance/approvals/` because they are curated hard-gate decisions, not raw local queue data or nice-to-have suggestions. PersoMemory workflows load `memory/governance/preferences/approval-routing.md` before creating or reviewing approvals so repeated Florian decisions can become explicit preference candidates.
+Approval items are stored in the vault under `governance/approvals/` because they are curated hard-gate decisions, not raw local queue data or nice-to-have suggestions. PersoMemory workflows load `governance/preferences/approval-routing.md` before creating or reviewing approvals so repeated Florian decisions can become explicit preference candidates.
 
-The ontology contract is stored in the vault under `memory/governance/ontology/contract.md` because it is live memory governance, not only repo documentation. Runtime skills and agents read it when category boundaries, durable promotion, retrieval policy, or graph stewardship are ambiguous.
+The ontology contract is stored in the vault under `governance/ontology/contract.md` because it is live memory governance, not only repo documentation. Runtime skills and agents read it when category boundaries, durable promotion, retrieval policy, or maintenance decisions are ambiguous.
 
 For interactive memory work, the current MCP-enabled session should run PersoMemory workflows directly through the relevant skill. Do not route PersoMemory work through custom agents or nested subagents, because delegated agents may not inherit the parent session's MCP connections or permissions.

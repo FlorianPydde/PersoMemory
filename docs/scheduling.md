@@ -26,7 +26,7 @@ The helper invokes the `/memory-sweep` skill directly with explicit MCP tool per
 Approval-gated decisions go to:
 
 ```text
-memory/governance/approvals/YYYY-MM-DD.md
+governance/approvals/YYYY-MM-DD.md
 ```
 
 ## Tool permissions
@@ -79,6 +79,6 @@ Cron can call the installed helper with an absolute path:
 
 ## Morning brief
 
-The morning brief should read `memory/governance/preferences/approval-routing.md`, then read pending approval notes from `memory/governance/approvals/` and ask Florian to approve, reject, defer, or edit them.
+The morning brief should read `governance/preferences/approval-routing.md`, then read pending approval notes from `governance/approvals/` and ask Florian to approve, reject, defer, or edit them.
 
 This makes the overnight run useful without pretending that unattended approval happened.

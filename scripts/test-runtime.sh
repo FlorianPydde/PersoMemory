@@ -51,16 +51,15 @@ cleanup() {
 trap cleanup EXIT
 
 fixture_vault="${tmpdir}/vault"
-mkdir -p "${fixture_vault}/memory/content/active" "${fixture_vault}/memory/content/commitments"
-mkdir -p "${fixture_vault}/memory/governance/ontology"
-mkdir -p "${fixture_vault}/memory/governance/approvals" "${fixture_vault}/memory/governance/maintenance" "${fixture_vault}/memory/governance/preferences"
-mkdir -p "${fixture_vault}/memory/content/daily" "${fixture_vault}/memory/content/projects" "${fixture_vault}/memory/content/people" "${fixture_vault}/memory/content/patterns" "${fixture_vault}/memory/content/decisions" "${fixture_vault}/memory/content/career" "${fixture_vault}/memory/content/toolkits" "${fixture_vault}/memory/registries"
-printf '# Memory\n' > "${fixture_vault}/MEMORY.md"
-printf '# Dreams\n' > "${fixture_vault}/memory/governance/dreams.md"
-printf '# Now\n' > "${fixture_vault}/memory/content/active/now.md"
-printf '# Open Loops\n' > "${fixture_vault}/memory/content/commitments/open-loops.md"
-printf '# Ontology Contract\n' > "${fixture_vault}/memory/governance/ontology/contract.md"
-printf '# Projects\n' > "${fixture_vault}/memory/registries/projects.md"
+mkdir -p "${fixture_vault}/evidence/daily" "${fixture_vault}/evidence/sessions"
+mkdir -p "${fixture_vault}/outcomes" "${fixture_vault}/execution" "${fixture_vault}/reusable" "${fixture_vault}/views"
+mkdir -p "${fixture_vault}/governance/ontology" "${fixture_vault}/governance/approvals" "${fixture_vault}/governance/maintenance" "${fixture_vault}/governance/preferences"
+printf '# V2 Vault\n' > "${fixture_vault}/README.md"
+printf '# Active Now\n' > "${fixture_vault}/views/active-now.md"
+printf '# Career Impact\n' > "${fixture_vault}/views/career-impact.md"
+printf '# Open Loops\n' > "${fixture_vault}/execution/open-loops.md"
+printf '# Ontology Contract\n' > "${fixture_vault}/governance/ontology/contract.md"
+printf '# Approval Routing\n' > "${fixture_vault}/governance/preferences/approval-routing.md"
 
 printf '{"sessionId":"startup","source":"manual-test","cwd":"/tmp/project"}' \
   | PERSOMEMORY_DATA_HOME="${tmpdir}" PERSOMEMORY_VAULT_PATH="${fixture_vault}" bash config/hooks/scripts/persomemory-session-start.sh >"${tmpdir}/session-start.out"
@@ -151,8 +150,8 @@ grep -q 'broad day-level' skills/memory-brief/SKILL.md
 grep -q 'route through `memory`' skills/memory-brief/SKILL.md
 grep -q 'Pending Approvals' skills/memory-brief/SKILL.md
 grep -q 'ObsidianVaultMemory' skills/memory-sweep/SKILL.md
-grep -q "memory', 'content', 'projects" mcp/lifecycle/index.js
-grep -q "memory', 'content', 'commitments" mcp/lifecycle/index.js
+grep -q "VAULT_PATH, 'outcomes'" mcp/lifecycle/index.js
+grep -q "VAULT_PATH, 'execution', 'open-loops.md'" mcp/lifecycle/index.js
 grep -q 'WorkIQ Question Battery' skills/memory-sweep/SKILL.md
 grep -q 'Obligations and Requests' skills/memory-sweep/SKILL.md
 grep -q 'Project or Outcome Changes' skills/memory-sweep/SKILL.md
@@ -162,7 +161,7 @@ grep -q 'Reusable Artifacts and Ideas' skills/memory-sweep/SKILL.md
 grep -q 'Direct Mentions and Questions to Florian' skills/memory-sweep/SKILL.md
 grep -q 'No candidates found' skills/memory-sweep/SKILL.md
 grep -q 'Copilot CLI Session Sweep' skills/memory-sweep/SKILL.md
-grep -q 'memory/governance/approvals/YYYY-MM-DD.md' skills/memory-sweep/SKILL.md
+grep -q 'governance/approvals/YYYY-MM-DD.md' skills/memory-sweep/SKILL.md
 grep -q 'Maintains the memory vault over time' skills/memory-maintenance/SKILL.md
 grep -q 'promote' skills/memory-maintenance/SKILL.md
 grep -q 'steward' skills/memory-maintenance/SKILL.md
@@ -170,11 +169,13 @@ grep -q 'scoped-maintenance' skills/memory-maintenance/SKILL.md
 grep -q 'monthly-compression' skills/memory-maintenance/SKILL.md
 grep -q 'Required Multi-Pass Checklist' skills/memory-maintenance/SKILL.md
 grep -q 'Supersede' skills/memory-maintenance/SKILL.md
-grep -q 'memory/registries/projects.md' scripts/validate-memory-vault.sh
-grep -q 'memory/content/projects' scripts/validate-memory-vault.sh
-grep -q 'memory/governance/dreams.md' scripts/validate-memory-vault.sh
+grep -q 'outcomes' scripts/validate-memory-vault.sh
+grep -q 'execution/open-loops.md' scripts/validate-memory-vault.sh
+grep -q 'governance/maintenance' scripts/validate-memory-vault.sh
 grep -q 'workflow output shapes live in the relevant memory skill' docs/spec.md
 ! grep -q 'memory/content/daily/TEMPLATE.md' scripts/validate-memory-vault.sh
+grep -q '"MEMORY.md"' scripts/validate-memory-vault.sh
+grep -q '"governance/dreams.md"' scripts/validate-memory-vault.sh
 ! grep -R -q 'name: persomemory' skills
 test ! -e config/agents/persomemory-agent.agent.md
 test ! -e config/agents/persomemory-graph-steward.agent.md
@@ -188,9 +189,9 @@ grep -q 'Approval Routing Preference Candidates' templates/approvals.md
 grep -q 'type: maintenance-report' templates/maintenance-report.md
 grep -q 'Entity Disposition' templates/maintenance-report.md
 grep -q 'Cold Evidence / Daily Notes' templates/maintenance-report.md
-grep -q 'memory/governance/approvals/YYYY-MM-DD.md' templates/maintenance-report.md
-grep -q 'memory/governance/approvals/YYYY-MM-DD.md' README.md
-grep -q 'memory/governance/preferences/approval-routing.md' README.md
+grep -q 'governance/approvals/YYYY-MM-DD.md' templates/maintenance-report.md
+grep -q 'governance/approvals/YYYY-MM-DD.md' README.md
+grep -q 'governance/preferences/approval-routing.md' README.md
 ! grep -R -q 'memory/inbox/approvals' README.md docs scripts config skills templates
 
 PERSOMEMORY_DATA_HOME="${tmpdir}/runtime" COPILOT_BIN=/bin/echo ./scripts/run-evening-sweep.sh 2026-05-13 >"${tmpdir}/sweep.out"
@@ -219,9 +220,9 @@ grep -q 'Risk and Weak Signal Audit' "${tmpdir}/sweep.out"
 grep -q 'Routing and Approval Audit' "${tmpdir}/sweep.out"
 grep -q 'Merge contract' "${tmpdir}/sweep.out"
 grep -q 'Career Direction and Feedback Updates' "${tmpdir}/sweep.out"
-grep -q 'memory/governance/approvals/2026-05-13.md' "${tmpdir}/sweep.out"
-grep -q 'memory/governance/preferences/approval-routing.md' "${tmpdir}/sweep.out"
-grep -q 'memory/governance/ontology/contract.md' "${tmpdir}/sweep.out"
+grep -q 'governance/approvals/2026-05-13.md' "${tmpdir}/sweep.out"
+grep -q 'governance/preferences/approval-routing.md' "${tmpdir}/sweep.out"
+grep -q 'governance/ontology/contract.md' "${tmpdir}/sweep.out"
 grep -q 'Approvals are hard gates, not a suggestion inbox' "${tmpdir}/sweep.out"
 grep -q 'Approval Routing Preference Candidates' "${tmpdir}/sweep.out"
 

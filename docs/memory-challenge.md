@@ -112,7 +112,7 @@ A cron or scheduled sweep may discover something that needs judgment, such as a 
 Possible answers:
 
 1. Allow low risk daily and operational writes.
-2. Route gated decisions to `memory/governance/approvals/YYYY-MM-DD.md`.
+2. Route gated decisions to `governance/approvals/YYYY-MM-DD.md`.
 3. Review pending approval items during the morning brief.
 4. Avoid `--yolo` and `--allow-all-tools` for unattended memory work by default.
 
@@ -139,10 +139,10 @@ Memory management is the lifecycle discipline around those things. It decides wh
 
 PersoMemory separates four layers.
 
-1. Evidence: daily notes and source attributed observations.
-2. Operational memory: active context and open loops.
-3. Durable memory: stable self model, project notes, people notes, patterns, decisions, toolkits, and career evidence.
-4. Consolidation reasoning: DREAMS and promotion logs.
+1. Evidence: daily/session notes and source-attributed observations.
+2. Execution: active commitments, blockers, waiting items, and open loops.
+3. Outcomes: maintained projects, pursuits, deliverables, and workstreams.
+4. Reusable memory and views: decisions, patterns, narratives, principles, reusable assets, attention views, and career-impact projections.
 
 This separation matters because each layer has a different freshness and approval requirement.
 
@@ -150,18 +150,14 @@ This separation matters because each layer has a different freshness and approva
 
 The main note types are:
 
-1. `MEMORY.md`: durable self model, stable working style, decision frameworks, and stable people context.
-2. `memory/content/active/now.md`: current priorities and short lived active context.
-3. `memory/content/commitments/open-loops.md`: obligations, follow ups, and recently closed loops.
-4. `memory/content/daily/YYYY-MM-DD.md`: episodic evidence and daily intake.
-5. `memory/content/projects/*.md`: structural project knowledge.
-6. `memory/content/people/*.md`: durable relationship context.
-7. `memory/content/patterns/*.md`: repeated heuristics and reusable patterns.
-8. `memory/content/decisions/*.md`: durable decisions and revisit triggers.
-9. `memory/content/toolkits/*.md`: reusable prompts, checklists, playbooks, and assets.
-10. `memory/content/career/*.md`: accomplishments, feedback, goals, and growth evidence.
-11. `memory/content/career/evidence/*.md`: atomic career evidence strong enough for Connect or promotion.
-12. `memory/governance/approvals/*.md`: pending human decisions from unattended sweeps.
+1. `evidence/daily/YYYY-MM-DD.md`: episodic evidence and daily intake.
+2. `evidence/sessions/*.md`: Copilot/session evidence worth retaining.
+3. `views/active-now.md`: current priorities and short lived attention context.
+4. `execution/open-loops.md`: obligations, follow ups, and recently closed loops.
+5. `outcomes/*.md`: maintained projects, pursuits, deliverables, and workstreams.
+6. `reusable/*.md`: decisions, patterns, prompts, narratives, principles, and reusable assets.
+7. `views/career-impact.md`: curated career-impact projection.
+8. `governance/approvals/*.md`: pending human decisions from unattended sweeps.
 
 ### Memory Management Challenges
 
@@ -172,8 +168,8 @@ Daily notes are useful as evidence, but they become harmful if every retrieval s
 Possible answers:
 
 1. Treat daily notes as episodic evidence, not primary retrieval memory.
-2. Promote repeated or durable signals into project, people, pattern, decision, toolkit, or career notes.
-3. Keep operational state in `active/now.md` and `open-loops.md`, not buried in daily notes.
+2. Promote repeated or durable signals into `outcomes/`, `execution/`, `reusable/`, or curated `views/`.
+3. Keep operational state in `views/active-now.md` and `execution/open-loops.md`, not buried in daily notes.
 4. Use daily notes mainly when chronology, source detail, or a specific date matters.
 
 #### Challenge: Current status becomes stale
@@ -182,21 +178,21 @@ Projects can end without anyone saying "this project is closed". Commitments can
 
 Possible answers:
 
-1. Use lifecycle checks for stale projects and aged open loops.
-2. Add `review-by` to winding down or uncertain project notes.
+1. Use lifecycle checks for stale outcomes and aged open loops.
+2. Add `review-by` to winding down or uncertain outcome notes.
 3. Use morning brief and weekly consolidation to surface stale state.
 4. Require approval before closing ambiguous projects or commitments.
 
 #### Challenge: Over promotion
 
-Fresh thoughts can look durable in the moment. If promoted too early, `MEMORY.md` and durable notes become noisy.
+Fresh thoughts can look durable in the moment. If promoted too early, durable records and views become noisy.
 
 Possible answers:
 
 1. Route new facts first into daily notes or active context.
 2. Promote durable memory only when repeated, identity shaping, strategy changing, relationship shaping, career relevant, or reusable.
-3. Require approval for `MEMORY.md` changes and career evidence.
-4. Use DREAMS for consolidation rather than promoting every raw signal.
+3. Require approval for career evidence, retrieval-policy changes, and high-impact durable rewrites.
+4. Use `memory-maintenance` for consolidation rather than promoting every raw signal.
 
 #### Challenge: Commitments are easy to miss
 
@@ -204,7 +200,7 @@ If commitments stay only in meeting notes or daily notes, they stop being action
 
 Possible answers:
 
-1. Mirror open obligations into `memory/content/commitments/open-loops.md`.
+1. Mirror open obligations into `execution/open-loops.md`.
 2. Mark closed loops explicitly, then remove them after consolidation.
 3. Distinguish explicit promises from vague discussion.
 4. Use lifecycle tooling to surface aged loops.
@@ -218,7 +214,7 @@ Possible answers:
 
 1. Split career conversations into recognition, evidence, and future direction.
 2. Route recognition to daily notes and, when strong enough, career evidence approval items.
-3. Route future guidance to `memory/content/career/feedback.md` or `memory/content/career/goals.md` through an approval-gated career direction update.
+3. Route future guidance to `views/career-impact.md` or a reusable narrative/principle through an approval-gated career direction update.
 4. Capture role direction, exposure, skills, behaviors to start/stop/continue, and expected positioning.
 
 #### Challenge: The graph can become inconsistent
@@ -228,7 +224,7 @@ If notes lack frontmatter or inline wikilinks, the graph becomes harder for Obsi
 Possible answers:
 
 1. Require `type` frontmatter for every durable note.
-2. Include relationship fields such as projects, people, decisions, patterns, and toolkits where relevant.
+2. Include relationship fields such as outcomes, people, supports, supersedes, and retrieval cues where relevant.
 3. Add inline wikilinks in prose when referencing related notes.
 4. Prefer updating existing notes over creating parallel duplicates.
 
@@ -238,7 +234,7 @@ Ordinary delivery can be mistaken for Connect or promotion level evidence.
 
 Possible answers:
 
-1. Keep ordinary delivery in daily notes or project notes.
+1. Keep ordinary delivery in daily evidence or outcome notes.
 2. Create atomic career evidence only when it is strong enough for Connect, promotion, or leadership narrative.
 3. Use the controlled impact taxonomy.
 4. Preserve observer and source type fields.
@@ -255,7 +251,7 @@ The goal is not to load everything. The goal is to provide the smallest context 
 
 PersoMemory uses several retrieval modes.
 
-1. Startup context: `MEMORY.md`, `memory/content/active/now.md`, and `memory/content/commitments/open-loops.md`.
+1. Startup context: pointer-only reminder that memory retrieval is skill-triggered.
 2. Direct file lookup: read exact notes when the path is known.
 3. Linked note traversal: follow frontmatter and inline wikilinks.
 4. Property search: find notes by type, status, domain, or impact area.
@@ -340,10 +336,10 @@ Current mechanisms include:
 
 1. Approval gates for high impact memory writes.
 2. Approval files for unattended sweeps.
-3. Lifecycle checks for stale projects and aged loops.
+3. Lifecycle checks for stale outcomes and aged loops.
 4. Controlled schemas and frontmatter.
 5. Source attribution for every memory write.
-6. Separation between raw evidence, operational memory, and durable memory.
+6. Separation between raw evidence, execution state, outcomes, reusable memory, and views.
 7. Local disposable queues for transient runtime state.
 8. Runtime regression checks for hooks and sweep behavior.
 
@@ -351,10 +347,10 @@ Current mechanisms include:
 
 The system should ask before:
 
-1. Editing `MEMORY.md`.
+1. Changing durable memory or retrieval policy.
 2. Creating career evidence.
-3. Promoting durable project, people, pattern, decision, or toolkit notes.
-4. Closing a project.
+3. Promoting durable outcomes, reusable memory, or career-impact view changes.
+4. Closing an outcome.
 5. Closing an ambiguous commitment.
 6. Resolving conflicting evidence.
 7. Capturing potentially sensitive content.
@@ -376,14 +372,14 @@ Possible answers:
 
 #### Challenge: Stale memory silently degrades retrieval
 
-Outdated project status and old commitments can mislead future sessions.
+Outdated outcome status and old commitments can mislead future sessions.
 
 Possible answers:
 
 1. Run lifecycle checks during morning brief, evening sweep, and weekly consolidation.
-2. Add review dates for winding down projects.
+2. Add review dates for winding down outcomes.
 3. Surface stale items as decisions: confirm active, pause, close, extend review date, or disregard.
-4. Avoid using `MEMORY.md` for current project status.
+4. Avoid using reusable records for current project status; keep volatile state in `views/active-now.md` and `execution/open-loops.md`.
 
 #### Challenge: Privacy failures are hard to undo
 

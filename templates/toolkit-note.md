@@ -1,9 +1,11 @@
 ---
-type: toolkit
-projects:
-  - "[[content/projects/project-slug]]"
-patterns:
-  - "[[content/patterns/pattern-slug]]"
+type: reusable
+subtype: toolkit
+outcomes:
+  - "[[outcomes/outcome-slug]]"
+supports: []
+why_keep:
+retrieval_cues: []
 tags: []
 ---
 

@@ -6,15 +6,13 @@ impact-areas:
 so-what: "One sentence: what changed and why it matters."
 source-type: shipped-outcome
 observers:
-  - "[[content/people/person-slug]]"
-projects:
-  - "[[content/projects/project-slug]]"
+  - person-slug
+outcomes:
+  - "[[outcomes/outcome-slug]]"
 people:
-  - "[[content/people/person-slug]]"
-patterns:
-  - "[[content/patterns/pattern-slug]]"
-decisions:
-  - "[[content/decisions/decision-slug]]"
+  - person-slug
+reusable:
+  - "[[reusable/reusable-slug]]"
 tags: []
 ---
 
@@ -34,13 +32,12 @@ Source evidence: who said it, what was shipped, what was the measurable outcome.
 
 ## Connected Context
 
-- Project: [[content/projects/project-slug]]
-- Pattern applied: [[content/patterns/pattern-slug]]
-- Decision enabled: [[content/decisions/decision-slug]]
+- Outcome: [[outcomes/outcome-slug]]
+- Reusable memory applied: [[reusable/reusable-slug]]
 
 ---
 
-*Capture threshold: only create this note if the evidence is strong enough for Connect, a promotion case, or a leadership narrative. Ordinary work goes in project notes or daily notes.*
+*Capture threshold: only create this note if the evidence is strong enough for Connect, a promotion case, or a leadership narrative. Ordinary work goes in outcomes or evidence notes.*
 
 *impact-areas options: High Quality Delivery | Customer Orientation | AI Design Wins / Pre-sales | Thought & Technical Leadership | Microsoft Business Understanding and Management | Growth Mindset & Problem Solving | Diversity & Inclusion | Security*
 

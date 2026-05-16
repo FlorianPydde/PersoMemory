@@ -4,7 +4,7 @@ Lifecycle check for the PersoMemory vault.
 
 Surfaces three categories:
   1. OVERDUE: notes with review-by dates in the past
-  2. STALE: active/winding-down project notes not updated in STALE_DAYS
+  2. STALE: active/winding-down outcome notes not updated in STALE_DAYS
   3. AGED LOOPS: open-loop commitments with an explicit date older than LOOP_AGE_DAYS
 
 Usage:
@@ -20,9 +20,8 @@ from datetime import date, datetime
 from pathlib import Path
 
 VAULT = Path(os.environ.get("VAULT_PATH", "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"))
-PROJECTS_DIR = VAULT / "memory" / "content" / "projects"
-OPEN_LOOPS = VAULT / "memory" / "content" / "commitments" / "open-loops.md"
-DECISIONS_DIR = VAULT / "memory" / "content" / "decisions"
+OUTCOMES_DIR = VAULT / "outcomes"
+OPEN_LOOPS = VAULT / "execution" / "open-loops.md"
 
 STALE_DAYS_DEFAULT = 14
 LOOP_AGE_DAYS_DEFAULT = 14
@@ -62,11 +61,11 @@ def parse_date(val: str) -> date | None:
     return None
 
 
-def check_projects(today: date, stale_days: int) -> tuple[list, list]:
+def check_outcomes(today: date, stale_days: int) -> tuple[list, list]:
     overdue = []
     stale = []
 
-    for p in sorted(PROJECTS_DIR.glob("*.md")):
+    for p in sorted(OUTCOMES_DIR.glob("*.md")):
         fm = parse_frontmatter(p)
         status = fm.get("status", "").lower()
         name = p.stem
@@ -76,7 +75,7 @@ def check_projects(today: date, stale_days: int) -> tuple[list, list]:
             d = parse_date(review_by_raw)
             if d and d <= today:
                 overdue.append({
-                    "note": f"content/projects/{name}",
+                    "note": f"outcomes/{name}",
                     "status": status,
                     "review-by": str(d),
                     "days_overdue": (today - d).days,
@@ -90,7 +89,7 @@ def check_projects(today: date, stale_days: int) -> tuple[list, list]:
                     age = (today - d).days
                     if age >= stale_days:
                         stale.append({
-                            "note": f"content/projects/{name}",
+                            "note": f"outcomes/{name}",
                             "status": status,
                             "last_updated": str(d),
                             "days_since_update": age,
@@ -100,7 +99,7 @@ def check_projects(today: date, stale_days: int) -> tuple[list, list]:
                 age = (today - mtime).days
                 if age >= stale_days:
                     stale.append({
-                        "note": f"content/projects/{name}",
+                        "note": f"outcomes/{name}",
                         "status": status,
                         "last_updated": f"file mtime {mtime}",
                         "days_since_update": age,
@@ -156,14 +155,14 @@ def main():
     print(f"Lifecycle check: {today}\n")
     print("=" * 60)
 
-    overdue, stale = check_projects(today, args.stale_days)
+    overdue, stale = check_outcomes(today, args.stale_days)
 
     print(f"\n[OVERDUE] Notes past their review-by date ({len(overdue)})")
     print_section("overdue", overdue, lambda i: print(
         f"  {i['note']:<40} status={i['status']:<14} review-by={i['review-by']}  ({i['days_overdue']}d overdue)"
     ))
 
-    print(f"[STALE] Active/winding-down projects not updated in {args.stale_days}+ days ({len(stale)})")
+    print(f"[STALE] Active/winding-down outcomes not updated in {args.stale_days}+ days ({len(stale)})")
     print_section("stale", stale, lambda i: print(
         f"  {i['note']:<40} status={i['status']:<14} last={i['last_updated']}  ({i['days_since_update']}d ago)"
     ))

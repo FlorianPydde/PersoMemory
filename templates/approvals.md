@@ -49,7 +49,7 @@ Use this section only when Florian explicitly asks to remember an approval-routi
 - **Supporting examples**:
 - **Risks of learning this rule**:
 - **Risks of not learning this rule**:
-- **If approved**: Add or update `memory/governance/preferences/approval-routing.md`.
+- **If approved**: Add or update `governance/preferences/approval-routing.md`.
 - **If rejected**:
 - **Default if no answer**:
 - **Preference signal to watch**:

@@ -4,22 +4,18 @@ set -euo pipefail
 VAULT="${1:-/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory}"
 
 required=(
-  "MEMORY.md"
-  "memory/governance/dreams.md"
-  "memory/content/active/now.md"
-  "memory/content/commitments/open-loops.md"
-  "memory/governance/ontology/contract.md"
-  "memory/registries/projects.md"
-  "memory/content/daily"
-  "memory/content/projects"
-  "memory/content/people"
-  "memory/content/patterns"
-  "memory/content/decisions"
-  "memory/content/career"
-  "memory/content/toolkits"
-  "memory/governance/approvals"
-  "memory/governance/maintenance"
-  "memory/governance/preferences"
+  "README.md"
+  "evidence/daily"
+  "evidence/sessions"
+  "outcomes"
+  "execution/open-loops.md"
+  "reusable"
+  "views/active-now.md"
+  "views/career-impact.md"
+  "governance/ontology/contract.md"
+  "governance/approvals"
+  "governance/maintenance"
+  "governance/preferences/approval-routing.md"
 )
 
 for path in "${required[@]}"; do
@@ -30,7 +26,11 @@ for path in "${required[@]}"; do
 done
 
 for old_path in \
+  "MEMORY.md" \
   "DREAMS.md" \
+  "dreams.md" \
+  "governance/dreams.md" \
+  "memory" \
   "memory/active" \
   "memory/approvals" \
   "memory/career" \
