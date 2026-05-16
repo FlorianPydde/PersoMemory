@@ -26,7 +26,7 @@ If the mode is unclear, infer it from the request and state the chosen mode befo
 
 Active memory lives in the Obsidian vault:
 
-`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
+`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
 All `memory/...`, `memory/governance/dreams.md`, and `MEMORY.md` paths are vault-relative.
 

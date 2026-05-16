@@ -12,6 +12,8 @@ bash -n config/hooks/scripts/persomemory-session-end.sh
 
 node -e "JSON.parse(require('fs').readFileSync('config/hooks/persomemory-session.json','utf8'))"
 node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config.example.json','utf8')); if (!config.mcpServers['workiq-teams']) throw new Error('missing workiq-teams MCP config')"
+grep -q 'ObsidianVaultMemory' config/mcp-config.example.json
+! grep -q 'ObsidianVaultPersoMemory' config/mcp-config.example.json
 node -e "const evals = JSON.parse(require('fs').readFileSync('evals/skill-triggers/memory-skills.json','utf8')); if (evals.length < 20) throw new Error('expected at least 20 trigger evals'); for (const skill of ['memory','memory-brief','memory-sweep','memory-maintenance']) if (!evals.some(e => e.expected_skill === skill)) throw new Error('missing eval for '+skill); if (!evals.some(e => e.expected_skill === null && e.should_trigger === false)) throw new Error('missing negative eval')"
 
 cmp -s config/copilot-instructions.md .github/copilot-instructions.md
@@ -148,7 +150,9 @@ grep -q 'memory-maintenance' skills/memory/SKILL.md
 grep -q 'broad day-level' skills/memory-brief/SKILL.md
 grep -q 'route through `memory`' skills/memory-brief/SKILL.md
 grep -q 'Pending Approvals' skills/memory-brief/SKILL.md
-grep -q 'ObsidianVaultPersoMemory' skills/memory-sweep/SKILL.md
+grep -q 'ObsidianVaultMemory' skills/memory-sweep/SKILL.md
+grep -q "memory', 'content', 'projects" mcp/lifecycle/index.js
+grep -q "memory', 'content', 'commitments" mcp/lifecycle/index.js
 grep -q 'WorkIQ Question Battery' skills/memory-sweep/SKILL.md
 grep -q 'Obligations and Requests' skills/memory-sweep/SKILL.md
 grep -q 'Project or Outcome Changes' skills/memory-sweep/SKILL.md

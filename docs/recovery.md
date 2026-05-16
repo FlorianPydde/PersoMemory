@@ -4,7 +4,7 @@ This repo is the source of truth for rebuilding the personal memory system on a 
 
 ## Runtime Components
 
-1. Obsidian vault: `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
+1. Obsidian vault: `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 2. Copilot MCP config: `~/.copilot/mcp-config.json`
 3. Copilot global instructions: `~/.copilot/copilot-instructions.md`
 4. Memory skills: `~/.copilot/skills/memory*/SKILL.md`

@@ -6,7 +6,7 @@ It stores the artifacts needed to rebuild the system on a new machine: Copilot i
 
 It is not the active memory store. The active memory content lives in the Obsidian vault:
 
-`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
+`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
 ## Replication Model
 

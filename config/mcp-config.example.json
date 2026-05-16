@@ -16,7 +16,7 @@
       "command": "npx",
       "args": [
         "@bitbonsai/mcpvault@latest",
-        "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+        "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"
       ]
     },
     "smart-connections": {
@@ -25,7 +25,7 @@
         "/home/flpydde/smart-connections-mcp/dist/index.js"
       ],
       "env": {
-        "SMART_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+        "SMART_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"
       }
     },
     "persomemory-lifecycle": {
@@ -34,7 +34,7 @@
         "/home/flpydde/persomemory-lifecycle-mcp/index.js"
       ],
       "env": {
-        "VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory"
+        "VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"
       }
     }
   }

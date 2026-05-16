@@ -17,7 +17,7 @@ This skill ingests evidence. It does not perform durable consolidation or graph 
 
 Active memory lives in the Obsidian vault:
 
-`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory`
+`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
 All `memory/...`, `memory/governance/dreams.md`, and `MEMORY.md` paths are vault-relative.
 

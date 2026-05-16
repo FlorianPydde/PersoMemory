@@ -34,7 +34,7 @@ Build a personal, evolving memory system that:
 
 PersoMemory has two separate roles:
 
-1. `ObsidianVaultPersoMemory` is the active memory store. It contains personal memory content.
+1. `ObsidianVaultMemory` is the v2 active memory store. It contains personal memory content after curated migration.
 2. `PersoMemory` is the source and recovery repo. It contains setup artifacts, docs, skills, templates, config examples, and scripts.
 
 Runtime behavior is provided by global Copilot instructions, MCP configuration, and the installed `persomemory` skill.
@@ -143,7 +143,7 @@ node scripts/sweep.js
 ## Obsidian Vault Structure
 
 ```text
-ObsidianVaultPersoMemory/             (on OneDrive)
+ObsidianVaultMemory/                  (on OneDrive)
   MEMORY.md                           Durable self model and stable context only
   memory/governance/dreams.md                           Consolidation diary and promotion log
   memory/

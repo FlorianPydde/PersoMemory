@@ -25,8 +25,8 @@ if (!VAULT_PATH) {
   process.exit(1);
 }
 
-const PROJECTS_DIR = join(VAULT_PATH, 'memory', 'projects');
-const OPEN_LOOPS_PATH = join(VAULT_PATH, 'memory', 'commitments', 'open-loops.md');
+const PROJECTS_DIR = join(VAULT_PATH, 'memory', 'content', 'projects');
+const OPEN_LOOPS_PATH = join(VAULT_PATH, 'memory', 'content', 'commitments', 'open-loops.md');
 
 const STALE_DAYS_DEFAULT = 14;
 const LOOP_AGE_DAYS_DEFAULT = 14;
@@ -85,7 +85,7 @@ function checkProjects(staleDays) {
     const reviewBy = parseDate(fm['review-by']);
     if (reviewBy && reviewBy <= now) {
       overdue.push({
-        note: `projects/${name}`,
+        note: `content/projects/${name}`,
         status,
         reviewBy: reviewBy.toISOString().slice(0, 10),
         daysOverdue: daysDiff(reviewBy, now),
@@ -102,7 +102,7 @@ function checkProjects(staleDays) {
       const age = daysDiff(lastUpdated, now);
       if (age >= staleDays) {
         stale.push({
-          note: `projects/${name}`,
+          note: `content/projects/${name}`,
           status,
           lastUpdated: lastUpdated.toISOString().slice(0, 10),
           daysSinceUpdate: age,

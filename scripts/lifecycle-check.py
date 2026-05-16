@@ -19,10 +19,10 @@ import sys
 from datetime import date, datetime
 from pathlib import Path
 
-VAULT = Path("/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultPersoMemory")
-PROJECTS_DIR = VAULT / "memory" / "projects"
-OPEN_LOOPS = VAULT / "memory" / "commitments" / "open-loops.md"
-DECISIONS_DIR = VAULT / "memory" / "decisions"
+VAULT = Path(os.environ.get("VAULT_PATH", "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"))
+PROJECTS_DIR = VAULT / "memory" / "content" / "projects"
+OPEN_LOOPS = VAULT / "memory" / "content" / "commitments" / "open-loops.md"
+DECISIONS_DIR = VAULT / "memory" / "content" / "decisions"
 
 STALE_DAYS_DEFAULT = 14
 LOOP_AGE_DAYS_DEFAULT = 14
@@ -76,7 +76,7 @@ def check_projects(today: date, stale_days: int) -> tuple[list, list]:
             d = parse_date(review_by_raw)
             if d and d <= today:
                 overdue.append({
-                    "note": f"projects/{name}",
+                    "note": f"content/projects/{name}",
                     "status": status,
                     "review-by": str(d),
                     "days_overdue": (today - d).days,
@@ -90,7 +90,7 @@ def check_projects(today: date, stale_days: int) -> tuple[list, list]:
                     age = (today - d).days
                     if age >= stale_days:
                         stale.append({
-                            "note": f"projects/{name}",
+                            "note": f"content/projects/{name}",
                             "status": status,
                             "last_updated": str(d),
                             "days_since_update": age,
@@ -100,7 +100,7 @@ def check_projects(today: date, stale_days: int) -> tuple[list, list]:
                 age = (today - mtime).days
                 if age >= stale_days:
                     stale.append({
-                        "note": f"projects/{name}",
+                        "note": f"content/projects/{name}",
                         "status": status,
                         "last_updated": f"file mtime {mtime}",
                         "days_since_update": age,
