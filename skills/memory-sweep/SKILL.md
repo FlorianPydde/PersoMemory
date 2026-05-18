@@ -19,7 +19,7 @@ Active memory lives in the Obsidian vault:
 
 `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
 
-All vault paths are relative to this vault. V2 does not use top-level `MEMORY.md` or `dreams.md`.
+All vault paths are relative to this vault root.
 
 ## Priming
 
