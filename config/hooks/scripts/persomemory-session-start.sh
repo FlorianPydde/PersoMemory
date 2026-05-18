@@ -57,7 +57,7 @@ function writeDiagnosticEvent(input) {
       filesLoaded: [],
       memoryContentLoaded: false,
       availableSkills: skills,
-      additionalContext: true,
+      additionalContext: false,
       sourceHook: 'copilot-sessionStart-hook',
     };
     fs.appendFileSync(eventLogPath, `${JSON.stringify(event)}\n`, 'utf8');
@@ -76,18 +76,9 @@ try {
 
 writeDiagnosticEvent(input);
 
-const context = [
-  'Memory startup pointer loaded by sessionStart hook.',
-  '',
-  'No memory content was loaded. Use Agent Skills for intentional retrieval.',
-  'Use `memory` for ambiguous or scoped memory requests.',
-  'Use `memory-brief` for broad day-level focus.',
-  'Use `memory-sweep` for WorkIQ and Copilot evidence intake.',
-  'Use `memory-maintenance` for consolidation, stale-memory review, archive, merge, and cleanup.',
-  `Session source: ${input.source || 'unknown'}`,
-  `Session cwd: ${input.cwd || 'unknown'}`,
-  vaultPath ? `Vault path: ${vaultPath}` : 'Vault path: not configured',
-].join('\n');
-
-process.stdout.write(JSON.stringify({ additionalContext: context }));
+// No additionalContext injected. Skills self-advertise via their description
+// frontmatter, and copilot-instructions.md already carries the routing rules.
+// Injecting routing text here caused skill(memory) failures when the skill
+// was not yet installed, and duplicated guidance the model already has.
+process.stdout.write(JSON.stringify({}));
 NODE
