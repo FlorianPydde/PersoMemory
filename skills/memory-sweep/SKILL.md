@@ -171,3 +171,5 @@ After collecting candidates:
 ## Safety
 
 Never store credentials, tokens, secrets, raw emails, raw chats, or raw transcripts. If evidence is sensitive or conflicting, create an approval item instead of deciding silently.
+
+Do not call `manage_schedule` during a sweep. Schedule management is unrelated to evidence intake. The repeated `manage_schedule(action: "list")` pattern is noise — omit it entirely.
