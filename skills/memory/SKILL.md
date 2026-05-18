@@ -1,6 +1,6 @@
 ---
 name: memory
-description: Router and policy skill for Florian's executive memory system. Use this for any ambiguous, mixed, scoped, or general memory request: recall, "what should I focus on for X", project/person/topic context, commitments, capture this, should this be remembered, what do I owe, what do we know, or memory write/routing decisions. For explicit whole-day brief use memory-brief; explicit daily/end-of-day evidence intake use memory-sweep; explicit consolidation, stale-memory review, archive, merge, supersede, or cleanup use memory-maintenance.
+description: "Router and policy skill for Florian's executive memory system. Use this for any ambiguous, mixed, scoped, or general memory request: recall, what should I focus on for X, project/person/topic context, commitments, capture this, should this be remembered, what do I owe, what do we know, or memory write/routing decisions. For explicit whole-day brief use memory-brief; explicit daily/end-of-day evidence intake use memory-sweep; explicit consolidation, stale-memory review, archive, merge, supersede, or cleanup use memory-maintenance."
 ---
 
 # Memory Router
@@ -22,8 +22,6 @@ At session start, no memory content should be loaded by default. Agent Skills al
 Active memory lives in the Obsidian vault:
 
 `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
-
-All vault paths are relative to this vault. V2 does not use top-level `MEMORY.md` or `dreams.md`.
 
 ## Tool Roles
 
