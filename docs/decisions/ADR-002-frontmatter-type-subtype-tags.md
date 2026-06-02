@@ -98,7 +98,9 @@ neighbours into durable `links:` wikilinks.
   `subtype` (bodies unchanged; validated byte-for-byte).
 - Templates, `docs/ontology.md`, and the validate script follow the new schema; a
   schema-drift lint enforces the controlled vocabulary going forward.
-- `person-note` (a `people` type with no folder in the six-type model) is left untouched
-  and flagged for a separate decision: retire the template or introduce a people type.
+- `person-note` (a `people` type with no folder in the six-type model) was **retired**
+  (2026-06-02): the template is removed and no `people` type is introduced. People are
+  referenced inline within evidence/outcome notes and by wikilink; a dedicated people type
+  can be reconsidered if per-person aggregation is ever needed.
 - Tag normalisation and the `related:`/`informs:` → wikilinked `links:` unification are a
   deliberate follow-on curation pass, not part of the type/subtype migration.
