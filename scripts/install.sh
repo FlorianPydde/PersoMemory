@@ -61,6 +61,7 @@ install_skills() {
     -name 'persomemory' -o \
     -name 'persomemory-*' -o \
     -name 'memory' -o \
+    -name 'memory-router' -o \
     -name 'memory-brief' -o \
     -name 'memory-sweep' -o \
     -name 'memory-maintenance' \

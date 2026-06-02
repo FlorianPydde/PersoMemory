@@ -1,5 +1,5 @@
 ---
-name: memory
+name: memory-router
 description: "Router and policy skill for Florian's executive memory system. Use this for any ambiguous, mixed, scoped, or general memory request: recall, what should I focus on for X, project/person/topic context, commitments, capture this, should this be remembered, what do I owe, what do we know, or memory write/routing decisions. For explicit whole-day brief use memory-brief; explicit daily/end-of-day evidence intake use memory-sweep; explicit consolidation, stale-memory review, archive, merge, supersede, or cleanup use memory-maintenance."
 ---
 
@@ -37,10 +37,10 @@ WorkIQ output is evidence, not memory truth. MCPVault writes files, but this ski
 
 | User intent | Use |
 | --- | --- |
-| Ambiguous or mixed memory request | `memory` |
-| Project-scoped attention: "I am working on Phoenix, what should I focus on today?" | `memory` |
-| Named project/person/topic recall | `memory` |
-| "What do I owe?", "capture this", "should this be remembered?" | `memory` |
+| Ambiguous or mixed memory request | `memory-router` |
+| Project-scoped attention: "I am working on Phoenix, what should I focus on today?" | `memory-router` |
+| Named project/person/topic recall | `memory-router` |
+| "What do I owe?", "capture this", "should this be remembered?" | `memory-router` |
 | Whole-day or whole-work focus: "morning brief", "what matters today?" | `memory-brief` |
 | End-of-day or daily intake from WorkIQ/Copilot | `memory-sweep` |
 | Consolidate, dream, archive, stale review, merge, supersede, cleanup | `memory-maintenance` |

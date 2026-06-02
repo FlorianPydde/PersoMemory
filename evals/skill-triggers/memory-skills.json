@@ -2,28 +2,28 @@
   {
     "id": "router-scoped-attention-phoenix",
     "query": "I am working on Phoenix today. What should I focus on first?",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Scoped attention should stay with the router, not the broad day brief."
   },
   {
     "id": "router-project-recall",
     "query": "Bring me up to speed on the OTP banking agent project and any open loops before my next call.",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Named project recall plus execution state is a scoped retrieval request."
   },
   {
     "id": "router-capture-this",
     "query": "Remember that the PoC narrative should emphasize business-control telemetry, not just agent autonomy.",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Live capture/write decisions route through the policy layer."
   },
   {
     "id": "router-what-do-i-owe",
     "query": "What do I owe Sarah from our last Teams discussion?",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Scoped commitment recall belongs to the router."
   },
@@ -44,7 +44,7 @@
   {
     "id": "brief-near-miss-project-scope",
     "query": "For Phoenix specifically, what matters today?",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Near-miss: attention language is scoped, so memory-brief should not win."
   },
@@ -128,14 +128,14 @@
   {
     "id": "negative-maintenance-near-miss",
     "query": "What did we decide about Phoenix storage last time?",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Decision recall is not maintenance unless the user asks to supersede, archive, or clean up."
   },
   {
     "id": "negative-sweep-near-miss",
     "query": "Do we have any reusable Phoenix prompts already captured?",
-    "expected_skill": "memory",
+    "expected_skill": "memory-router",
     "should_trigger": true,
     "reason": "Reusable-memory recall is not evidence intake."
   }

@@ -13,7 +13,7 @@ Produce a concise attention view for the day across active work. This skill orie
 
 Use this skill for broad day-level attention only.
 
-If the user names a project, person, customer, topic, or artifact and asks what to focus on, stop and route through `memory` so the attention view can be scoped.
+If the user names a project, person, customer, topic, or artifact and asks what to focus on, stop and route through `memory-router` so the attention view can be scoped.
 
 Examples that belong here:
 
