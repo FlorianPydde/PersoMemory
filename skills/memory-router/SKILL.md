@@ -64,11 +64,19 @@ Classify the user request before loading memory.
 
 ## Retrieval Order
 
+Retrieval is two-stage: deterministic expansion first, semantic widening second.
+
 1. Direct file lookup when the exact path is known.
-2. Explicit graph links from the anchor record.
-3. Property search by type, status, domain, date, or relationship fields.
-4. Smart Connections for conceptual similarity.
+2. Explicit graph links from the anchor record (the `links:` wikilinks).
+3. Property search by `type`, `subtype`, `tags`, `status`, date, or relationship fields.
+4. Smart Connections for conceptual similarity — discovery only; confirm candidates with exact reads.
 5. Daily/evidence notes only when chronology, proof, or contradiction matters.
+
+Steps 1–3 are the deterministic stage; step 4 is the semantic stage and never the first
+move. `type` is one of six flat folder-values (`evidence`, `outcome`, `execution`,
+`reusable`, `view`, `governance`); `subtype` narrows within a folder; `tags` are
+cross-cutting facets. When Smart Connections repeatedly surfaces the same strong neighbor
+across sessions, propose promoting it to a curated `links:` wikilink during maintenance.
 
 Do not start by loading daily notes unless the user asks about a date, source evidence, or "what happened".
 

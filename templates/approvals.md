@@ -1,5 +1,6 @@
 ---
-type: approvals
+type: governance
+subtype: approval-queue
 date: YYYY-MM-DD
 status: pending
 source:
@@ -7,6 +8,7 @@ source:
   - Copilot conversation sweep
 projects: []
 people: []
+tags: []
 ---
 
 # Approvals YYYY-MM-DD

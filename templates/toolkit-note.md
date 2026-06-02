@@ -5,7 +5,7 @@ outcomes:
   - "[[outcomes/outcome-slug]]"
 supports: []
 why_keep:
-retrieval_cues: []
+retrieval-cues: []
 tags: []
 ---
 

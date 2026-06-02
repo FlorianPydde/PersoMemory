@@ -1,9 +1,11 @@
 ---
-type: daily
+type: evidence
+subtype: daily
 date: YYYY-MM-DD
 outcomes: []
 people: []
 impact-areas: []
+tags: []
 ---
 
 # YYYY-MM-DD

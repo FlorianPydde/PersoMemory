@@ -1,5 +1,6 @@
 ---
-type: maintenance-report
+type: governance
+subtype: maintenance-report
 date: YYYY-MM-DD
 status: draft
 scope: cascade-review
@@ -9,6 +10,7 @@ people: []
 reusable: []
 source:
   - Conversation with agent
+tags: []
 ---
 
 # Maintenance Report YYYY-MM-DD - Topic

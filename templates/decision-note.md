@@ -9,7 +9,7 @@ people:
   - person-slug
 supersedes: []
 why_keep:
-retrieval_cues: []
+retrieval-cues: []
 tags: []
 ---
 

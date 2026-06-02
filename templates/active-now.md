@@ -1,9 +1,11 @@
 ---
-type: active-now
+type: view
+subtype: attention
 updated: YYYY-MM-DD
 outcomes:
   - "[[outcomes/outcome-slug]]"
 people: []
+tags: []
 ---
 
 # Active Now

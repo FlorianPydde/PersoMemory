@@ -73,6 +73,17 @@ Identify:
 4. Reusable memory that should be promoted, merged, archived, or marked low-retrieval.
 5. Evidence that should remain evidence and not become durable memory.
 
+### 4b. Edge-Promotion Pass
+
+Convert recurring semantic signal into durable graph structure. When Smart Connections
+repeatedly surfaces the same strong neighbor for a record across sessions, and an exact
+read confirms the relationship is real and useful, propose adding it to the record's
+curated `links:` field as a wikilink (`"[[record]]"`). This moves the edge from the
+semantic stage into the deterministic stage so future retrieval reaches it via links
+rather than re-inferring it. Keep `links:` curated and targeted; do not bulk-link, and do
+not wikilink `sources:`. Schema/`type` drift (a `type` outside the six flat values or an
+unknown `subtype`) found during any pass is flagged here for correction.
+
 ### 5. Decision Pass
 
 Classify every candidate:

@@ -1,8 +1,10 @@
 ---
-type: open-loops
+type: execution
+subtype: open-loops
 updated: YYYY-MM-DD
 projects: []
 people: []
+tags: []
 ---
 
 # Open Loops

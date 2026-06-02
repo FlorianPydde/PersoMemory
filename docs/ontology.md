@@ -1,8 +1,8 @@
-# PersoMemory v2 Ontology
+# PersoMemory v3 Ontology
 
 ## Core Model
 
-PersoMemory v2 separates evidence, three maintained domains, views, and governance.
+PersoMemory v3 separates evidence, three maintained domains, views, and governance.
 
 1. Evidence lives in `evidence/`.
 2. Outcomes live in `outcomes/`.
@@ -45,6 +45,26 @@ ObsidianVaultMemory/
     maintenance/
     preferences/approval-routing.md
 ```
+
+## Frontmatter Schema
+
+Mirrors the canonical vault contract (`governance/ontology/contract.md`, v3). Every maintained note declares a controlled `type`, an optional controlled `subtype`, and optional `tags`.
+
+- `type` is **flat and equals the top-level folder**. Exactly six values, never compound or free-text:
+  `evidence | outcome | execution | reusable | view | governance`.
+- `subtype` is a controlled granular kind within the folder:
+
+  | `type` | allowed `subtype` |
+  | --- | --- |
+  | evidence | `daily`, `session` |
+  | outcome | `delivery`, `pursuit`, `initiative` |
+  | execution | `open-loops` |
+  | reusable | `operating-pattern`, `career-guidance`, `career-evidence`, `pattern`, `narrative`, `rubric`, `framework`, `decision`, `toolkit` |
+  | view | `attention`, `career-impact` |
+  | governance | `ontology-contract`, `approval-queue`, `approval-routing`, `maintenance-report` |
+
+- `tags` are cross-cutting facets (account/customer/theme), disjoint from `type`/`subtype`. A value is never both a type/subtype and a tag: if it names *what the note is*, it is `type`/`subtype`; if it names *what the note is about*, it is a `tag`.
+- **Targeted wikilinks:** the curated `links:` field uses Obsidian wikilinks (`"[[record]]"`) so edges appear in the graph; `sources:` stays plain provenance strings and is never wikilinked.
 
 ## Maintained Domains
 
@@ -171,6 +191,15 @@ Use the ADR-defined vocabulary:
 8. `supersedes`
 
 Avoid broad `relates_to` except for temporary capture, migration, or unresolved inbox cases.
+
+## Retrieval
+
+Retrieval is two-stage (canonical detail in the vault contract):
+
+1. **Deterministic expansion.** From the anchor record, expand via `links:` wikilinks and property/grep search on `type`, `subtype`, `tags`, `status`, and relationship fields.
+2. **Semantic widening.** Only when deterministic expansion is insufficient, use Smart Connections for conceptually related notes; treat results as candidates and confirm with exact reads.
+
+**Edge promotion:** when Smart Connections repeatedly surfaces the same strong neighbor across sessions, maintenance may promote it to a curated `links:` wikilink so future retrieval reaches it deterministically.
 
 ## Approval Gates
 

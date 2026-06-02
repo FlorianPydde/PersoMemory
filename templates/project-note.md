@@ -1,5 +1,6 @@
 ---
 type: outcome
+subtype: delivery
 status: active
 updated: YYYY-MM-DD
 domains:
