@@ -59,8 +59,7 @@ ALLOWED = {
     "evidence": {"daily", "session"},
     "outcome": {"delivery", "pursuit", "initiative"},
     "execution": {"open-loops"},
-    "reusable": {"operating-pattern", "career-guidance", "career-evidence", "pattern",
-                 "narrative", "rubric", "framework", "decision", "toolkit"},
+    "reusable": {"pattern", "framework", "career"},
     "view": {"attention", "career-impact"},
     "governance": {"ontology-contract", "approval-queue", "approval-routing", "maintenance-report"},
 }

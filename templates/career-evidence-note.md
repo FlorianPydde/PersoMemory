@@ -1,6 +1,6 @@
 ---
 type: reusable
-subtype: career-evidence
+subtype: career
 date: YYYY-MM-DD
 impact-areas:
   - "High Quality Delivery"

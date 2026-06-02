@@ -37,8 +37,7 @@ Adopt a three-field frontmatter classification plus a link convention:
    - evidence: `daily`, `session`
    - outcome: `delivery`, `pursuit`, `initiative`
    - execution: `open-loops`
-   - reusable: `operating-pattern`, `career-guidance`, `career-evidence`, `pattern`,
-     `narrative`, `rubric`, `framework`, `decision`, `toolkit`
+   - reusable: `pattern`, `framework`, `career`
    - view: `attention`, `career-impact`
    - governance: `ontology-contract`, `approval-queue`, `approval-routing`,
      `maintenance-report`
@@ -71,7 +70,7 @@ templates mirror it.
 ### Single `type` only (kepano-strict, no `subtype`)
 
 Closest to Obsidian's default advice, but loses the genuine intra-folder distinctions the
-team relies on (e.g. delivery vs pursuit outcomes; rubric vs narrative reusable assets).
+team relies on (e.g. delivery vs pursuit outcomes; pattern vs framework reusable assets).
 Rejected in favour of `type` + `subtype`, which keeps a flat class axis *and* the
 granularity.
 
@@ -102,5 +101,11 @@ neighbours into durable `links:` wikilinks.
   (2026-06-02): the template is removed and no `people` type is introduced. People are
   referenced inline within evidence/outcome notes and by wikilink; a dedicated people type
   can be reconsidered if per-person aggregation is ever needed.
+- **Reusable subtypes simplified 9 → 3 (2026-06-02):** `pattern`, `framework`, `career`.
+  The earlier set mixed *form* (pattern/operating-pattern/narrative/rubric/framework) with
+  *topic* (career-guidance/career-evidence) and duplicated `pattern`/`operating-pattern`.
+  `operating-pattern`→`pattern`; `career-guidance`+`career-evidence`+`rubric`(career use)+
+  `narrative`(career-direction)→`career`; unused `decision`/`toolkit` dropped (templates
+  removed). `career` is kept as a single-valued subtype by decision (tags not used here).
 - Tag normalisation and the `related:`/`informs:` → wikilinked `links:` unification are a
   deliberate follow-on curation pass, not part of the type/subtype migration.
