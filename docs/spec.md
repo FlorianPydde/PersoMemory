@@ -112,9 +112,13 @@ npm install -g @bitbonsai/mcpvault
 
 # Smart Connections
 # Install via Obsidian: Settings > Community Plugins > Browse > "Smart Connections"
+# Then run ./scripts/install.sh to clone/build the local smart-connections MCP bridge.
 
-# Run the nightly sweep locally (for testing)
-node scripts/sweep.js
+# PersoMemory runtime setup
+./scripts/install.sh
+
+# Run the evening sweep locally (for testing)
+scripts/run-evening-sweep.sh
 
 # GitHub Actions: runs automatically on schedule
 ```
@@ -240,7 +244,7 @@ Runtime install: `~/.copilot/skills/memory*/SKILL.md`
 
 The four runtime skills are:
 
-1. `memory`: router and policy layer for ambiguous, mixed, scoped recall/capture/commitment/focus requests.
+1. `memory-router`: router and policy layer for ambiguous, mixed, scoped recall/capture/commitment/focus requests.
 2. `memory-brief`: broad day-level attention brief.
 3. `memory-sweep`: WorkIQ and Copilot evidence intake.
 4. `memory-maintenance`: consolidation, promotion, stale review, archive, merge, supersede, and cleanup.

@@ -19,13 +19,15 @@ Detailed memory behavior belongs in the memory skill family under `skills/*/SKIL
 ## Runtime Pieces
 
 1. `~/.copilot/copilot-instructions.md`: concise global Copilot router installed from `config/copilot-instructions.md`.
-2. `~/.copilot/mcp-config.json`: runtime MCP configuration.
+2. `~/.copilot/mcp-config.json`: runtime MCP configuration installed from `config/mcp-config.example.json` when missing.
 3. `~/.copilot/skills/memory*/SKILL.md`: runtime memory skill family.
 4. `~/.copilot/hooks/persomemory-session.json`: optional session start and session end hooks.
 5. `~/.local/share/persomemory`: disposable local queue and hook runtime state.
 6. Obsidian vault: durable memory content.
 7. `governance/ontology/contract.md`: vault-canonical live routing, retrieval, decay, and maintenance policy.
-8. This repo: versioned recovery source.
+8. `~/persomemory-lifecycle-mcp`: local lifecycle MCP installed from `mcp/lifecycle`.
+9. `~/smart-connections-mcp`: local Smart Connections MCP cloned and built by the installer when missing.
+10. This repo: versioned recovery source.
 
 ## Repository Layout
 
@@ -48,7 +50,14 @@ templates/                          Vault note templates
 ./scripts/install.sh
 ```
 
-The installer is a small local bootstrapper, not part of the memory model. It copies the global Copilot instructions, the four memory skills, hooks, evening sweep helper, optional non-memory agent profiles, and lifecycle MCP into local runtime locations. It also removes obsolete `persomemory*` runtime skills/custom agents and stale managed `memory*` skill installs. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
+The installer is a small local bootstrapper, not part of the memory model. It copies the global Copilot instructions, creates `~/.copilot/mcp-config.json` when missing, installs the four memory skills, hooks, evening sweep helper, optional non-memory agent profiles, lifecycle MCP, and Smart Connections MCP into local runtime locations. It also removes obsolete `persomemory*` runtime skills/custom agents and stale managed `memory*` skill installs. If an existing `~/.copilot/copilot-instructions.md` differs from the source copy, the installer creates a timestamped backup before overwriting it.
+
+Smart Connections has two parts:
+
+1. The Obsidian community plugin, installed inside the vault so it creates `.smart-env/`.
+2. The local MCP bridge at `~/smart-connections-mcp`, installed by `./scripts/install.sh`.
+
+Semantic search returns useful results only after Obsidian has opened the vault with the Smart Connections plugin enabled and indexed it.
 
 ## Validate Vault Structure
 
@@ -85,10 +94,10 @@ MCPs provide access. The memory skill family provides judgment, routing, and wor
 2. Work IQ Teams sends or manages Teams chats and channel messages when explicit user intent is present.
 3. Copilot conversation hooks queue transcript pointers as local evidence under `~/.local/share/persomemory`.
 4. MCPVault reads and writes the Obsidian vault.
-5. Smart Connections retrieves related notes.
-6. persomemory-lifecycle surfaces stale projects, overdue review dates, and aged loops.
+5. Smart Connections retrieves related notes from the plugin-generated `.smart-env/` index.
+6. persomemory-lifecycle surfaces stale outcomes, overdue review dates, and aged loops.
 7. `governance/ontology/contract.md` defines live category boundaries, routing, retrieval triggers, decay rules, durable-entity thresholds, and maintenance eval examples.
-8. `memory` defines core retrieval, live capture, routing, and write gates.
+8. `memory-router` defines core retrieval, live capture, routing, and write gates.
 9. `memory-brief` defines broad day-level attention.
 10. `memory-sweep` defines WorkIQ and Copilot evidence intake.
 11. `memory-maintenance` combines consolidation, promotion, stale review, archive, merge, supersede, and cleanup modes.

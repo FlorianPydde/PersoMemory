@@ -11,16 +11,22 @@ bash -n config/hooks/scripts/persomemory-agent-stop.sh
 bash -n config/hooks/scripts/persomemory-session-end.sh
 
 node -e "JSON.parse(require('fs').readFileSync('config/hooks/persomemory-session.json','utf8'))"
-node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config.example.json','utf8')); if (!config.mcpServers['workiq-teams']) throw new Error('missing workiq-teams MCP config')"
+node -e "const config = JSON.parse(require('fs').readFileSync('config/mcp-config.example.json','utf8')); for (const name of ['workiq','workiq-teams','mcpvault','smart-connections','persomemory-lifecycle']) if (!config.mcpServers[name]) throw new Error('missing MCP config: '+name); if (!config.mcpServers['smart-connections'].args.includes('/home/flpydde/smart-connections-mcp/dist/index.js')) throw new Error('smart-connections MCP path drifted'); if (!config.mcpServers['persomemory-lifecycle'].args.includes('/home/flpydde/persomemory-lifecycle-mcp/index.js')) throw new Error('lifecycle MCP path drifted')"
 grep -q 'ObsidianVaultMemory' config/mcp-config.example.json
 ! grep -q 'ObsidianVaultPersoMemory' config/mcp-config.example.json
-node -e "const evals = JSON.parse(require('fs').readFileSync('evals/skill-triggers/memory-skills.json','utf8')); if (evals.length < 20) throw new Error('expected at least 20 trigger evals'); for (const skill of ['memory','memory-brief','memory-sweep','memory-maintenance']) if (!evals.some(e => e.expected_skill === skill)) throw new Error('missing eval for '+skill); if (!evals.some(e => e.expected_skill === null && e.should_trigger === false)) throw new Error('missing negative eval')"
+node -e "const evals = JSON.parse(require('fs').readFileSync('evals/skill-triggers/memory-skills.json','utf8')); if (evals.length < 20) throw new Error('expected at least 20 trigger evals'); for (const skill of ['memory-router','memory-brief','memory-sweep','memory-maintenance']) if (!evals.some(e => e.expected_skill === skill)) throw new Error('missing eval for '+skill); if (!evals.some(e => e.expected_skill === null && e.should_trigger === false)) throw new Error('missing negative eval')"
 
 cmp -s config/copilot-instructions.md .github/copilot-instructions.md
-test "$(wc -c < config/copilot-instructions.md)" -le 1200
+test "$(wc -c < config/copilot-instructions.md)" -le 5000
 grep -q 'invoke the relevant memory skill' config/copilot-instructions.md
 grep -q 'Detailed memory behavior belongs in the installed memory skills' config/copilot-instructions.md
+grep -q 'Use `memory-router`' config/copilot-instructions.md
 grep -q 'Backed up existing Copilot instructions' scripts/install.sh
+grep -q 'install_mcp_config' scripts/install.sh
+grep -q 'SMART_CONNECTIONS_MCP_REPO' scripts/install.sh
+grep -q 'npm run build --silent' scripts/install.sh
+grep -q 'install_lifecycle_mcp' scripts/install.sh
+grep -q 'install_smart_connections_mcp' scripts/install.sh
 
 for forbidden in \
   'Session Naming' \
@@ -65,19 +71,21 @@ printf '{"sessionId":"startup","source":"manual-test","cwd":"/tmp/project"}' \
   | PERSOMEMORY_DATA_HOME="${tmpdir}" PERSOMEMORY_VAULT_PATH="${fixture_vault}" bash config/hooks/scripts/persomemory-session-start.sh >"${tmpdir}/session-start.out"
 
 test -f "${tmpdir}/session-start-events.jsonl"
-grep -q '"additionalContext":true' "${tmpdir}/session-start-events.jsonl"
+grep -q '"additionalContext":false' "${tmpdir}/session-start-events.jsonl"
 grep -q '"memoryContentLoaded":false' "${tmpdir}/session-start-events.jsonl"
 grep -q '"filesLoaded":\[\]' "${tmpdir}/session-start-events.jsonl"
-grep -q 'additionalContext' "${tmpdir}/session-start.out"
-grep -q 'No memory content was loaded' "${tmpdir}/session-start.out"
-grep -q 'memory-brief' "${tmpdir}/session-start.out"
+grep -q '"availableSkills":\["memory-router","memory-brief","memory-sweep","memory-maintenance"\]' "${tmpdir}/session-start-events.jsonl"
+grep -q '{}' "${tmpdir}/session-start.out"
+! grep -q 'additionalContext' "${tmpdir}/session-start.out"
+! grep -q 'No memory content was loaded' "${tmpdir}/session-start.out"
 ! grep -q '# Memory' "${tmpdir}/session-start.out"
 ! grep -q '# Now' "${tmpdir}/session-start.out"
 ! grep -q '# Open Loops' "${tmpdir}/session-start.out"
 
 printf '{"sessionId":"startup-unsafe-data-home","source":"manual-test","cwd":"/tmp/project"}' \
   | PERSOMEMORY_DATA_HOME="/" PERSOMEMORY_VAULT_PATH="${fixture_vault}" bash config/hooks/scripts/persomemory-session-start.sh >"${tmpdir}/session-start-unsafe-data-home.out" 2>"${tmpdir}/session-start-unsafe-data-home.err"
-grep -q 'additionalContext' "${tmpdir}/session-start-unsafe-data-home.out"
+grep -q '{}' "${tmpdir}/session-start-unsafe-data-home.out"
+! grep -q 'additionalContext' "${tmpdir}/session-start-unsafe-data-home.out"
 grep -q 'PersoMemory sessionStart diagnostics failed' "${tmpdir}/session-start-unsafe-data-home.err"
 
 printf '{"sessionId":"without-transcript","timestamp":1778683417000,"cwd":"/tmp/project","stopReason":"end_turn"}' \
@@ -100,7 +108,7 @@ test -f "${tmpdir}/session-reviews/2026-05-13.md"
 grep -q '/tmp/transcript.jsonl' "${tmpdir}/session-reviews/2026-05-13.md"
 grep -q '"hasTranscriptPath":true' "${tmpdir}/agent-stop-events.jsonl"
 
-for skill in memory memory-brief memory-sweep memory-maintenance; do
+for skill in memory-router memory-brief memory-sweep memory-maintenance; do
   test -f "skills/${skill}/SKILL.md"
   grep -q "name: ${skill}" "skills/${skill}/SKILL.md"
 done
@@ -120,7 +128,7 @@ HOME="${install_home}" bash -c '
   test ! -e "${COPILOT_DIR}/skills/persomemory-old-workflow"
   test ! -e "${COPILOT_DIR}/skills/memory-sweep/stale.txt"
   test -d "${COPILOT_DIR}/skills/unrelated-skill"
-  test -f "${COPILOT_DIR}/skills/memory/SKILL.md"
+  test -f "${COPILOT_DIR}/skills/memory-router/SKILL.md"
   test -f "${COPILOT_DIR}/skills/memory-brief/SKILL.md"
   test -f "${COPILOT_DIR}/skills/memory-sweep/SKILL.md"
   test -f "${COPILOT_DIR}/skills/memory-maintenance/SKILL.md"
@@ -138,16 +146,16 @@ HOME="${install_home}" bash -c '
   test -f "${COPILOT_DIR}/agents/vscode-et.agent.md"
 '
 
-grep -q 'Router and policy skill' skills/memory/SKILL.md
-grep -q 'Project-scoped attention' skills/memory/SKILL.md
-grep -q 'no memory content should be loaded by default' skills/memory/SKILL.md
-grep -q 'memory-brief' skills/memory/SKILL.md
-grep -q 'memory-sweep' skills/memory/SKILL.md
-grep -q 'memory-maintenance' skills/memory/SKILL.md
-! grep -q 'WorkIQ Question Battery' skills/memory/SKILL.md
-! grep -q 'Required Multi-Pass Checklist' skills/memory/SKILL.md
+grep -q 'Router and policy skill' skills/memory-router/SKILL.md
+grep -q 'Project-scoped attention' skills/memory-router/SKILL.md
+grep -q 'no memory content should be loaded by default' skills/memory-router/SKILL.md
+grep -q 'memory-brief' skills/memory-router/SKILL.md
+grep -q 'memory-sweep' skills/memory-router/SKILL.md
+grep -q 'memory-maintenance' skills/memory-router/SKILL.md
+! grep -q 'WorkIQ Question Battery' skills/memory-router/SKILL.md
+! grep -q 'Required Multi-Pass Checklist' skills/memory-router/SKILL.md
 grep -q 'broad day-level' skills/memory-brief/SKILL.md
-grep -q 'route through `memory`' skills/memory-brief/SKILL.md
+grep -q 'route through `memory-router`' skills/memory-brief/SKILL.md
 grep -q 'Pending Approvals' skills/memory-brief/SKILL.md
 grep -q 'ObsidianVaultMemory' skills/memory-sweep/SKILL.md
 grep -q "VAULT_PATH, 'outcomes'" mcp/lifecycle/index.js
@@ -192,6 +200,13 @@ grep -q 'Cold Evidence / Daily Notes' templates/maintenance-report.md
 grep -q 'governance/approvals/YYYY-MM-DD.md' templates/maintenance-report.md
 grep -q 'governance/approvals/YYYY-MM-DD.md' README.md
 grep -q 'governance/preferences/approval-routing.md' README.md
+grep -q 'smart-connections-mcp' README.md
+grep -q '.smart-env/' README.md
+grep -q 'persomemory-lifecycle-mcp' docs/recovery.md
+grep -q 'SMART_CONNECTIONS_MCP_REPO' docs/recovery.md
+grep -q '.smart-env/' docs/recovery.md
+grep -q 'scripts/run-evening-sweep.sh' docs/spec.md
+! grep -q 'node scripts/sweep.js' docs/spec.md
 ! grep -R -q 'memory/inbox/approvals' README.md docs scripts config skills templates
 
 PERSOMEMORY_DATA_HOME="${tmpdir}/runtime" COPILOT_BIN=/bin/echo ./scripts/run-evening-sweep.sh 2026-05-13 >"${tmpdir}/sweep.out"

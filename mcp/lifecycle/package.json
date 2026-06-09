@@ -1,7 +1,7 @@
 {
   "name": "persomemory-lifecycle",
   "version": "1.0.0",
-  "description": "MCP server for PersoMemory lifecycle management: overdue reviews, stale projects, aged commitments",
+  "description": "MCP server for PersoMemory lifecycle management: overdue reviews, stale outcomes, aged commitments",
   "type": "module",
   "main": "index.js",
   "scripts": {
