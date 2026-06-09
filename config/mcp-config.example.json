@@ -16,25 +16,25 @@
       "command": "npx",
       "args": [
         "@bitbonsai/mcpvault@latest",
-        "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"
+        "C:\\Users\\<USERNAME>\\Repos\\ObsidianVaultMemory"
       ]
     },
     "smart-connections": {
       "command": "node",
       "args": [
-        "/home/flpydde/smart-connections-mcp/dist/index.js"
+        "C:\\Users\\<USERNAME>\\smart-connections-mcp\\dist\\index.js"
       ],
       "env": {
-        "SMART_VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"
+        "SMART_VAULT_PATH": "C:\\Users\\<USERNAME>\\Repos\\ObsidianVaultMemory"
       }
     },
     "persomemory-lifecycle": {
       "command": "node",
       "args": [
-        "/home/flpydde/persomemory-lifecycle-mcp/index.js"
+        "C:\\Users\\<USERNAME>\\persomemory-lifecycle-mcp\\index.js"
       ],
       "env": {
-        "VAULT_PATH": "/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory"
+        "VAULT_PATH": "C:\\Users\\<USERNAME>\\Repos\\ObsidianVaultMemory"
       }
     }
   }

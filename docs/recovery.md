@@ -4,12 +4,12 @@ This repo is the source of truth for rebuilding the personal memory system on a 
 
 ## Runtime Components
 
-1. Obsidian vault: `/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
+1. Obsidian vault: `C:\Users\<USERNAME>\Repos\ObsidianVaultMemory`
 2. Copilot MCP config: `~/.copilot/mcp-config.json`
 3. Copilot global instructions: `~/.copilot/copilot-instructions.md`
 4. Memory skills: `~/.copilot/skills/memory*/SKILL.md`
-5. Smart Connections MCP project: `/home/flpydde/smart-connections-mcp`
-6. persomemory-lifecycle MCP project: `/home/flpydde/persomemory-lifecycle-mcp`
+5. Smart Connections MCP project: `C:\Users\<USERNAME>\smart-connections-mcp`
+6. persomemory-lifecycle MCP project: `C:\Users\<USERNAME>\persomemory-lifecycle-mcp`
 
 ## Restore Order
 
@@ -26,8 +26,8 @@ This repo is the source of truth for rebuilding the personal memory system on a 
 `scripts/install.sh` installs the local MCPs expected by `config/mcp-config.example.json`:
 
 ```text
-~/smart-connections-mcp/dist/index.js
-~/persomemory-lifecycle-mcp/index.js
+C:\Users\<USERNAME>\smart-connections-mcp\dist\index.js
+C:\Users\<USERNAME>\persomemory-lifecycle-mcp\index.js
 ```
 
 The installer clones Smart Connections MCP from `https://github.com/msdanyg/smart-connections-mcp.git` when `~/smart-connections-mcp` is missing, then runs `npm install` and `npm run build`. Override `SMART_CONNECTIONS_MCP_REPO` or `SMART_CONNECTIONS_MCP_DIR` when restoring from a fork or non-default path.
