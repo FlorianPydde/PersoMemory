@@ -102,10 +102,42 @@ The installed session start hook uses `additionalContext`, not an auto-submitted
 
 Source files:
 
-1. `config/hooks/persomemory-session.json`
+1. `config/hooks/persomemory-session.json` (Linux/macOS, bash)
 2. `config/hooks/scripts/persomemory-session-start.sh`
 3. `config/hooks/scripts/persomemory-agent-stop.sh`
 4. `config/hooks/scripts/persomemory-session-end.sh`
+5. `config/hooks/persomemory-session.windows.json` (Windows, PowerShell)
+6. `config/hooks/scripts/persomemory-session-start.ps1`
+7. `config/hooks/scripts/persomemory-agent-stop.ps1`
+8. `config/hooks/scripts/persomemory-session-end.ps1`
+
+## Windows hooks
+
+On Windows the hook file is `persomemory-session.windows.json` and each entry uses
+the `powershell` command field instead of `bash`, pointing at the `.ps1` scripts.
+Install it to `~/.copilot/hooks/persomemory-session.json` (the runtime filename is
+the same on every OS). Two Windows-specific requirements are easy to get wrong and
+both cause hooks to silently never run:
+
+1. **Invoke with the call operator.** The command must be
+   `& "$HOME\.copilot\hooks\scripts\<name>.ps1"`, not the bare path. Copilot runs the
+   command string via `powershell -Command "<value>"`; a bare path starting with a
+   variable (`$HOME\...`) is parsed as an expression and fails with a `ParserError`,
+   so the script is never executed.
+2. **Read the payload from stdin, not `$input`.** Copilot pipes the hook JSON to the
+   process stdin. Under `powershell -Command "& script.ps1"` the automatic `$input`
+   variable is empty, so the scripts read `[Console]::In.ReadToEnd()` instead. Without
+   this the scripts run but receive no `sessionId`/`transcriptPath`, and no review
+   pointer is ever queued.
+
+The `.ps1` scripts default `PERSOMEMORY_DATA_HOME` to
+`Join-Path $env:USERPROFILE '.local\share\persomemory'`, matching the canonical
+`~/.local/share/persomemory` location used by the `.sh` hooks and the `memory-sweep`
+skill, so review pointers land where the sweep looks for them.
+
+The bash installer (`scripts/install.sh`) only installs the `.sh` variant. On Windows,
+copy the `.windows.json` file (as `persomemory-session.json`) and the three `.ps1`
+scripts into `~/.copilot/hooks/` manually.
 
 ## Source
 

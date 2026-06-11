@@ -17,7 +17,7 @@ This skill ingests evidence. It does not perform durable consolidation or graph 
 
 Active memory lives in the Obsidian vault:
 
-`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
+`C:\Users\flpydde\Repos\ObsidianVaultMemory`
 
 All vault paths are relative to this vault root.
 
@@ -147,6 +147,8 @@ If none are found, return `No candidates found`.
 Read pointer-only review entries from:
 
 `~/.local/share/persomemory/session-reviews/`
+
+This is the canonical runtime-state location on every OS. If the `PERSOMEMORY_DATA_HOME` environment variable is set, use `$PERSOMEMORY_DATA_HOME/session-reviews/` instead. If the directory does not exist, the session-end hook has not run yet — note that and continue with WorkIQ evidence only.
 
 For each reviewable transcript pointer, extract candidates using the six lenses above plus:
 
