@@ -11,10 +11,13 @@ const path = require('path');
 
 const vaultPath = process.env.PERSOMEMORY_VAULT_PATH || '';
 const EVENT_LOG_RETENTION_DAYS = 30;
-const skills = ['memory-router', 'memory-brief', 'memory-sweep', 'memory-maintenance'];
+const skills = ['memory', 'memory-brief', 'memory-sweep', 'memory-maintenance'];
 
 function resolveDataHome() {
-  const configured = process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory');
+  const configured = process.env.PERSOMEMORY_DATA_HOME
+    || (process.env.XDG_DATA_HOME
+      ? path.join(process.env.XDG_DATA_HOME, 'persomemory')
+      : path.join(os.homedir(), '.local', 'share', 'persomemory'));
   const resolved = path.resolve(configured);
   const root = path.parse(resolved).root;
   const home = path.resolve(os.homedir());
@@ -78,7 +81,7 @@ writeDiagnosticEvent(input);
 
 // No additionalContext injected. Skills self-advertise via their description
 // frontmatter, and copilot-instructions.md already carries the routing rules.
-// Injecting routing text here caused skill routing failures when the router
+// Injecting routing text here caused skill(memory) failures when the skill
 // was not yet installed, and duplicated guidance the model already has.
 process.stdout.write(JSON.stringify({}));
 NODE

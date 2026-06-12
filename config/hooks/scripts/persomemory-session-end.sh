@@ -21,7 +21,10 @@ try {
 }
 
 function resolveDataHome() {
-  const configured = process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory');
+  const configured = process.env.PERSOMEMORY_DATA_HOME
+    || (process.env.XDG_DATA_HOME
+      ? path.join(process.env.XDG_DATA_HOME, 'persomemory')
+      : path.join(os.homedir(), '.local', 'share', 'persomemory'));
   const resolved = path.resolve(configured);
   const root = path.parse(resolved).root;
   const home = path.resolve(os.homedir());

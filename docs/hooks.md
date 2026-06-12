@@ -26,11 +26,14 @@ The session end hook deliberately does not write memory. Closing a session with 
 
 Hook generated runtime state lives outside `~/.copilot/plugin-data` because PersoMemory is not a Copilot plugin.
 
-Default location:
+Default location is OS-native, resolved by each hook script as follows:
 
-```text
-~/.local/share/persomemory/
-```
+1. If `PERSOMEMORY_DATA_HOME` is set, use it (the explicit override on any platform).
+2. Otherwise use the OS-native default:
+   - Windows: `%LOCALAPPDATA%\persomemory` (e.g. `C:\Users\<user>\AppData\Local\persomemory`).
+   - macOS/Linux: `$XDG_DATA_HOME/persomemory` if `XDG_DATA_HOME` is set, else `~/.local/share/persomemory`.
+
+The `memory-sweep` skill resolves the location with the same rules so it reads the queue from wherever the hooks wrote it.
 
 Directory layout:
 
@@ -130,10 +133,11 @@ both cause hooks to silently never run:
    this the scripts run but receive no `sessionId`/`transcriptPath`, and no review
    pointer is ever queued.
 
-The `.ps1` scripts default `PERSOMEMORY_DATA_HOME` to
-`Join-Path $env:USERPROFILE '.local\share\persomemory'`, matching the canonical
-`~/.local/share/persomemory` location used by the `.sh` hooks and the `memory-sweep`
-skill, so review pointers land where the sweep looks for them.
+Each `.ps1` script resolves the data home OS-natively: `PERSOMEMORY_DATA_HOME` if set,
+otherwise `%LOCALAPPDATA%\persomemory`. The `.sh` hooks resolve it to
+`$XDG_DATA_HOME/persomemory` (or `~/.local/share/persomemory`), and the `memory-sweep`
+skill applies the same per-OS rules, so review pointers land where the sweep looks for
+them on every platform.
 
 The bash installer (`scripts/install.sh`) only installs the `.sh` variant. On Windows,
 copy the `.windows.json` file (as `persomemory-session.json`) and the three `.ps1`

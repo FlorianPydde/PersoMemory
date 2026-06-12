@@ -16,7 +16,7 @@ $retentionDays = 30
 
 function Get-DataHome {
     $configured = if ($env:PERSOMEMORY_DATA_HOME) { $env:PERSOMEMORY_DATA_HOME } else {
-        Join-Path $env:USERPROFILE '.local\share\persomemory'
+        Join-Path $env:LOCALAPPDATA 'persomemory'
     }
     $resolved = [System.IO.Path]::GetFullPath($configured)
     $root = [System.IO.Path]::GetPathRoot($resolved)

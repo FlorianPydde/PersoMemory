@@ -7,8 +7,7 @@
         "powershell": "& \"$HOME\\.copilot\\hooks\\scripts\\persomemory-session-start.ps1\"",
         "timeoutSec": 5,
         "env": {
-          "PERSOMEMORY_VAULT_PATH": "C:\\Users\\flpydde\\Repos\\ObsidianVaultMemory",
-          "PERSOMEMORY_DATA_HOME": "C:\\Users\\flpydde\\.local\\share\\persomemory"
+          "PERSOMEMORY_VAULT_PATH": "C:\\Users\\flpydde\\Repos\\ObsidianVaultMemory"
         }
       }
     ],
@@ -16,20 +15,14 @@
       {
         "type": "command",
         "powershell": "& \"$HOME\\.copilot\\hooks\\scripts\\persomemory-agent-stop.ps1\"",
-        "timeoutSec": 5,
-        "env": {
-          "PERSOMEMORY_DATA_HOME": "C:\\Users\\flpydde\\.local\\share\\persomemory"
-        }
+        "timeoutSec": 5
       }
     ],
     "sessionEnd": [
       {
         "type": "command",
         "powershell": "& \"$HOME\\.copilot\\hooks\\scripts\\persomemory-session-end.ps1\"",
-        "timeoutSec": 5,
-        "env": {
-          "PERSOMEMORY_DATA_HOME": "C:\\Users\\flpydde\\.local\\share\\persomemory"
-        }
+        "timeoutSec": 5
       }
     ]
   }

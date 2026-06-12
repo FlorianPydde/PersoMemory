@@ -17,7 +17,10 @@ try {
 }
 
 const baseDir = path.resolve(
-  process.env.PERSOMEMORY_DATA_HOME || path.join(os.homedir(), '.local', 'share', 'persomemory')
+  process.env.PERSOMEMORY_DATA_HOME
+    || (process.env.XDG_DATA_HOME
+      ? path.join(process.env.XDG_DATA_HOME, 'persomemory')
+      : path.join(os.homedir(), '.local', 'share', 'persomemory'))
 );
 const sessionId = input.sessionId || input.session_id;
 const transcriptPath =

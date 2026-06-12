@@ -144,11 +144,16 @@ If none are found, return `No candidates found`.
 
 ## Copilot CLI Session Sweep
 
-Read pointer-only review entries from:
+Locate the PersoMemory data home, then read pointer-only review entries from its `session-reviews/` subdirectory.
 
-`~/.local/share/persomemory/session-reviews/`
+Resolve the data home in this order:
 
-This is the canonical runtime-state location on every OS. If the `PERSOMEMORY_DATA_HOME` environment variable is set, use `$PERSOMEMORY_DATA_HOME/session-reviews/` instead. If the directory does not exist, the session-end hook has not run yet — note that and continue with WorkIQ evidence only.
+1. If the `PERSOMEMORY_DATA_HOME` environment variable is set, use it.
+2. Otherwise use the OS-native default:
+   - Windows: `%LOCALAPPDATA%\persomemory` (e.g. `C:\Users\<user>\AppData\Local\persomemory`).
+   - macOS/Linux: `$XDG_DATA_HOME/persomemory` if `XDG_DATA_HOME` is set, else `~/.local/share/persomemory`.
+
+Then read the queue at `<data-home>/session-reviews/`. If that directory does not exist, the session-end hook has not run yet — note that and continue with WorkIQ evidence only.
 
 For each reviewable transcript pointer, extract candidates using the six lenses above plus:
 
