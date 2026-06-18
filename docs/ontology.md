@@ -11,7 +11,7 @@ PersoMemory v3 separates evidence, three maintained domains, views, and governan
 5. Views live in `views/`.
 6. Governance lives in `governance/`.
 
-`MEMORY.md` and `dreams.md` are intentionally not part of v2. Skills retrieve deliberately; consolidation outputs are dated maintenance reports.
+`MEMORY.md` and `dreams.md` are intentionally not part of v3. Skills retrieve deliberately; consolidation outputs are dated maintenance reports.
 
 ## Main Rule
 
@@ -111,14 +111,18 @@ Minimum fields for each loop:
 
 ### Reusable Memory
 
-Patterns, decisions, toolkits, prompts, playbooks, reusable narratives, evaluation methods, and operating heuristics.
+Reusable patterns, frameworks, and durable career material. Exactly three subtypes:
+
+- `pattern` — a repeatable way of working or behaving that proved effective; reuse it.
+- `framework` — a structured method or model for tackling a class of problem.
+- `career` — durable career material: evidence, growth guidance, and leadership signals.
 
 Minimum frontmatter:
 
 ```yaml
 ---
 type: reusable
-subtype: decision | pattern | toolkit | prompt | narrative | principle
+subtype: pattern | framework | career
 status: active
 created: YYYY-MM-DD
 updated: YYYY-MM-DD

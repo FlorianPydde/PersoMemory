@@ -139,9 +139,10 @@ otherwise `%LOCALAPPDATA%\persomemory`. The `.sh` hooks resolve it to
 skill applies the same per-OS rules, so review pointers land where the sweep looks for
 them on every platform.
 
-The bash installer (`scripts/install.sh`) only installs the `.sh` variant. On Windows,
-copy the `.windows.json` file (as `persomemory-session.json`) and the three `.ps1`
-scripts into `~/.copilot/hooks/` manually.
+Both the `.sh` and `.ps1` hook variants ship in `config/hooks/`. `SETUP.md` copies the
+variant for the current OS into `~/.copilot/hooks/`. On Windows, install the
+`.windows.json` file (as `persomemory-session.json`) and the three `.ps1` scripts; on
+Linux/macOS install the `.json` file and the three `.sh` scripts.
 
 ## Source
 

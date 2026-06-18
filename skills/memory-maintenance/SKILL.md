@@ -26,7 +26,7 @@ If the mode is unclear, infer it from the request and state the chosen mode befo
 
 Active memory lives in the Obsidian vault:
 
-`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
+`C:\Users\flpydde\Repos\ObsidianVaultMemory`
 
 All vault paths are relative to this vault root.
 

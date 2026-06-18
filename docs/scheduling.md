@@ -58,20 +58,21 @@ crontab -e
 Run every weekday evening:
 
 ```cron
-30 18 * * 1-5 /mnt/c/Users/flpydde/OneDrive\ -\ Microsoft/ProjectArchive/PersoMemory/scripts/run-evening-sweep.sh
+30 18 * * 1-5 /mnt/c/Users/flpydde/Repos/PersoMemory/scripts/run-evening-sweep.sh
 ```
 
 If cron has trouble with spaces in the path, create a small wrapper in `~/.local/bin` that calls the script.
 
-## Installed helper
+## Convenience wrapper
 
-`scripts/install.sh` installs a convenience wrapper here:
+For a stable cron target, create a wrapper on the PATH that calls the repo script:
 
-```text
-~/.local/bin/persomemory-evening-sweep
+```bash
+ln -sf /mnt/c/Users/flpydde/Repos/PersoMemory/scripts/run-evening-sweep.sh \
+  ~/.local/bin/persomemory-evening-sweep
 ```
 
-Cron can call the installed helper with an absolute path:
+Cron can then call the wrapper with an absolute path:
 
 ```cron
 30 18 * * 1-5 /home/flpydde/.local/bin/persomemory-evening-sweep

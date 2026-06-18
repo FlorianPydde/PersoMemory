@@ -21,7 +21,7 @@ At session start, no memory content should be loaded by default. Agent Skills al
 
 Active memory lives in the Obsidian vault:
 
-`/mnt/c/Users/flpydde/OneDrive - Microsoft/ProjectArchive/ObsidianVaultMemory`
+`C:\Users\flpydde\Repos\ObsidianVaultMemory`
 
 ## Tool Roles
 
