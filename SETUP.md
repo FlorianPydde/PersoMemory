@@ -24,9 +24,43 @@ Collect these values up front and reuse them:
 | Variable | Meaning | Example |
 | --- | --- | --- |
 | `VAULT_PATH` | Where the Obsidian vault lives | `C:\Users\<user>\Repos\ObsidianVaultMemory` |
+| `PERSOMEMORY_REPO` | Where this repo is checked out | `C:\Users\<user>\Repos\PersoMemory` |
 | `SC_MCP_DIR` | Smart Connections MCP install dir | `C:\Users\<user>\smart-connections-mcp` |
 | `LIFECYCLE_MCP_DIR` | Lifecycle MCP install dir | `C:\Users\<user>\persomemory-lifecycle-mcp` |
 | `COPILOT_DIR` | Copilot CLI config dir | `~/.copilot` |
+
+## Path placeholders (important)
+
+This repo ships **no hardcoded user paths**. Several files contain placeholder tokens that
+must be replaced with the user's chosen paths when the files are copied into place:
+
+| Token | Replace with | Appears in |
+| --- | --- | --- |
+| `<VAULT_PATH>` | the user's `VAULT_PATH` | `config/hooks/persomemory-session*.json`, `skills/memory-*/SKILL.md`, `scripts/run-evening-sweep.sh`, `scripts/validate-memory-vault.sh` |
+| `<PERSOMEMORY_REPO>` | the user's `PERSOMEMORY_REPO` | `docs/scheduling.md` (cron examples) |
+
+The agent substitutes these tokens **after copying** a file to its install location (skills,
+hooks), or when invoking a script (pass the real path as an env var / argument instead of
+relying on the placeholder default). Use the OS-appropriate path style: Windows uses
+backslashes (escaped in JSON, e.g. `C:\\Users\\<user>\\Repos\\ObsidianVaultMemory`);
+Linux/macOS/WSL use forward slashes.
+
+Example substitution after copying the skills (PowerShell):
+
+```powershell
+Get-ChildItem $HOME\.copilot\skills\memory-* -Recurse -Filter SKILL.md |
+  ForEach-Object {
+    (Get-Content $_.FullName -Raw).Replace('<VAULT_PATH>', $VaultPath) |
+      Set-Content $_.FullName
+  }
+```
+
+Example substitution (bash):
+
+```bash
+grep -rl '<VAULT_PATH>' ~/.copilot/skills/memory-* ~/.copilot/hooks |
+  xargs sed -i "s|<VAULT_PATH>|${VAULT_PATH}|g"
+```
 
 ## Components being installed
 
@@ -93,7 +127,11 @@ Copy-Item -Recurse -Force skills\memory-router,skills\memory-brief,skills\memory
 
 Then remove any obsolete `persomemory*` skill folders from `~/.copilot/skills/` if present.
 
-Verify each skill has a `SKILL.md` with a matching `name:` field.
+**Substitute the `<VAULT_PATH>` placeholder** in the copied skill files (see "Path
+placeholders" above) so each skill's Memory Store section points at the real vault.
+
+Verify each skill has a `SKILL.md` with a matching `name:` field and no remaining
+`<VAULT_PATH>` token.
 
 ## Step 4 — MCP servers
 
@@ -176,18 +214,22 @@ Install the variant for the current OS into `~/.copilot/hooks/` (the runtime fil
 - **Windows:** copy `config/hooks/persomemory-session.windows.json` as
   `persomemory-session.json`, plus the three `config/hooks/scripts/*.ps1` files.
 
-Set `PERSOMEMORY_VAULT_PATH` in the hook JSON to the user's `VAULT_PATH`.
+Replace the `<VAULT_PATH>` placeholder in the copied hook JSON (the
+`PERSOMEMORY_VAULT_PATH` env value) with the user's `VAULT_PATH`, using the OS-appropriate
+path style (escaped backslashes in the Windows JSON).
 
 ## Step 7 — Scheduled evening sweep (optional)
 
 See `docs/scheduling.md`. The `scripts/run-evening-sweep.sh` helper runs `/memory-sweep`
 with narrow tool permissions and writes approval-gated decisions to
-`governance/approvals/YYYY-MM-DD.md`. Set `VAULT_PATH` via env or edit the default, and add
-a cron entry if unattended runs are wanted.
+`governance/approvals/YYYY-MM-DD.md`. Provide the vault path by exporting
+`VAULT_PATH=<VAULT_PATH>` before running (preferred over relying on the placeholder
+default), and substitute `<PERSOMEMORY_REPO>` in any cron entry. Add a cron entry if
+unattended runs are wanted.
 
 ## Step 8 — Validate
 
-1. Vault structure and frontmatter schema:
+1. Vault structure and frontmatter schema (pass the real vault path as the argument):
    ```bash
    ./scripts/validate-memory-vault.sh "<VAULT_PATH>"
    ```

@@ -7,7 +7,7 @@
         "powershell": "& \"$HOME\\.copilot\\hooks\\scripts\\persomemory-session-start.ps1\"",
         "timeoutSec": 5,
         "env": {
-          "PERSOMEMORY_VAULT_PATH": "C:\\Users\\flpydde\\Repos\\ObsidianVaultMemory"
+          "PERSOMEMORY_VAULT_PATH": "<VAULT_PATH>"
         }
       }
     ],

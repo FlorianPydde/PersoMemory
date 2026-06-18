@@ -17,7 +17,7 @@ This skill ingests evidence. It does not perform durable consolidation or graph 
 
 Active memory lives in the Obsidian vault:
 
-`C:\Users\flpydde\Repos\ObsidianVaultMemory`
+`<VAULT_PATH>`
 
 All vault paths are relative to this vault root.
 

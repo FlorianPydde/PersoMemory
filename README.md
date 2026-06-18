@@ -7,9 +7,10 @@ It stores the artifacts needed to rebuild the system on a new machine: the memor
 vault note templates, ontology and architecture docs, the lifecycle MCP, session hooks, and
 operational scripts.
 
-It is **not** the active memory store. The active memory content lives in the Obsidian vault:
+It is **not** the active memory store. The active memory content lives in the Obsidian
+vault, at a path chosen at setup time (referred to as `<VAULT_PATH>` throughout this repo):
 
-`C:\Users\flpydde\Repos\ObsidianVaultMemory`
+`<VAULT_PATH>`  (e.g. `C:\Users\<user>\Repos\ObsidianVaultMemory`)
 
 The global Copilot instructions and personal agent profiles are managed separately in the
 dotfiles repo (`~/repos/dotfiles/.copilot/`), not here.

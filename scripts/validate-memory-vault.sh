@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VAULT="${1:-/mnt/c/Users/flpydde/Repos/ObsidianVaultMemory}"
+VAULT="${1:-<VAULT_PATH>}"
 
 required=(
   "README.md"

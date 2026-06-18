@@ -3,7 +3,7 @@ set -euo pipefail
 
 DATE="${1:-$(date +%F)}"
 COPILOT_BIN="${COPILOT_BIN:-copilot}"
-VAULT_PATH="${VAULT_PATH:-/mnt/c/Users/flpydde/Repos/ObsidianVaultMemory}"
+VAULT_PATH="${VAULT_PATH:-<VAULT_PATH>}"
 PERSOMEMORY_DATA_HOME="${PERSOMEMORY_DATA_HOME:-${HOME}/.local/share/persomemory}"
 LOG_DIR="${PERSOMEMORY_DATA_HOME}/logs"
 

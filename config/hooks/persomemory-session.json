@@ -7,7 +7,7 @@
         "bash": "$HOME/.copilot/hooks/scripts/persomemory-session-start.sh",
         "timeoutSec": 5,
         "env": {
-          "PERSOMEMORY_VAULT_PATH": "/mnt/c/Users/flpydde/Repos/ObsidianVaultMemory"
+          "PERSOMEMORY_VAULT_PATH": "<VAULT_PATH>"
         }
       }
     ],
