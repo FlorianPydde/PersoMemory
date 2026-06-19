@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Build Your Own Executive Personal Assistant</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #eef3f9;
+  --cp-bg-elevated: #f6f9fc;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #e7eff8;
+  --cp-border: #cfe0ef;
+  --cp-border-strong: #7da6cc;
+  --cp-text: #12243a;
+  --cp-text-muted: #46607a;
+  --cp-text-soft: #6a8199;
+  --cp-accent: #0f6cbd;
+  --cp-accent-hover: #0c5aa0;
+  --cp-accent-soft: rgba(15, 108, 189, 0.09);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #15803d;
+  --cp-danger: #dc2626;
+  --cp-warning: #b45309;
+  --cp-link: #0f6cbd;
+  --cp-shadow: 0 18px 48px rgba(12, 40, 72, 0.16);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(246, 249, 252, 0.86);
+  --cp-panel-strong: rgba(246, 249, 252, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(15, 108, 189, 0.12);
+  --hero-bg: linear-gradient(135deg, #0c2238 0%, #134a7e 60%, #0f6cbd 130%);
+  --hero-text: #eaf3fc;
+  --hero-accent: #7fc1ff;
+  --hero-soft: #b9d4ee;
+  --hero-dot: #5a7fa3;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #0d1a29;
+  --cp-bg-elevated: #112338;
+  --cp-surface: #172b42;
+  --cp-surface-soft: #1d3349;
+  --cp-border: #2f4a67;
+  --cp-border-strong: #4f78a3;
+  --cp-text: #dce8f4;
+  --cp-text-muted: #9fb4cb;
+  --cp-text-soft: #b6c6d8;
+  --cp-accent: #4da6ff;
+  --cp-accent-hover: #69b5ff;
+  --cp-accent-soft: rgba(77, 166, 255, 0.14);
+  --cp-accent-fg: #08263f;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+  --cp-overlay: rgba(13, 26, 41, 0.88);
+  --cp-panel: rgba(17, 35, 56, 0.78);
+  --cp-panel-strong: rgba(17, 35, 56, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(77, 166, 255, 0.12);
+  --hero-bg: linear-gradient(135deg, #08131f 0%, #0f2f50 60%, #155a96 130%);
+  --hero-text: #eaf3fc;
+  --hero-accent: #7fc1ff;
+  --hero-soft: #aac6e2;
+  --hero-dot: #466a8f;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cp-bg);
+  color: var(--cp-text);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+code, .mono { font-family: Consolas, "Courier New", Courier, monospace; }
+
+.deck { position: fixed; inset: 0; }
+.slide {
+  position: absolute; inset: 0;
+  display: none; flex-direction: column; justify-content: center;
+  padding: clamp(2.4rem, 5.5vw, 5.5rem);
+  padding-bottom: clamp(4rem, 7vw, 6rem);
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+.slide-inner { width: 100%; max-width: 1200px; margin: 0 auto; }
+
+.slide.compact { padding-top: clamp(2rem, 4.5vw, 4rem); }
+.slide.compact h2 { margin-bottom: 0.9rem; }
+.slide.compact .card { padding: 0.95rem 1.05rem; }
+.slide.compact .callout { margin-top: 0.85rem; padding: 0.85rem 1.15rem; }
+
+/* hero (title + closing) */
+.slide.hero { background: var(--hero-bg); color: var(--hero-text); }
+.slide.hero .kicker { color: var(--hero-accent); }
+.slide.hero .kicker .num { color: var(--hero-accent); border-color: var(--hero-accent); background: rgba(127,193,255,0.16); }
+.slide.hero h1, .slide.hero h2 { color: #ffffff; }
+.slide.hero .accent { color: var(--hero-accent); }
+.slide.hero .tagline { color: var(--hero-text); }
+.slide.hero .tagline .soft { color: var(--hero-soft); }
+.slide.hero .lead { color: var(--hero-soft); }
+.slide.hero .title-meta { color: var(--hero-soft); }
+.slide.hero .title-meta .dot { background: var(--hero-dot); }
+.slide.hero .title-author { color: #ffffff; }
+.slide.hero .soft { color: var(--hero-soft); }
+
+.kicker {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: clamp(0.72rem, 1vw, 0.85rem); font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--cp-accent); margin-bottom: 1.2rem;
+}
+.kicker .num {
+  font-variant-numeric: tabular-nums; background: var(--cp-accent-soft);
+  border: 1px solid var(--cp-accent); color: var(--cp-accent);
+  border-radius: 999px; padding: 0.1rem 0.65rem; letter-spacing: 0.08em;
+}
+
+h1 { font-size: clamp(2.2rem, 5.2vw, 4rem); line-height: 1.04; font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.55rem, 3.2vw, 2.55rem); line-height: 1.08; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 1.2rem; }
+.lead { font-size: clamp(1rem, 1.55vw, 1.32rem); color: var(--cp-text-muted); line-height: 1.5; max-width: 70ch; }
+.accent { color: var(--cp-accent); }
+.soft { color: var(--cp-text-soft); }
+
+.tagline { margin-top: 1.5rem; font-size: clamp(1.1rem, 1.9vw, 1.55rem); font-weight: 600; line-height: 1.3; }
+
+.title-meta {
+  margin-top: 2.4rem; display: flex; flex-wrap: wrap; gap: 0.55rem 1.1rem;
+  align-items: center; color: var(--cp-text-muted); font-size: clamp(0.85rem, 1.2vw, 1rem);
+}
+.title-meta .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cp-border-strong); }
+.title-author { color: var(--cp-text); font-weight: 600; }
+
+.grid { display: grid; gap: 0.9rem; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.card {
+  background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px;
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 0 2px rgba(12,40,72,0.10), 0 1px 2px rgba(12,40,72,0.12);
+}
+.card h3 { font-size: clamp(1rem, 1.45vw, 1.2rem); font-weight: 700; margin-bottom: 0.45rem; display:flex; align-items:center; gap:0.5rem; }
+.card p { font-size: clamp(0.85rem, 1.12vw, 1rem); color: var(--cp-text-muted); line-height: 1.45; }
+.card.accenttop { border-top: 3px solid var(--cp-accent); }
+
+.section-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cp-text-soft); margin-bottom: 0.55rem; }
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.8rem; height: 1.8rem; padding: 0 0.5rem; border-radius: 8px;
+  background: var(--cp-accent-soft); color: var(--cp-accent); border: 1px solid var(--cp-accent);
+  font-weight: 700; font-size: 0.92rem; font-variant-numeric: tabular-nums;
+}
+
+/* question chips (intro) */
+.qgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+.qchip {
+  background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 4px solid var(--cp-accent);
+  border-radius: 12px; padding: 0.85rem 1rem;
+  box-shadow: 0 0 2px rgba(12,40,72,0.10), 0 1px 2px rgba(12,40,72,0.12);
+}
+.qchip .qq { font-weight: 700; font-size: clamp(0.92rem, 1.25vw, 1.1rem); line-height: 1.2; }
+.qchip .qm { font-size: 0.74rem; color: var(--cp-text-soft); margin-top: 0.35rem; letter-spacing: 0.04em; }
+
+/* tech sub-strip */
+.techstrip {
+  margin-top: 1.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; align-items: center;
+  border-top: 1px solid var(--cp-border); padding-top: 1rem;
+  font-size: clamp(0.85rem, 1.1vw, 0.98rem); color: var(--cp-text-muted);
+}
+.techstrip .tl { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cp-text-soft); }
+.techstrip span b { color: var(--cp-text); font-weight: 600; }
+
+ul.clean { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.3rem; }
+ul.clean li { position: relative; padding-left: 1.6rem; font-size: clamp(0.95rem, 1.3vw, 1.15rem); line-height: 1.4; color: var(--cp-text); }
+ul.clean li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.55rem; height: 0.55rem; border-radius: 2px; background: var(--cp-accent); }
+ul.clean li .t { color: var(--cp-text-muted); }
+
+.two-col { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(1.4rem, 3.5vw, 3rem); align-items: center; }
+.two-col.even { grid-template-columns: 1fr 1fr; align-items: stretch; }
+
+.tag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.tag.bad { color: var(--cp-text-soft); }
+.tag.good { color: var(--cp-accent); }
+.gapcard { border-top: 3px solid var(--cp-border-strong); }
+.capcard { border-top: 3px solid var(--cp-accent); }
+
+.pill { display: inline-block; padding: 0.28rem 0.65rem; border-radius: 999px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); font-size: 0.78rem; color: var(--cp-text-muted); font-weight: 600; }
+
+.flow { display: flex; align-items: stretch; gap: 0.6rem; flex-wrap: wrap; }
+.flow .node {
+  flex: 1 1 0; min-width: 110px; background: var(--cp-surface); border: 1px solid var(--cp-border);
+  border-radius: 12px; padding: 0.8rem 0.9rem; text-align: center;
+  display: flex; flex-direction: column; gap: 0.2rem; justify-content: center;
+}
+.flow .node .lbl { font-weight: 700; font-size: clamp(0.82rem,1.15vw,1rem); }
+.flow .node .sub { font-size: 0.74rem; color: var(--cp-text-soft); }
+.flow .arrow { display: flex; align-items: center; color: var(--cp-accent); font-size: 1.3rem; font-weight: 700; }
+.node.accent { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+
+.hub-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem; align-items: stretch; }
+.hub-center {
+  grid-column: 2; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  background: var(--cp-accent); color: var(--cp-accent-fg); border-radius: 16px; padding: 1.2rem; text-align: center;
+  box-shadow: var(--cp-shadow);
+}
+.hub-center .big { font-size: clamp(1.05rem,1.7vw,1.4rem); font-weight: 800; }
+.hub-center .small { font-size: 0.8rem; opacity: 0.92; margin-top: 0.25rem; }
+
+.stack { display: flex; flex-direction: column; gap: 0.5rem; }
+.layer {
+  display: grid; grid-template-columns: 150px 1fr; gap: 1rem; align-items: center;
+  background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 4px solid var(--cp-accent);
+  border-radius: 12px; padding: 0.7rem 1.05rem;
+}
+.layer .name { font-weight: 700; font-size: clamp(0.95rem,1.3vw,1.15rem); }
+.layer .qa { font-size: clamp(0.82rem,1.1vw,1rem); color: var(--cp-text-muted); line-height: 1.32; }
+.layer .qa b { color: var(--cp-text); font-weight: 600; }
+.layer.muted { border-left-color: var(--cp-border-strong); }
+
+.loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
+.loop .step { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 14px; padding: 1rem; }
+.loop .step .n { font-size: 0.74rem; font-weight: 700; color: var(--cp-accent); letter-spacing: 0.08em; }
+.loop .step h4 { font-size: clamp(0.92rem,1.25vw,1.12rem); margin: 0.3rem 0 0.35rem; }
+.loop .step p { font-size: 0.79rem; color: var(--cp-text-muted); line-height: 1.38; }
+
+.folders { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.55rem; }
+.folder { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; padding: 0.7rem 0.85rem; }
+.folder .fname { font-weight: 700; color: var(--cp-accent); font-family: Consolas, monospace; font-size: 0.92rem; }
+.folder .fdesc { font-size: 0.76rem; color: var(--cp-text-muted); margin-top: 0.22rem; line-height: 1.3; }
+
+.callout {
+  margin-top: 1.3rem; padding: 1rem 1.3rem; background: var(--cp-accent-soft); border: 1px solid var(--cp-accent);
+  border-radius: 14px; font-size: clamp(1rem,1.45vw,1.28rem); font-weight: 600; line-height: 1.35;
+}
+.callout .ll { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cp-accent); display:block; margin-bottom: 0.3rem; }
+.callout .accent { font-weight: 800; }
+
+.steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+.step-chip { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; padding: 0.6rem 0.72rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.step-chip .sn { width: 1.55rem; height: 1.55rem; border-radius: 8px; background: var(--cp-accent); color: var(--cp-accent-fg); font-weight: 700; display:flex; align-items:center; justify-content:center; font-size: 0.8rem; }
+.step-chip .st { font-weight: 700; font-size: 0.86rem; }
+.step-chip .sd { font-size: 0.72rem; color: var(--cp-text-muted); line-height: 1.28; }
+
+.resource-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem; }
+.resource { display: flex; align-items: center; gap: 0.55rem; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; padding: 0.6rem 0.9rem; font-size: 0.9rem; }
+.resource .mono { color: var(--cp-accent); font-weight: 600; }
+.slide.hero .resource { background: rgba(255,255,255,0.08); border-color: rgba(127,193,255,0.4); color: var(--hero-text); }
+.slide.hero .resource .mono { color: var(--hero-accent); }
+.slide.hero .card.accenttop { background: rgba(255,255,255,0.07); border-color: rgba(127,193,255,0.4); }
+.slide.hero ul.clean li { color: var(--hero-text); }
+.slide.hero ul.clean li .t { color: var(--hero-soft); }
+.slide.hero .callout { background: rgba(127,193,255,0.14); border-color: var(--hero-accent); color: #fff; }
+.slide.hero .callout .accent { color: var(--hero-accent); }
+.slide.hero .section-label { color: var(--hero-soft); }
+
+/* governance challenge → solution */
+.gov { display: flex; flex-direction: column; gap: 0.55rem; }
+.gov-labels { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0 0.3rem; }
+.gov-row { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--cp-border); border-radius: 12px; overflow: hidden; background: var(--cp-surface); box-shadow: 0 0 2px rgba(12,40,72,0.10), 0 1px 2px rgba(12,40,72,0.12); }
+.gov-row .chal, .gov-row .sol { padding: 0.72rem 1.05rem; }
+.gov-row .chal p { font-size: clamp(0.82rem,1.08vw,0.96rem); line-height: 1.38; color: var(--cp-text-muted); }
+.gov-row .sol { background: var(--cp-accent-soft); border-left: 1px solid var(--cp-border); }
+.gov-row .sol p { font-size: clamp(0.82rem,1.08vw,0.96rem); line-height: 1.38; color: var(--cp-text); }
+
+/* day in the life phases */
+.phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
+.phase { background: var(--cp-surface); border: 1px solid var(--cp-border); border-top: 3px solid var(--cp-accent); border-radius: 14px; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; gap: 0.28rem; box-shadow: 0 0 2px rgba(12,40,72,0.10), 0 1px 2px rgba(12,40,72,0.12); }
+.phase .pt { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cp-accent); }
+.phase h4 { font-size: clamp(0.98rem,1.35vw,1.18rem); font-weight: 700; }
+.phase .what { font-size: clamp(0.78rem,1.02vw,0.9rem); color: var(--cp-text-muted); line-height: 1.36; }
+.phase .how { font-size: clamp(0.73rem,0.96vw,0.83rem); color: var(--cp-text); line-height: 1.32; margin-top: auto; padding-top: 0.4rem; }
+.phase .how b { color: var(--cp-accent); font-weight: 600; }
+
+/* consolidation detail */
+.consol { margin-top: 0.85rem; background: var(--cp-accent-soft); border: 1px solid var(--cp-accent); border-radius: 14px; padding: 0.8rem 1.1rem; }
+.consol .ch { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cp-accent); margin-bottom: 0.45rem; }
+.consol .citems { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.32rem 1.6rem; }
+.consol .ci { font-size: clamp(0.8rem,1.05vw,0.94rem); color: var(--cp-text); line-height: 1.34; }
+.consol .ci b { color: var(--cp-accent); }
+
+/* appendix: skill internals */
+.kv { display: grid; grid-template-columns: 3.3rem 1fr; gap: 0.5rem; font-size: clamp(0.75rem,0.97vw,0.87rem); line-height: 1.32; margin-top: 0.28rem; }
+.kv .k { font-weight: 700; color: var(--cp-accent); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 0.16rem; }
+.kv .v { color: var(--cp-text-muted); }
+.kv .v .mono { color: var(--cp-text); }
+.passgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; }
+.pass { background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--cp-accent); border-radius: 10px; padding: 0.6rem 0.8rem; }
+.pass .pn { font-weight: 700; font-size: clamp(0.82rem,1.05vw,0.95rem); }
+.pass .pd { font-size: 0.74rem; color: var(--cp-text-muted); line-height: 1.3; margin-top: 0.12rem; }
+
+.progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--cp-accent); width: 0%; transition: width 0.3s ease; z-index: 40; }
+
+.chrome { position: fixed; bottom: 1rem; right: 1.2rem; z-index: 40; display: flex; align-items: center; gap: 0.5rem; }
+.chrome button {
+  width: 2.3rem; height: 2.3rem; border-radius: 8px; background: var(--cp-panel); border: 1px solid var(--cp-border);
+  color: var(--cp-text); cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px); transition: background 0.2s, border-color 0.2s;
+}
+.chrome button:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+.counter { font-variant-numeric: tabular-nums; font-size: 0.85rem; color: var(--cp-text-muted); padding: 0 0.5rem; min-width: 3.4rem; text-align: center; }
+
+.hint { position: fixed; bottom: 1.1rem; left: 1.2rem; z-index: 40; font-size: 0.76rem; color: var(--cp-text-soft); background: var(--cp-panel); border: 1px solid var(--cp-border); padding: 0.38rem 0.72rem; border-radius: 8px; backdrop-filter: blur(6px); }
+.hint .mono { color: var(--cp-accent); }
+
+.slide-tag { position: fixed; top: 1rem; left: 1.4rem; z-index: 40; font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cp-text-soft); font-weight: 600; }
+
+.notes {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; transform: translateY(100%); transition: transform 0.3s ease;
+  background: var(--cp-panel-strong); border-top: 2px solid var(--cp-accent); backdrop-filter: blur(10px);
+  padding: 1rem clamp(1.4rem, 5vw, 4rem) 1.2rem; max-height: 46vh; overflow-y: auto; box-shadow: 0 -14px 40px rgba(0,0,0,0.18);
+}
+.notes.show { transform: translateY(0); }
+.notes h5 { font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cp-accent); margin-bottom: 0.45rem; }
+.notes p { font-size: clamp(0.9rem, 1.2vw, 1.05rem); line-height: 1.5; color: var(--cp-text); max-width: 92ch; }
+.notes .nclose { position: absolute; top: 0.75rem; right: 1.2rem; cursor: pointer; color: var(--cp-text-muted); font-size: 1.1rem; background:none; border:none; }
+
+@media (max-width: 860px) {
+  .grid-3, .grid-4, .hub-wrap, .qgrid, .steps-grid, .loop { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .two-col.even { grid-template-columns: 1fr; }
+  .hub-center { grid-column: auto; }
+  .layer { grid-template-columns: 1fr; gap: 0.3rem; }
+  .gov-row, .gov-labels { grid-template-columns: 1fr; }
+  .phases { grid-template-columns: repeat(2, 1fr); }
+  .consol .citems { grid-template-columns: 1fr; }
+  .passgrid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="slide-tag" id="slidetag">Executive Personal Assistant</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 — TITLE (hero) -->
+  <section class="slide hero active" data-notes="Welcome. 45 minutes. I'm not pitching a product — I'm showing a system I actually run every day, and the design decisions behind it. The talk is in three acts. Act one: the problem, and what this assistant actually is. Act two: how it works — the four pillars that make memory useful. Act three: how you'd build your own, and a live demo of the real thing. The title says 'what actually matters' because the easy part is wiring an agent to tools; the hard, interesting part is memory and governance.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">EAG Day of Learning</span> Data Science · 19 June 2026</div>
+      <h1>Build Your Own<br><span class="accent">Executive Personal Assistant</span></h1>
+      <div class="tagline">What actually matters: <span class="soft">memory, workflows, tools, and governance.</span></div>
+      <div class="title-meta">
+        <span class="title-author">Florian Pydde</span>
+        <span class="dot"></span><span>Sr Data Scientist, EAG AI Engineering</span>
+        <span class="dot"></span><span>14:00–14:45 CET · recorded</span>
+      </div>
+      <div class="resource-row" style="margin-top:1.6rem;">
+        <a href="https://github.com/FlorianPydde/PersoMemory" target="_blank" rel="noopener" class="resource" style="text-decoration:none;color:inherit;">📦 <span class="mono">github.com/FlorianPydde/PersoMemory</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 — THE GAP (Act I) -->
+  <section class="slide" data-notes="Act one — the problem. Today's agents are genuinely capable: Copilot CLI plans, runs workflows, calls tools, edits files. But every one of them starts from zero each session. They forget what you decided yesterday, what you owe, a project's status. The gap isn't intelligence — it's memory. And not just any memory: memory that is actionable, meaning it changes the next decision, and governed, meaning you can trust what it stored and what it deliberately didn't. That's the missing piece this whole talk is about.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT I</span> The problem</div>
+      <h2>Agents can already act — so what's missing?</h2>
+      <div class="grid grid-3" style="margin-bottom:1.3rem;">
+        <div class="card"><h3>✓ Run workflows</h3><p>Plan, execute multi-step tasks, orchestrate tools.</p></div>
+        <div class="card"><h3>✓ Use tools</h3><p>MCP servers, APIs, the file system, the web.</p></div>
+        <div class="card"><h3>✓ Reason</h3><p>Strong models, good at the task in front of them.</p></div>
+      </div>
+      <div class="callout">…but they <span class="accent">forget everything between sessions.</span> The missing piece is <span class="accent">actionable, governed memory.</span></div>
+    </div>
+  </section>
+
+  <!-- 3 — WHAT IT IS + QUESTIONS (Act I) -->
+  <section class="slide" data-notes="So what is it, concretely? Think chief of staff, not chatbot: it knows what matters now, what you owe, the backstory behind your work, and the playbooks worth reusing — and it brings the right one up at the right moment. The best way to feel what it does is the questions you can actually ask it. These six are real: what should I focus on, what do I owe and to whom, bring me up to speed on a project, what did someone say about X, have we solved this before, what's my career evidence right now. Each of these quietly demands something a notes app or a RAG dump can't do — and answering them well is what the next three pillars are about. Underneath — deliberately the footnote, not the headline — it runs on Copilot CLI, your Microsoft 365 through WorkIQ, and a private Obsidian vault.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT I</span> What it is</div>
+      <h2>An assistant you can actually ask</h2>
+      <p class="lead" style="margin-bottom:1.1rem;">Chief of staff, not chatbot. It knows what matters, what you owe, the context behind your work, and what's worth reusing. In practice, that means you can ask it:</p>
+      <div class="qgrid">
+        <div class="qchip"><div class="qq">"What should I focus on today?"</div><div class="qm">attention · priorities</div></div>
+        <div class="qchip"><div class="qq">"What do I owe — and to whom?"</div><div class="qm">open commitments</div></div>
+        <div class="qchip"><div class="qq">"Bring me up to speed on [project]."</div><div class="qm">outcome context</div></div>
+        <div class="qchip"><div class="qq">"What did [person] say about X?"</div><div class="qm">source evidence</div></div>
+        <div class="qchip"><div class="qq">"Have we solved this before?"</div><div class="qm">reusable patterns</div></div>
+        <div class="qchip"><div class="qq">"What's my career evidence right now?"</div><div class="qm">curated · gated</div></div>
+      </div>
+      <div class="techstrip">
+        <span class="tl">Under the hood</span>
+        <span><b>Copilot CLI</b> — the agent</span>
+        <span><b>Microsoft 365</b> (WorkIQ) — the evidence</span>
+        <span><b>Obsidian vault</b> — the memory</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE STACK & BUILD YOUR OWN (moved to Act I) -->
+  <section class="slide compact" data-notes="Before we get into how it works, here's the actual tech it's built on — so you know exactly what this is. On the left, the machinery: Copilot CLI is the agent you talk to; WorkIQ pulls Microsoft 365 evidence; the Obsidian vault is the durable store, written deterministically through the mcpvault MCP; Smart Connections gives semantic search; a tiny lifecycle MCP surfaces staleness; and the memory skills are the judgment layer. Tools give access; the skills give judgment. On the right, how you'd build your own: it's agent-driven, there's no install script — you open SETUP.md and an agent walks you through eight steps using your own paths. My honest advice: start minimal — a vault, the skills, and WorkIQ gets you most of the value; add hooks and scheduling once you trust it. Everything is in the PersoMemory repo.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT I</span> The stack &amp; build your own</div>
+      <h2>The machinery &amp; the path</h2>
+      <div class="two-col even">
+        <div>
+          <div class="section-label">The machinery</div>
+          <div class="hub-wrap" style="gap:0.6rem;">
+            <div class="card"><h3>WorkIQ</h3><p>M365 evidence.</p></div>
+            <div class="hub-center" style="padding:0.9rem;"><div class="big">Copilot CLI</div><div class="small">agent · judgment</div></div>
+            <div class="card"><h3>Obsidian vault</h3><p>Durable store · <span class="mono">mcpvault</span>.</p></div>
+            <div class="card"><h3>Smart Connections</h3><p>Semantic search.</p></div>
+            <div class="card"><h3>Memory skills</h3><p>The judgment layer.</p></div>
+            <div class="card"><h3>Lifecycle MCP</h3><p>Staleness signals.</p></div>
+          </div>
+          <p class="soft" style="margin-top:0.7rem;font-size:0.86rem;">Tools give <strong>access</strong>; skills give <strong>judgment</strong>.</p>
+        </div>
+        <div>
+          <div class="section-label">Agent-driven setup · no install script</div>
+          <div class="steps-grid">
+            <div class="step-chip"><span class="sn">1</span><span class="st">Vault</span><span class="sd">Git-backed Obsidian.</span></div>
+            <div class="step-chip"><span class="sn">2</span><span class="st">Smart Connections</span><span class="sd">Build the index.</span></div>
+            <div class="step-chip"><span class="sn">3</span><span class="st">Skills</span><span class="sd">The memory skills.</span></div>
+            <div class="step-chip"><span class="sn">4</span><span class="st">MCP config</span><span class="sd">WorkIQ · vault · lifecycle.</span></div>
+            <div class="step-chip"><span class="sn">5</span><span class="st">Instructions</span><span class="sd">Route to skills.</span></div>
+            <div class="step-chip"><span class="sn">6</span><span class="st">Hooks</span><span class="sd">Pointer capture (opt).</span></div>
+            <div class="step-chip"><span class="sn">7</span><span class="st">Schedule</span><span class="sd">Evening sweep (opt).</span></div>
+            <div class="step-chip"><span class="sn">8</span><span class="st">Validate</span><span class="sd">Structure + behaviour.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Start minimal: <span class="accent">vault + skills + WorkIQ.</span> Everything to rebuild is in <span class="mono">PersoMemory / SETUP.md</span>.</div>
+    </div>
+  </section>
+
+  <!-- 4 — PILLAR 1: INGESTION (Act II) -->
+  <section class="slide" data-notes="Act two — how it works, in four pillars. Pillar one: ingestion, and two rules matter. First — recall first. The real risk is missing something that matters — a task someone handed you, a commitment you made, a piece of career advice dropped in passing. The cost of missing those is high; the cost of keeping a little extra noise is low. So you capture broadly, making sure nothing important slips through, and you sort signal from noise later, when you have context. The mechanic that makes that affordable is on the right — you save a short summary plus a link back to the source, not the raw email or transcript, so the vault stays light and the full detail stays where it already lives. Second — reconcile across sources. The asks, the decisions, the discussion all live in email, chat, and meeting recordings — but the actual work often happens somewhere else entirely: in the terminal, in a doc, in another tool. No single source tells the whole story, so ingestion has to reconcile what was asked against where the work actually happened. And here's the mechanism that makes that possible: session hooks. Every Copilot CLI session drops a pointer — a breadcrumb to the work I just did in the terminal — into a local queue, and the evening sweep picks those up and reconciles them against the open tasks, so a commitment gets marked done because there's evidence I did the work, not just because I said I would. Those are the two big ideas: capture broadly for recall, and reconcile across scattered sources. One practical point that matters a lot: good recall takes specific prompts. A single broad query misses most things — so I use a targeted WorkIQ prompt for each kind of signal: obligations and requests, decisions and risks, career and feedback signals, reusable ideas, and direct mentions. Specific prompts surface specific evidence; that's what makes recall actually complete.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT II</span> Pillar 1 · Ingestion</div>
+      <h2>Capture everything — judge &amp; reconcile later</h2>
+      <div class="two-col even">
+        <div>
+          <div class="section-label">① Recall · don't miss anything</div>
+          <div class="card accenttop" style="margin-bottom:0.7rem;">
+            <h3>Capture broadly</h3>
+            <p>Missing a real <strong>task, commitment, or piece of career advice</strong> is costly — a bit of noise isn't. Capture everything that might matter; sort signal from noise <strong>later</strong>.</p>
+          </div>
+          <div style="background:var(--cp-accent-soft);border:1px solid var(--cp-accent);border-radius:12px;padding:0.8rem 1.05rem;">
+            <div class="section-label" style="color:var(--cp-accent);margin-bottom:0.3rem;">How · specific prompts</div>
+            <p style="font-size:0.92rem;color:var(--cp-text);line-height:1.42;">A <strong>targeted WorkIQ prompt for each signal</strong> — obligations · decisions · risks · career · ideas · mentions. One broad query misses most.</p>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">② Reconcile · match work to intent</div>
+          <div class="card accenttop" style="margin-bottom:0.7rem;">
+            <h3>Asks ≠ work</h3>
+            <p>Asks &amp; decisions live in email, chat &amp; meetings — but the <strong>work happens in the terminal</strong> (or a doc). No source is complete on its own.</p>
+          </div>
+          <div style="background:var(--cp-accent-soft);border:1px solid var(--cp-accent);border-radius:12px;padding:0.8rem 1.05rem;">
+            <div class="section-label" style="color:var(--cp-accent);margin-bottom:0.3rem;">How · session hooks</div>
+            <p style="font-size:0.92rem;color:var(--cp-text);line-height:1.42;">Each Copilot CLI session drops a <strong>pointer</strong> to the terminal work; the sweep matches it back to the task it satisfied.</p>
+          </div>
+        </div>
+      </div>
+      <div class="techstrip">
+        <span class="tl">Captured as</span>
+        <span>summaries + source links — <b>never raw transcripts or secrets</b></span>
+        <span><b>Sources:</b> M365 · Copilot sessions · "remember this" · repo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 — PILLAR 2: ONTOLOGY (Act II) -->
+  <section class="slide compact" data-notes="Pillar two: ontology — and the key is WHY it's split this way. Different things in your work live for different lengths of time, so they need different homes. Evidence is the raw inbox — transient, and most of it decays. Execution is the now-to-this-week layer: what I owe, my tasks, open loops, my daily objectives. Outcomes are the medium horizon — projects that span days or weeks that I need to keep in mind. Reusable is long-term: durable patterns, frameworks, and career knowledge I'll still want months from now. Views are just lenses that rank and point. Concretely it's six folders in an Obsidian vault. And here's the part that's easy to underestimate: approval gates. The model often can't tell which layer something belongs to — is this a passing comment or real career evidence, a task or just chatter — or whether to keep it at all. So anything ambiguous or high-impact stops at a gate, and I decide. That's what keeps the ontology clean instead of the model guessing and polluting it.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT II</span> Pillar 2 · Ontology</div>
+      <h2>Why the layers: different time horizons</h2>
+      <div class="two-col even">
+        <div>
+          <div class="section-label">Organized by how long it matters</div>
+          <div class="stack">
+            <div class="layer muted"><div class="name">Evidence</div><div class="qa"><b>Raw inbox</b> — transient signal; most of it decays.</div></div>
+            <div class="layer"><div class="name">Execution</div><div class="qa"><b>Now → this week</b> — what I owe: tasks, follow-ups, open loops.</div></div>
+            <div class="layer"><div class="name">Outcomes</div><div class="qa"><b>Weeks → months</b> — projects to keep in mind across many days.</div></div>
+            <div class="layer"><div class="name">Reusable</div><div class="qa"><b>Long-term</b> — durable patterns, frameworks, career knowledge.</div></div>
+            <div class="layer muted"><div class="name">Views</div><div class="qa"><b>Lenses</b> — rank &amp; point; no facts of their own.</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">…and it's just six folders</div>
+          <div class="folders" style="margin-bottom:0.9rem;">
+            <div class="folder"><div class="fname">evidence/</div><div class="fdesc">Daily &amp; session capture.</div></div>
+            <div class="folder"><div class="fname">execution/</div><div class="fdesc">Open loops &amp; blockers.</div></div>
+            <div class="folder"><div class="fname">outcomes/</div><div class="fdesc">Maintained projects.</div></div>
+            <div class="folder"><div class="fname">reusable/</div><div class="fdesc">Patterns &amp; frameworks.</div></div>
+            <div class="folder"><div class="fname">views/</div><div class="fdesc">Attention &amp; career.</div></div>
+            <div class="folder"><div class="fname">governance/</div><div class="fdesc">Approvals &amp; ontology.</div></div>
+          </div>
+          <div class="callout" style="margin-top:0;"><span class="ll">Why approval gates matter</span>The model can't always tell <span class="accent">which layer</span> something belongs to — or whether to keep it at all. Ambiguous or high-impact cases stop at a gate: <span class="accent">you decide.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 — PILLAR 3: RETRIEVAL (Act II) -->
+  <section class="slide" data-notes="Pillar three: retrieval — and it's really two questions. First, WHEN do we retrieve? The answer is cue-driven, never automatic. At startup nothing loads. A skill pulls memory only when you actually ask — 'what should I focus on', 'what's my career path', 'have we solved this before'. Your question is the trigger; that's what keeps the context clean instead of dumping the whole vault into every session. Second, HOW do we find it? Two mechanisms, both native to Obsidian. One — links: notes are wikilinked to each other, so from one note I traverse the graph straight to the related ones. That's exact and cheap, so I try it first. Two — semantic search: Obsidian's Smart Connections finds notes related by meaning, even when I don't know the exact file — perfect for discovery, but I treat its hits as candidates and confirm them with an exact read before trusting them. The rule across both: retrieve the smallest context that improves the next decision — more memory usually makes the agent worse.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT II</span> Pillar 3 · Retrieval</div>
+      <h2>When to retrieve — and how to find it</h2>
+      <div class="two-col even">
+        <div>
+          <div class="section-label">① When · the trigger</div>
+          <div class="card accenttop">
+            <h3>Cue-driven, not automatic</h3>
+            <p>Nothing loads at startup. A <strong>skill</strong> pulls memory only when you ask — your question is the cue.</p>
+            <div class="flow" style="gap:0.4rem;margin-top:0.85rem;">
+              <span class="pill">"What should I focus on?"</span>
+              <span class="pill">"What's my career path?"</span>
+              <span class="pill">"Have we done this before?"</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">② How · the search</div>
+          <div class="grid" style="gap:0.7rem;">
+            <div class="card"><h3>Follow links</h3><p>Curated <strong>wikilinks</strong> between notes form a graph — traverse straight to the related ones. Exact &amp; deterministic; try this first.</p></div>
+            <div class="card"><h3>Semantic search</h3><p>Obsidian's <strong>Smart Connections</strong> finds notes by meaning — great for discovery. Confirm hits with an exact read.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Cue-driven, not session-driven — links first, semantic for discovery. Retrieve the <span class="accent">smallest context</span> that helps; more memory makes it worse.</div>
+    </div>
+  </section>
+
+  <!-- 7 — PILLAR 4: GOVERNANCE (Act II) -->
+  <section class="slide compact" data-notes="Pillar four: governance — the part that makes the whole thing trustworthy, so let me make it concrete instead of abstract. The model is constantly making proposals, and it can be wrong in three specific ways. First: did the work actually satisfy the ask? Remember — hooks capture what I did in the terminal, and WorkIQ captures what was asked in chat and email. Governance is what links those two: it matches a piece of work to the commitment it satisfies. But that match can be wrong — right work, wrong task, or not actually finished. So when the match is confident it auto-closes the loop and records the source — your tasks live in one file, execution/open-loops.md, and the nightly sweep marks the loop done there with a link to the proof; when it's uncertain it does NOT silently close it — it drops a note in governance/approvals/ and waits for my OK. Second: should something be promoted, and to which layer? The model can over-claim — turn a passing comment into 'career evidence' — or file it in the wrong place. So any high-impact or ambiguous write stops at an approval gate, and I decide. Third: has something gone stale? Projects end and commitments linger and nobody announces it. So scheduled live checks — a lifecycle service — read each note's frontmatter (status, last-updated, review_date) and surface stale outcomes and aged loops as explicit decisions: confirm it's still active, close it, or extend the review. And underneath all of it, two things are always on: every memory links to its source so I can audit it, and raw transcripts, chat, and secrets are never written. The model proposes; you stay in control of anything that matters. And where does this actually live? The gates and routing are enforced by the memory skills — the judgment layer you'll see on the next slide; the live checks run as a small lifecycle service that scans the vault; and the policy itself, plus every pending approval, lives in the vault's governance folder. So governance isn't a vague principle — it's skills enforcing the rules, a checker scanning for staleness, and a folder holding the policy and the pending decisions.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT II</span> Pillar 4 · Governance</div>
+      <h2>Where the model can be wrong — and how we catch it</h2>
+      <div class="gov">
+        <div class="gov-labels">
+          <div class="section-label">The challenge</div>
+          <div class="section-label" style="color:var(--cp-accent);">How governance handles it</div>
+        </div>
+        <div class="gov-row">
+          <div class="chal"><p><strong>Did this actually get done?</strong> The system pairs the work you did (captured by hooks) with the task asked for in chat — but it can pick the wrong pair.</p></div>
+          <div class="sol"><p>Your tasks live in one file — <span class="mono">execution/open-loops.md</span>. The nightly <strong>sweep</strong> marks the loop done with a link to the proof; if it's unsure, it files a note in <span class="mono">governance/approvals/</span> for you.</p></div>
+        </div>
+        <div class="gov-row">
+          <div class="chal"><p><strong>Is this worth keeping — and where?</strong> The model might exaggerate (call a small win "career evidence") or save it in the wrong place.</p></div>
+          <div class="sol"><p>It's an <strong>approval gate</strong>: the proposed entry waits in <span class="mono">governance/approvals/</span> (a dated file) — nothing durable is saved until you approve it in the morning brief.</p></div>
+        </div>
+        <div class="gov-row">
+          <div class="chal"><p><strong>Is this still current?</strong> Projects quietly end and old tasks pile up — nobody tells the system.</p></div>
+          <div class="sol"><p>A <strong>lifecycle service</strong> reads each note's frontmatter (<span class="mono">status</span>, last-updated, <span class="mono">review_date</span>) and flags stale outcomes &amp; aged loops in the morning brief — confirm, close, or extend.</p></div>
+        </div>
+      </div>
+      <div class="techstrip">
+        <span class="tl">Under the hood</span>
+        <span>the <b>memory skills</b> decide · a <b>lifecycle service</b> scans · it's all plain <b>Markdown in the vault</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 — IT RUNS (Act III) -->
+  <section class="slide compact" data-notes="Act three — this is how I actually work with it day to day; it's basically the demo in words. Morning: I ask for a brief. The brief skill pulls today's priorities from my active-now view, my open loops, anything stale, and any approvals waiting — so I start the day knowing what matters. During the day: capture. I just say 'remember this' — a decision, a commitment, or something I saw, like a talk or a video I want to keep — and the router skill writes it down as evidence, gating anything durable so it doesn't pollute memory. Evening: the sweep. The sweep skill pulls the day's signals from Microsoft 365 and my sessions with those targeted prompts, routes each into the right layer, reconciles the work I did against my open tasks, and parks anything ambiguous as an approval. And weekly: consolidation — the one people ask about, so let me make it concrete. Once a week the maintenance skill steps back and tidies memory so it stays sharp instead of bloated, and it does four things. It promotes — if I've reused the same pattern three times, that becomes a durable reusable note. It closes — a project with no activity for weeks gets marked done or archived, with my approval. It prunes — and to be clear, "decay" does not mean delete: old daily evidence that never turned into anything is simply never promoted or linked, so the retrieval path never surfaces it; it just sits as a dated note and gets archived in the monthly compression. And it merges or supersedes: if two notes cover the same thing, maintenance combines them into one canonical note and repoints the links; and when newer guidance replaces older guidance, the new note records a supersedes link to the old one, and the old one is flagged superseded — kept for history and audit, but dropped from active recall. So the daily loop captures and routes; the weekly loop is where memory gets distilled and kept honest.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT III</span> It runs · how I actually work</div>
+      <h2>A day in the life</h2>
+      <div class="phases">
+        <div class="phase">
+          <div class="pt">Morning</div>
+          <h4>Brief</h4>
+          <p class="what">Today's priorities, open loops, stale items &amp; anything awaiting your approval.</p>
+          <p class="how">How → the <b>brief</b> skill reads active-now + open-loops + approvals</p>
+        </div>
+        <div class="phase">
+          <div class="pt">During the day</div>
+          <h4>Capture</h4>
+          <p class="what">"Remember this" — a decision, a commitment, or a talk / video you want to keep.</p>
+          <p class="how">How → the <b>router</b> skill writes evidence &amp; gates anything durable</p>
+        </div>
+        <div class="phase">
+          <div class="pt">Evening</div>
+          <h4>Sweep</h4>
+          <p class="what">Pull the day's signals, route them, reconcile work vs. tasks, park unclear calls.</p>
+          <p class="how">How → the <b>sweep</b> skill: multi-prompt recall + reconciliation</p>
+        </div>
+        <div class="phase">
+          <div class="pt">Weekly</div>
+          <h4>Consolidate</h4>
+          <p class="what">Step back and distil memory so it stays sharp, not bloated.</p>
+          <p class="how">How → the <b>maintenance</b> skill</p>
+        </div>
+      </div>
+      <div class="consol">
+        <div class="ch">Inside the weekly consolidation</div>
+        <div class="citems">
+          <div class="ci"><b>Promote</b> — a pattern reused 3× becomes a durable reusable note.</div>
+          <div class="ci"><b>Close</b> — a project untouched for weeks → done / archived (with your OK).</div>
+          <div class="ci"><b>Prune (decay ≠ delete)</b> — old daily notes are never promoted or linked, so retrieval ignores them; they age out and get archived in the monthly compression.</div>
+          <div class="ci"><b>Merge / supersede</b> — two notes on one topic are combined &amp; their links repointed; replaced guidance sets <span class="mono">supersedes: [[old]]</span> and the old note is flagged <span class="mono">superseded</span> — kept for history, dropped from recall.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 — RECAP + DEMO (hero) -->
+  <section class="slide hero" data-notes="Let me leave you with what actually matters, stripped of the tools — these hold on any stack. Separate raw evidence from interpreted memory. Promote sparingly; most evidence should decay. Retrieve minimally; protect the context window. Govern aggressively; gate the high-impact and ambiguous writes. Keep the durable store human-curated and inspectable. Now let me show you the real thing. [SWITCH TO DEMO: Copilot CLI + the Obsidian vault. Suggested beats — ask 'what should I focus on today' and show the reconciled open loops; do a live capture; then ask about a past pattern or career evidence and show the approval gate.] It's all in the PersoMemory repo, built to be rebuilt. Fork it, tune it to how you work. Questions?">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">ACT III</span> What actually matters · then the demo</div>
+      <h2>What actually matters</h2>
+      <div class="two-col">
+        <ul class="clean">
+          <li>Separate <span class="t">raw evidence from interpreted memory.</span></li>
+          <li>Promote <span class="t">sparingly — most evidence should decay.</span></li>
+          <li>Retrieve <span class="t">minimally — protect the context window.</span></li>
+          <li>Govern <span class="t">aggressively — gate high-impact writes.</span></li>
+          <li>Keep the store <span class="t">human-curated and inspectable.</span></li>
+        </ul>
+        <div class="card accenttop" style="display:flex;flex-direction:column;justify-content:center;">
+          <div class="section-label">Now — the real implementation</div>
+          <p style="font-size:1rem;line-height:1.5;color:var(--hero-text);">Live: Copilot CLI driving the system over a real Obsidian vault.</p>
+          <div class="resource-row">
+            <div class="resource">📦 <span class="mono">FlorianPydde/PersoMemory</span></div>
+            <div class="resource">⚙️ <span class="mono">SETUP.md</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Built to be <span class="accent">rebuilt</span> — fork it and tune it to how <span class="accent">you</span> work. &nbsp; Questions?</div>
+    </div>
+  </section>
+
+  <!-- A1 — APPENDIX: anatomy of a skill & the router -->
+  <section class="slide compact" data-notes="Appendix — for the 'how is this actually built' questions. First, what a skill even is. A skill is just an instruction module — a SKILL.md file — that the agent loads on demand. Only its name and description sit in context all the time; the full body loads only when the request matches, which is why I can have many skills without bloating context. A skill encodes judgment and policy: when to act, what files to read, what to write, and what to gate. They live in the Copilot config directory. The clean split: skills decide, MCPs do the I/O. The router is the entry point. It classifies the intent — is this recall, capture, day-level attention, or maintenance — picks the smallest useful context, and runs the two-stage retrieval: deterministic first (read the exact note, follow curated links, property search), then semantic widening with Smart Connections, always confirmed by exact reads. Then it dispatches: whole-day attention goes to brief, end-of-day intake to sweep, cleanup to maintenance, and scoped or ambiguous recall it handles itself — enforcing the approval gates on anything durable.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">APPENDIX A</span> Skill internals</div>
+      <h2>Anatomy of a skill &amp; the router</h2>
+      <div class="two-col even">
+        <div>
+          <div class="section-label">What a "skill" is</div>
+          <ul class="clean">
+            <li>A <span class="t">SKILL.md instruction module the agent loads on demand</span> — only its name + description stay in context; the body loads when relevant (progressive disclosure).</li>
+            <li>Encodes <span class="t">judgment &amp; policy</span>: when to act, what to read, what to write, what to gate.</li>
+            <li>Lives in <span class="mono">~/.copilot/skills/</span>. <span class="t">Skills decide; MCPs do the I/O.</span></li>
+          </ul>
+        </div>
+        <div class="card accenttop">
+          <div class="section-label" style="color:var(--cp-accent);">The router's job</div>
+          <ul class="clean" style="margin-top:0.3rem;">
+            <li>Classify intent — <span class="t">recall · capture · attention · maintenance.</span></li>
+            <li>Two-stage retrieval — <span class="t">deterministic (direct → links → property) then semantic (Smart Connections), confirmed by exact reads.</span></li>
+            <li>Dispatch — <span class="t">whole-day → brief · intake → sweep · cleanup → maintenance · scoped/ambiguous → handled inline.</span></li>
+            <li>Enforce <span class="t">approval gates on durable writes.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A2 — APPENDIX: what each skill reads & writes -->
+  <section class="slide compact" data-notes="Second appendix slide — exactly which files each skill touches, because that's where the real behaviour lives. The router reads the active-now view, the open-loops file, curated links and property search, and Smart Connections; it writes lightweight evidence and obvious open-loop or active-now updates, and it gates durable promotions, career evidence, closures, and ambiguous routing. The brief is read-only: it reads active-now, open-loops, pending approvals, and the lifecycle checks, and it writes nothing — it never closes or promotes without approval. The sweep reads active-now, open-loops and outcomes for deduplication, runs the WorkIQ passes, and reads the local session-reviews queue; it writes dated daily evidence, mirrors open loops, updates active-now only for material changes, and files approval items; durable, career, and conflicting calls are all gated. Maintenance reads evidence and the durable records plus approvals and lifecycle results, and it writes maintenance reports and — only after approval — the actual promotions, merges, and supersessions; almost everything it does is gated.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">APPENDIX B</span> File handling</div>
+      <h2>What each skill reads &amp; writes</h2>
+      <div class="grid grid-2" style="gap:0.7rem;">
+        <div class="card">
+          <h3 class="mono" style="color:var(--cp-accent);">memory-router</h3>
+          <div class="kv"><span class="k">Reads</span><span class="v">active-now, open-loops, curated links, property search, Smart Connections</span></div>
+          <div class="kv"><span class="k">Writes</span><span class="v">evidence; obvious <span class="mono">open-loops</span> / <span class="mono">active-now</span> updates</span></div>
+          <div class="kv"><span class="k">Gates</span><span class="v">durable promotions, career evidence, closures, ambiguous routing</span></div>
+        </div>
+        <div class="card">
+          <h3 class="mono" style="color:var(--cp-accent);">memory-brief</h3>
+          <div class="kv"><span class="k">Reads</span><span class="v">active-now, open-loops, approvals, lifecycle checks</span></div>
+          <div class="kv"><span class="k">Writes</span><span class="v">nothing — a read-only attention view</span></div>
+          <div class="kv"><span class="k">Gates</span><span class="v">never closes or promotes without approval</span></div>
+        </div>
+        <div class="card">
+          <h3 class="mono" style="color:var(--cp-accent);">memory-sweep</h3>
+          <div class="kv"><span class="k">Reads</span><span class="v">active-now, open-loops, outcomes; WorkIQ (6 passes); <span class="mono">session-reviews/</span> queue</span></div>
+          <div class="kv"><span class="k">Writes</span><span class="v"><span class="mono">evidence/daily/</span>, open-loops, active-now (material), approvals</span></div>
+          <div class="kv"><span class="k">Gates</span><span class="v">durable, career, conflict, ambiguous → approvals</span></div>
+        </div>
+        <div class="card">
+          <h3 class="mono" style="color:var(--cp-accent);">memory-maintenance</h3>
+          <div class="kv"><span class="k">Reads</span><span class="v">evidence/, durable records, approvals, lifecycle</span></div>
+          <div class="kv"><span class="k">Writes</span><span class="v">maintenance reports; <em>approved</em> promotions / merges / supersessions</span></div>
+          <div class="kv"><span class="k">Gates</span><span class="v">nearly everything — promote, merge, supersede, close, archive, policy</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A3 — APPENDIX: inside the sweep -->
+  <section class="slide compact" data-notes="Third appendix slide — inside the sweep, since it's the most mechanism-heavy. Recall is deliberately not one query: it's six targeted WorkIQ passes, each asking for a candidate LIST with source detail and the exact wording — never raw text — covering obligations and requests, project and outcome changes, career and feedback signals, decisions/risks/dependencies, reusable artifacts and ideas, and direct mentions or questions to me. Different prompts surface different evidence; that's what makes recall complete. On top of that, the terminal: the sweep reads pointer-only entries from the local session-reviews queue that the session-end hook drops, and it specifically looks for loop closures — where work I did in a Copilot session completed a commitment WorkIQ had raised. Then routing: it deduplicates against existing evidence and open loops, writes concise dated evidence to evidence/daily, mirrors still-open obligations into open-loops, updates active-now only for material changes, and queues anything durable or ambiguous into governance/approvals. WorkIQ and Copilot evidence are kept separate, with source attribution, until merged.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">APPENDIX C</span> Inside the sweep</div>
+      <h2>Recall, the terminal &amp; routing</h2>
+      <div class="section-label">Recall — 6 targeted WorkIQ passes (candidate lists + source detail, never raw text)</div>
+      <div class="passgrid" style="margin-bottom:0.9rem;">
+        <div class="pass"><div class="pn">1 · Obligations &amp; requests</div><div class="pd">promises made, asks to do/review/send/decide.</div></div>
+        <div class="pass"><div class="pn">2 · Outcome changes</div><div class="pd">status, scope, owner, blocker, risk, priority shifts.</div></div>
+        <div class="pass"><div class="pn">3 · Career &amp; feedback</div><div class="pd">recognition vs. future guidance, kept separate.</div></div>
+        <div class="pass"><div class="pn">4 · Decisions &amp; risks</div><div class="pd">decisions, reversals, dependencies, "waiting on".</div></div>
+        <div class="pass"><div class="pn">5 · Reusable artifacts</div><div class="pd">decks, prompts, patterns, playbooks, lessons.</div></div>
+        <div class="pass"><div class="pn">6 · Direct mentions</div><div class="pd">@mentions, questions, owner assignments to me.</div></div>
+      </div>
+      <div class="two-col even">
+        <div class="card">
+          <h3>Plus the terminal</h3>
+          <p>Reads pointer-only entries from the local <span class="mono">session-reviews/</span> queue (dropped by the session-end hook) and extracts <strong>loop closures</strong> — work in a Copilot session that completed a WorkIQ-raised commitment.</p>
+        </div>
+        <div class="card">
+          <h3>Then routing</h3>
+          <p>Dedupe → write <span class="mono">evidence/daily/</span> → mirror <span class="mono">open-loops</span> → update active-now (material only) → queue durable/ambiguous in <span class="mono">governance/approvals/</span>. Sources kept separate &amp; attributed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A4 — APPENDIX: why MCPs -->
+  <section class="slide compact" data-notes="Appendix D — the 'why do you even need MCPs' question. The short answer: MCPs are the access layer — the agent's hands, not its brain. Each one gives the agent a capability it has no other way to get. WorkIQ is the only door into Microsoft 365 — without it the agent literally can't see my meetings, mail, or Teams. mcpvault is deterministic, frontmatter-aware read and write to the Obsidian vault — reliable structured writes to the durable store rather than the model fumbling with raw files. Smart Connections exposes the embedding index the Obsidian plugin builds, so the agent can do semantic search it couldn't compute itself. The lifecycle MCP is a tiny deterministic scanner that computes staleness from frontmatter dates, cheaply and reliably. And WorkIQ Teams is the actuation side — sending Teams messages, only on explicit intent. Now, why a tool layer at all instead of baking it into the agent? Three reasons. Separation of concerns: MCPs are deliberately dumb — they do I/O, they don't decide meaning; the judgment stays in inspectable skills, the plumbing stays in tools, and that's what makes the system safe to reason about. Standard and swappable: MCP is a protocol, so any MCP-capable agent can use these — capability is decoupled from the agent. And determinism plus a security boundary: vault writes and staleness checks are deterministic, and each MCP scopes exactly what the agent is allowed to touch. So MCPs are the sensory and motor system; the skills are the interesting, opinionated part — the MCPs are intentionally boring, and that's the point.">
+    <div class="slide-inner">
+      <div class="kicker"><span class="num">APPENDIX D</span> Why MCPs?</div>
+      <h2>MCPs: the access layer</h2>
+      <p class="soft" style="margin:-0.4rem 0 1rem;font-size:clamp(0.92rem,1.2vw,1.1rem);">The agent's <strong>hands, not its brain</strong> — each gives a capability the agent has no other way to get. Strip them out and it's blind.</p>
+      <div class="two-col even">
+        <div>
+          <div class="section-label">Each earns its place</div>
+          <div class="stack">
+            <div class="layer"><div class="name mono">WorkIQ</div><div class="qa">The only door into <b>Microsoft 365</b> — meetings, mail, Teams, transcripts.</div></div>
+            <div class="layer"><div class="name mono">mcpvault</div><div class="qa">Deterministic, frontmatter-aware <b>read/write to the vault</b> — not raw-file fumbling.</div></div>
+            <div class="layer"><div class="name mono">smart-connections</div><div class="qa">Exposes the plugin's <b>embedding index</b> for semantic search.</div></div>
+            <div class="layer"><div class="name mono">lifecycle</div><div class="qa">Deterministic <b>staleness scanner</b> over frontmatter dates.</div></div>
+            <div class="layer muted"><div class="name mono">workiq-teams</div><div class="qa">Actuation — <b>send Teams messages</b>, on explicit intent only.</div></div>
+          </div>
+        </div>
+        <div class="card accenttop">
+          <div class="section-label" style="color:var(--cp-accent);">Why a tool layer at all</div>
+          <ul class="clean" style="margin-top:0.3rem;">
+            <li>Separation of concerns — <span class="t">MCPs are dumb I/O; judgment stays in inspectable skills. Safe to reason about.</span></li>
+            <li>Standard &amp; swappable — <span class="t">MCP is a protocol; capability is decoupled from the agent.</span></li>
+            <li>Determinism + a security boundary — <span class="t">reliable writes/checks; each MCP scopes what the agent can touch.</span></li>
+          </ul>
+          <p class="soft" style="margin-top:0.7rem;font-size:0.86rem;">Tools = access · skills = judgment · vault = memory · agent = orchestrator.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="notes" id="notes">
+  <button class="nclose" id="nclose" aria-label="close notes">✕</button>
+  <h5>Speaker notes</h5>
+  <p id="notesText"></p>
+</div>
+
+<div class="hint">← → navigate &nbsp;·&nbsp; <span class="mono">N</span> notes &nbsp;·&nbsp; <span class="mono">F</span> fullscreen</div>
+<div class="chrome">
+  <button id="prev" aria-label="previous">‹</button>
+  <span class="counter" id="counter">1 / 10</span>
+  <button id="next" aria-label="next">›</button>
+  <button id="notesBtn" aria-label="speaker notes">≡</button>
+  <button id="fsBtn" aria-label="fullscreen">⤢</button>
+</div>
+
+<script>
+(() => {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let i = 0;
+
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const notes = document.getElementById('notes');
+  const notesText = document.getElementById('notesText');
+  const tag = document.getElementById('slidetag');
+
+  function render() {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    progress.style.width = ((i + 1) / total * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + total;
+    notesText.textContent = slides[i].getAttribute('data-notes') || '—';
+    tag.textContent = i === 0 ? 'Executive Personal Assistant' : ('PersoMemory · ' + (i + 1) + '/' + total);
+  }
+  function go(n) { i = Math.max(0, Math.min(total - 1, n)); render(); }
+  function next() { go(i + 1); }
+  function prev() { go(i - 1); }
+
+  document.getElementById('next').onclick = next;
+  document.getElementById('prev').onclick = prev;
+  document.getElementById('notesBtn').onclick = () => notes.classList.toggle('show');
+  document.getElementById('nclose').onclick = () => notes.classList.remove('show');
+  document.getElementById('fsBtn').onclick = toggleFs;
+
+  function toggleFs() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); break;
+      case 'Home': go(0); break;
+      case 'End': go(total - 1); break;
+      case 'n': case 'N': notes.classList.toggle('show'); break;
+      case 'f': case 'F': toggleFs(); break;
+      case 'Escape': notes.classList.remove('show'); break;
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

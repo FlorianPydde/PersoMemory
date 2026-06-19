@@ -54,13 +54,13 @@ Run these six passes for the target date or date range.
 ### 1. Obligations and Requests
 
 ```text
-Search Microsoft 365 activity around Florian for [DATE/RANGE].
+Search Microsoft 365 activity around the signed-in user for [DATE/RANGE].
 
 Return a candidate list, not a summary.
 
 Find every message, email, meeting note, transcript passage, task, or shared-file comment where:
-- Florian says he will do something.
-- Someone asks Florian to do, review, send, prepare, decide, follow up, validate, schedule, or share something.
+- The signed-in user says they will do something.
+- Someone asks the signed-in user to do, review, send, prepare, decide, follow up, validate, schedule, or share something.
 - A concrete output, owner, due date, next step, or blocker is mentioned.
 
 For each candidate include source type, source detail, sender/speaker, date/time, exact wording or close paraphrase, requested output, owner, due date or timing, project/topic, whether explicit or inferred, confidence, and ambiguity.
@@ -71,7 +71,7 @@ If none are found, return `No candidates found`.
 ### 2. Project or Outcome Changes
 
 ```text
-Search Microsoft 365 activity around Florian for [DATE/RANGE].
+Search Microsoft 365 activity around the signed-in user for [DATE/RANGE].
 
 Return a candidate list, not a summary.
 
@@ -85,11 +85,11 @@ If none are found, return `No candidates found`.
 ### 3. Career, Feedback, and Guidance
 
 ```text
-Search Microsoft 365 activity around Florian for [DATE/RANGE].
+Search Microsoft 365 activity around the signed-in user for [DATE/RANGE].
 
 Return a candidate list, not a summary.
 
-Find discussions involving manager, skip-level, mentor, leadership, customer, or senior stakeholder feedback about Florian's role, scope, visibility, strengths, growth areas, mentoring, leadership, promotion, Connect evidence, career direction, future opportunities, or 1-3 year trajectory.
+Find discussions involving manager, skip-level, mentor, leadership, customer, or senior stakeholder feedback about the signed-in user's role, scope, visibility, strengths, growth areas, mentoring, leadership, promotion, Connect evidence, career direction, future opportunities, or 1-3 year trajectory.
 
 Keep recognition of past impact separate from future guidance.
 
@@ -101,7 +101,7 @@ If none are found, return `No candidates found`.
 ### 4. Decisions, Risks, and Dependencies
 
 ```text
-Search Microsoft 365 activity around Florian for [DATE/RANGE].
+Search Microsoft 365 activity around the signed-in user for [DATE/RANGE].
 
 Return a candidate list, not a summary.
 
@@ -117,7 +117,7 @@ If none are found, return `No candidates found`.
 ### 5. Reusable Artifacts and Ideas
 
 ```text
-Search Microsoft 365 activity around Florian for [DATE/RANGE].
+Search Microsoft 365 activity around the signed-in user for [DATE/RANGE].
 
 Return a candidate list, not a summary.
 
@@ -128,14 +128,14 @@ For each candidate include source type, source detail, sender/speaker, date/time
 If none are found, return `No candidates found`.
 ```
 
-### 6. Direct Mentions and Questions to Florian
+### 6. Direct Mentions and Questions to the signed-in user
 
 ```text
-Search Microsoft 365 activity around Florian for [DATE/RANGE].
+Search Microsoft 365 activity around the signed-in user for [DATE/RANGE].
 
 Return a candidate list, not a summary.
 
-Find Teams messages, emails, meeting chats, comments, or threads where Florian is mentioned by name, @mentioned, directly asked a question, assigned as owner, asked for input, or expected to respond.
+Find Teams messages, emails, meeting chats, comments, or threads where the signed-in user is mentioned by name, @mentioned, directly asked a question, assigned as owner, asked for input, or expected to respond.
 
 For each candidate include source type, source detail, sender/speaker, date/time, exact wording or close paraphrase, requested response or input, deadline if visible, project/topic, confidence, and ambiguity.
 

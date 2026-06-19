@@ -2,9 +2,9 @@
 
 ## Position
 
-Hooks are optional orchestration aids. They should not be the main memory system.
+Hooks are lightweight orchestration aids. They should not be the main memory system.
 
-Use global Copilot instructions, memory skills, and MCP configuration for generic behavior. Use hooks only for lightweight session orchestration.
+Use memory skills and MCP configuration for generic behavior. Use hooks only for lightweight session orchestration.
 
 ## User-level hooks
 
@@ -93,11 +93,10 @@ Copilot CLI also loads hook configuration from `.github/hooks/*.json` in the cur
 
 The correct generic setup is:
 
-1. Global Copilot instructions define memory behavior.
-2. MCP config exposes WorkIQ, MCPVault, Smart Connections, and persomemory-lifecycle.
-3. Memory skills operate the routines.
-4. User-level hooks load pointer-only context and queue Copilot conversation review pointers.
-5. Work repos stay free of memory-system hooks unless intentionally opted in.
+1. MCP config exposes WorkIQ, MCPVault, Smart Connections, and persomemory-lifecycle.
+2. Memory skills (auto-discovered) define memory behavior and operate the routines.
+3. User-level hooks load pointer-only context and queue Copilot conversation review pointers.
+4. Work repos stay free of memory-system hooks unless intentionally opted in.
 
 ## Session start context hook
 

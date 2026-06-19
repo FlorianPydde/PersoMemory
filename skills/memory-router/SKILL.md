@@ -1,6 +1,6 @@
 ---
 name: memory-router
-description: "Router and policy skill for Florian's executive memory system. Use this for any ambiguous, mixed, scoped, or general memory request: recall, what should I focus on for X, project/person/topic context, commitments, capture this, should this be remembered, what do I owe, what do we know, or memory write/routing decisions. For explicit whole-day brief use memory-brief; explicit daily/end-of-day evidence intake use memory-sweep; explicit consolidation, stale-memory review, archive, merge, supersede, or cleanup use memory-maintenance."
+description: "Router and policy skill for the user's executive memory system. Use this for any ambiguous, mixed, scoped, or general memory request: recall, what should I focus on for X, project/person/topic context, commitments, capture this, should this be remembered, what do I owe, what do we know, or memory write/routing decisions. For explicit whole-day brief use memory-brief; explicit daily/end-of-day evidence intake use memory-sweep; explicit consolidation, stale-memory review, archive, merge, supersede, or cleanup use memory-maintenance."
 ---
 
 # Memory Router
@@ -26,7 +26,7 @@ Active memory lives in the Obsidian vault:
 ## Tool Roles
 
 1. WorkIQ retrieves Microsoft 365 evidence from Teams, email, meetings, calendar, documents, people, and transcripts.
-2. Work IQ Teams sends or manages Teams messages only when Florian explicitly asks.
+2. Work IQ Teams sends or manages Teams messages only when the user explicitly asks.
 3. MCPVault performs deterministic reads and writes in the Obsidian vault.
 4. Smart Connections finds semantically related notes when exact paths are unknown.
 5. persomemory-lifecycle surfaces stale outcomes, aged open loops, and overdue reviews.

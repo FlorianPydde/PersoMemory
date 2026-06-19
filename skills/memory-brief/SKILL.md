@@ -48,7 +48,7 @@ Do not load daily notes by default. Use daily/evidence notes only when the user 
 1. Build the attention view from active outcomes, open execution, pending approvals, and stale/waiting items.
 2. Prefer items that are urgent, important, blocked, waiting on someone, or at risk of being forgotten.
 3. Separate focus from background context.
-4. Do not write to memory unless Florian explicitly asks or approves an approval item.
+4. Do not write to memory unless the user explicitly asks or approves an approval item.
 
 ## Output Format
 
@@ -74,7 +74,7 @@ Return a concise brief:
 
 ## Watchpoint
 
-- One risk or blind spot Florian may be underweighting.
+- One risk or blind spot the user may be underweighting.
 ```
 
 Keep it short. The goal is executive attention, not exhaustive recall.

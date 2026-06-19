@@ -9,7 +9,7 @@ description: Maintains the memory vault over time. Use for consolidate, dream, p
 
 Maintain memory quality after evidence has been captured. This skill reviews evidence and durable records, then proposes promotions, updates, archival decisions, merges, supersessions, closures, and cleanup actions.
 
-It is conservative by design: draft recommendations first, apply approval-gated changes only after Florian approves them.
+It is conservative by design: draft recommendations first, apply approval-gated changes only after the user approves them.
 
 ## Modes
 

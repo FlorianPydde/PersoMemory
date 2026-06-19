@@ -71,12 +71,8 @@ grep -rl '<VAULT_PATH>' ~/.copilot/skills/memory-* ~/.copilot/hooks |
    `smart-connections`, `persomemory-lifecycle`.
 5. Two local MCP projects: `smart-connections-mcp` (cloned/built) and
    `persomemory-lifecycle-mcp` (copied from `mcp/lifecycle/`).
-6. Optional Copilot CLI session hooks in `~/.copilot/hooks/`.
-7. Optional scheduled evening sweep.
-
-Note: the global `copilot-instructions.md` and personal agent profiles are **not** managed
-by this repo anymore. They live in the dotfiles repo (`~/repos/dotfiles/.copilot/`). Install
-those from dotfiles, not from here.
+6. Copilot CLI session hooks in `~/.copilot/hooks/`.
+7. Scheduled evening sweep.
 
 ## Prerequisites
 
@@ -188,23 +184,10 @@ paths (use the path style for the OS — Windows uses escaped backslashes in JSO
 }
 ```
 
-## Step 5 — Global Copilot instructions (from dotfiles)
-
-The memory router lives in the global `~/.copilot/copilot-instructions.md`, which is managed
-by the **dotfiles repo**, not PersoMemory. Install it from there:
-
-```bash
-# in the dotfiles repo
-cp .copilot/copilot-instructions.md ~/.copilot/copilot-instructions.md
-```
-
-Confirm it routes memory work to the `memory-router`, `memory-brief`, `memory-sweep`, and
-`memory-maintenance` skills.
-
-## Step 6 — Session hooks (optional)
+## Step 5 — Session hooks
 
 Hooks queue pointer-only conversation review breadcrumbs and inject a pointer-only startup
-reminder. They are optional orchestration aids — see `docs/hooks.md`.
+reminder. They capture the session evidence the sweep reconciles against open loops — see `docs/hooks.md`.
 
 Install the variant for the current OS into `~/.copilot/hooks/` (the runtime filename is
 `persomemory-session.json` on every OS):
@@ -218,16 +201,16 @@ Replace the `<VAULT_PATH>` placeholder in the copied hook JSON (the
 `PERSOMEMORY_VAULT_PATH` env value) with the user's `VAULT_PATH`, using the OS-appropriate
 path style (escaped backslashes in the Windows JSON).
 
-## Step 7 — Scheduled evening sweep (optional)
+## Step 6 — Scheduled evening sweep
 
 See `docs/scheduling.md`. The `scripts/run-evening-sweep.sh` helper runs `/memory-sweep`
 with narrow tool permissions and writes approval-gated decisions to
 `governance/approvals/YYYY-MM-DD.md`. Provide the vault path by exporting
 `VAULT_PATH=<VAULT_PATH>` before running (preferred over relying on the placeholder
-default), and substitute `<PERSOMEMORY_REPO>` in any cron entry. Add a cron entry if
-unattended runs are wanted.
+default), and substitute `<PERSOMEMORY_REPO>` in any cron entry. Add a cron entry for
+unattended nightly runs.
 
-## Step 8 — Validate
+## Step 7 — Validate
 
 1. Vault structure and frontmatter schema (pass the real vault path as the argument):
    ```bash

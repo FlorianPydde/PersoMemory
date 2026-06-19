@@ -12,9 +12,6 @@ vault, at a path chosen at setup time (referred to as `<VAULT_PATH>` throughout 
 
 `<VAULT_PATH>`  (e.g. `C:\Users\<user>\Repos\ObsidianVaultMemory`)
 
-The global Copilot instructions and personal agent profiles are managed separately in the
-dotfiles repo (`~/repos/dotfiles/.copilot/`), not here.
-
 ## Setup and recovery
 
 Setup is driven interactively by an AI agent following [`SETUP.md`](SETUP.md). There is no
